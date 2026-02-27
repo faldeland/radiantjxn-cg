@@ -1,4 +1,36 @@
 function groupsApp() {
+  const COOKIE_OPTS = 'path=/; max-age=31536000; SameSite=Lax'; // 1 year
+
+  function getCookie(name) {
+    const match = document.cookie.match(new RegExp('(?:^|; )' + name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '=([^;]*)'));
+    return match ? decodeURIComponent(match[1]) : null;
+  }
+
+  function setCookie(name, value) {
+    document.cookie = name + '=' + encodeURIComponent(value) + '; ' + COOKIE_OPTS;
+  }
+
+  function getFiltersFromCookie() {
+    const raw = getCookie('filters');
+    if (!raw) return null;
+    try {
+      const parsed = JSON.parse(raw);
+      return {
+        category: Array.isArray(parsed.category) ? parsed.category : [],
+        demographic: Array.isArray(parsed.demographic) ? parsed.demographic : [],
+        type: Array.isArray(parsed.type) ? parsed.type : [],
+        regularity: Array.isArray(parsed.regularity) ? parsed.regularity : [],
+      };
+    } catch {
+      return null;
+    }
+  }
+
+  function getThemeFromCookie() {
+    const theme = getCookie('theme');
+    return theme === 'light' ? false : true; // default dark
+  }
+
   return {
     allGroups: [],
     sourcePages: [],
@@ -10,17 +42,22 @@ function groupsApp() {
     refreshing: false,
     refreshMessage: '',
     refreshError: false,
-    darkMode: localStorage.getItem('theme') === 'dark',
+    nextRefreshAt: null,
+    darkMode: getThemeFromCookie(),
+    filterBarExpanded: false,
     taglines: ['FREE', 'EMPOWERED', 'CONNECTED', 'GENEROUS', 'LOVING OTHERS'],
     taglineIndex: 0,
     currentTagline: 'FREE',
 
-    filters: {
-      category: [],
-      demographic: [],
-      type: [],
-      regularity: [],
-    },
+    filters: (() => {
+      const saved = getFiltersFromCookie();
+      return saved || {
+        category: [],
+        demographic: [],
+        type: [],
+        regularity: [],
+      };
+    })(),
 
     categories: [
       { name: 'Adult', dotColor: 'bg-radiant-500', borderClass: 'border-radiant-200', activeClass: 'bg-radiant-600 text-white shadow-sm' },
@@ -36,6 +73,65 @@ function groupsApp() {
       this.applyTheme();
       this.startTaglineRotation();
       await this.loadGroups();
+      await this.fetchRefreshStatus();
+      let closeIfOutsideRef = null;
+      let scrollCloseRef = null;
+      this.$watch('filterBarExpanded', (expanded) => {
+        if (expanded) {
+          closeIfOutsideRef = (e) => {
+            if (e.target && e.target.closest && e.target.closest('.filter-bar')) return;
+            const x = e.clientX ?? e.changedTouches?.[0]?.clientX;
+            const y = e.clientY ?? e.changedTouches?.[0]?.clientY;
+            if (x != null && y != null) {
+              const atPoint = document.elementFromPoint(x, y);
+              if (atPoint && atPoint.closest('.filter-bar')) return;
+            }
+            this.filterBarExpanded = false;
+            document.removeEventListener('touchend', closeIfOutsideRef);
+            document.removeEventListener('click', closeIfOutsideRef);
+          };
+          document.addEventListener('touchend', closeIfOutsideRef, { passive: true });
+          document.addEventListener('click', closeIfOutsideRef);
+          const scrollStartY = window.scrollY;
+          scrollCloseRef = (e) => {
+            const el = e.target;
+            const isMainViewportScroll = el === document || el === document.documentElement || el === document.body;
+            if (!isMainViewportScroll) return;
+            if (Math.abs(window.scrollY - scrollStartY) < 50) return;
+            this.filterBarExpanded = false;
+            window.removeEventListener('scroll', scrollCloseRef, { passive: true });
+          };
+          window.addEventListener('scroll', scrollCloseRef, { passive: true });
+        } else {
+          if (closeIfOutsideRef) {
+            document.removeEventListener('touchend', closeIfOutsideRef);
+            document.removeEventListener('click', closeIfOutsideRef);
+            closeIfOutsideRef = null;
+          }
+          if (scrollCloseRef) {
+            window.removeEventListener('scroll', scrollCloseRef, { passive: true });
+            scrollCloseRef = null;
+          }
+        }
+      });
+    },
+
+    async fetchRefreshStatus() {
+      try {
+        const resp = await fetch('/api/status');
+        const data = await resp.json();
+        if (data.nextRefreshAt && Date.now() < data.nextRefreshAt) {
+          this.nextRefreshAt = data.nextRefreshAt;
+        } else {
+          this.nextRefreshAt = null;
+        }
+      } catch {
+        this.nextRefreshAt = null;
+      }
+    },
+
+    saveFiltersCookie() {
+      setCookie('filters', JSON.stringify(this.filters));
     },
 
     taglineFading: false,
@@ -53,7 +149,7 @@ function groupsApp() {
 
     toggleDarkMode() {
       this.darkMode = !this.darkMode;
-      localStorage.setItem('theme', this.darkMode ? 'dark' : 'light');
+      setCookie('theme', this.darkMode ? 'dark' : 'light');
       this.applyTheme();
     },
 
@@ -76,8 +172,12 @@ function groupsApp() {
       }
     },
 
+    get canRefresh() {
+      return this.nextRefreshAt == null || Date.now() >= this.nextRefreshAt;
+    },
+
     async refreshGroups() {
-      if (this.refreshing) return;
+      if (this.refreshing || !this.canRefresh) return;
       this.refreshing = true;
       this.refreshMessage = '';
       this.refreshError = false;
@@ -91,7 +191,11 @@ function groupsApp() {
         const result = await resp.json();
 
         if (!resp.ok) {
-          throw new Error(result.error || 'Refresh failed');
+          const errMsg = result.error || 'Refresh failed';
+          if (resp.status === 429 && result.nextRefreshAt) {
+            this.nextRefreshAt = result.nextRefreshAt;
+          }
+          throw new Error(errMsg);
         }
 
         this.qrRendered.clear();
@@ -99,6 +203,7 @@ function groupsApp() {
         this.$nextTick(() => this.renderAllVisibleQR());
         this.refreshMessage = `Updated ${result.groupCount} groups from Church Center`;
         this.refreshError = false;
+        if (result.nextRefreshAt) this.nextRefreshAt = result.nextRefreshAt;
       } catch (e) {
         console.error('Refresh failed:', e);
         this.refreshMessage = `Refresh failed: ${e.message}`;
@@ -149,6 +254,7 @@ function groupsApp() {
       } else {
         this.filters[key].splice(idx, 1);
       }
+      this.saveFiltersCookie();
       this.qrRendered.clear();
       this.$nextTick(() => this.renderAllVisibleQR());
     },
@@ -163,6 +269,7 @@ function groupsApp() {
       this.filters.type = [];
       this.filters.regularity = [];
       this.searchQuery = '';
+      this.saveFiltersCookie();
       this.qrRendered.clear();
     },
 

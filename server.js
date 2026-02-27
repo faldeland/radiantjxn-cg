@@ -11,10 +11,21 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public'), { index: 'index.html' }));
 
 let scrapeInProgress = false;
+const REFRESH_COOLDOWN_MS = 15 * 60 * 1000; // 15 minutes
+let lastSuccessfulRefreshAt = null;
 
 app.post('/api/refresh', async (req, res) => {
   if (scrapeInProgress) {
     return res.status(409).json({ error: 'A refresh is already in progress' });
+  }
+
+  if (lastSuccessfulRefreshAt && Date.now() - lastSuccessfulRefreshAt < REFRESH_COOLDOWN_MS) {
+    const nextAt = lastSuccessfulRefreshAt + REFRESH_COOLDOWN_MS;
+    const minutesLeft = Math.ceil((nextAt - Date.now()) / 60000);
+    return res.status(429).json({
+      error: `Refresh is limited to once every 15 minutes. Try again in ${minutesLeft} minute${minutesLeft !== 1 ? 's' : ''}.`,
+      nextRefreshAt: nextAt,
+    });
   }
 
   scrapeInProgress = true;
@@ -29,11 +40,13 @@ app.post('/api/refresh', async (req, res) => {
     const dest = saveGroups(data);
 
     log(`Refresh complete: ${data.groups.length} groups saved to ${dest}`);
+    lastSuccessfulRefreshAt = Date.now();
     res.json({
       success: true,
       groupCount: data.groups.length,
       lastUpdated: data.lastUpdated,
       logs,
+      nextRefreshAt: lastSuccessfulRefreshAt + REFRESH_COOLDOWN_MS,
     });
   } catch (err) {
     log(`Refresh failed: ${err.message}`);
@@ -44,7 +57,11 @@ app.post('/api/refresh', async (req, res) => {
 });
 
 app.get('/api/status', (req, res) => {
-  res.json({ scrapeInProgress });
+  res.json({
+    scrapeInProgress,
+    lastSuccessfulRefreshAt,
+    nextRefreshAt: lastSuccessfulRefreshAt ? lastSuccessfulRefreshAt + REFRESH_COOLDOWN_MS : null,
+  });
 });
 
 app.get('/api/sources', (req, res) => {

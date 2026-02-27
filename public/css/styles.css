@@ -10,6 +10,23 @@
 .card-compact { transition: all 0.3s ease; }
 .card-expanded { transition: all 0.3s ease; }
 
+/* Crisp, clean rendering for small tile images */
+.tile-image-wrap {
+  position: relative;
+  isolation: isolate;
+}
+.tile-image {
+  object-position: center;
+  image-rendering: -webkit-optimize-contrast;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+@media (min-resolution: 1.5dppx) {
+  .tile-image {
+    image-rendering: auto;
+  }
+}
+
 .filter-btn {
   transition: all 0.15s ease;
   -webkit-tap-highlight-color: transparent;
@@ -51,6 +68,13 @@
 
 @media (max-width: 768px) {
   .filter-bar { padding-bottom: env(safe-area-inset-bottom, 8px); }
+  /* Expanded tiles: full width, 30% less height (shorter image) */
+  .card-grid-expanded {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .expanded-card-image {
+    aspect-ratio: 16/7;
+  }
 }
 
 html { scroll-behavior: smooth; }

@@ -40,9 +40,9 @@
       <div class="flex items-center gap-3">
         <img src="https://avatars.planningcenteronline.com/uploads/organization/123537-1387786808/avatar.2.png" alt="Radiant Church Jackson" class="w-9 h-9 rounded-lg object-cover">
         <div>
-          <h1 class="text-4xl font-bold leading-none">
-            <span class="text-gray-900 dark:text-white">LIVE </span>
-            <span class="text-radiant-600 tagline-fade" :class="taglineFading ? 'fading' : ''" x-text="currentTagline"></span>
+          <h1 class="text-[1.82rem] sm:text-4xl font-bold leading-none flex flex-col sm:flex-row sm:inline-flex sm:gap-1">
+            <span class="text-gray-900 dark:text-white">LIVE</span>
+            <span class="text-radiant-600 tagline-fade block sm:inline" :class="taglineFading ? 'fading' : ''" x-text="currentTagline"></span>
           </h1>
         </div>
       </div>
@@ -67,10 +67,10 @@
           </svg>
         </button>
         <button @click="refreshGroups()"
-                class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-400 transition-colors"
+                class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 :class="refreshing ? 'animate-spin text-radiant-600' : ''"
-                :disabled="refreshing"
-                title="Refresh groups from Church Center">
+                :disabled="refreshing || !canRefresh"
+                :title="!canRefresh && nextRefreshAt ? 'Refresh available in ' + Math.ceil((nextRefreshAt - Date.now())/60000) + ' min (limit 1 per 15 min)' : 'Refresh groups from Church Center'">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
           </svg>
@@ -137,9 +137,9 @@
                        class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden shadow-sm hover:shadow-md transition-all cursor-pointer flex flex-col w-full"
                        :class="cat.borderClass"
                        @click="openDetail(group)">
-                    <div class="aspect-[2/1] overflow-hidden bg-gray-100 dark:bg-gray-700 flex-shrink-0">
+                    <div class="tile-image-wrap aspect-[2/1] overflow-hidden bg-gray-100 dark:bg-gray-700 flex-shrink-0">
                       <img :src="group.imageUrl" :alt="group.name"
-                           class="w-full h-full object-cover"
+                           class="tile-image w-full h-full object-cover object-center"
                            loading="lazy"
                            onerror="this.style.display='none'">
                     </div>
@@ -147,9 +147,9 @@
                       <h4 class="text-xs font-bold text-gray-900 dark:text-gray-100 leading-tight truncate" x-text="group.name"></h4>
                       <div class="flex flex-wrap gap-1 mt-1.5">
                         <span class="tag-pill" :class="typeColor(group.tags.type)" x-text="group.tags.type" x-show="group.tags.type"></span>
+                        <span class="tag-pill bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300" x-text="group.tags.location" x-show="group.tags.location"></span>
                         <span class="tag-pill bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300" x-text="group.tags.regularity" x-show="group.tags.regularity"></span>
                       </div>
-                      <p class="text-[0.6rem] text-gray-400 mt-1 truncate" x-text="group.tags.location" x-show="group.tags.location"></p>
                       <p x-show="group.tags.meetingDay || group.tags.meetingTime"
                          class="text-[0.6rem] text-gray-400 mt-auto pt-0.5 truncate"
                          x-text="[group.tags.meetingDay, group.tags.meetingTime].filter(Boolean).join(' ')"></p>
@@ -160,14 +160,14 @@
                   <div x-show="isExpanded"
                        class="bg-white dark:bg-gray-800 rounded-2xl border-2 dark:border-gray-600 overflow-hidden shadow-md"
                        :class="cat.borderClass">
-                    <div class="flex flex-col sm:flex-row">
-                      <div class="sm:w-2/5 aspect-[16/10] sm:aspect-auto overflow-hidden bg-gray-100 dark:bg-gray-700">
+                    <div class="flex flex-col">
+                      <div class="expanded-card-image w-full aspect-[16/10] overflow-hidden bg-gray-100 dark:bg-gray-700">
                         <img :src="group.imageUrl" :alt="group.name"
                              class="w-full h-full object-cover"
                              loading="lazy"
                              onerror="this.style.display='none'">
                       </div>
-                      <div class="p-4 sm:w-3/5 flex flex-col">
+                      <div class="p-4 flex flex-col flex-1">
                         <h4 class="text-base font-bold text-gray-900 dark:text-gray-100 mb-1" x-text="group.name"></h4>
                         <p class="text-sm text-gray-600 dark:text-gray-400 mb-3 leading-relaxed" x-text="group.description"></p>
                         <div class="flex flex-wrap gap-1.5 mb-3">
@@ -177,13 +177,13 @@
                           <span class="tag-pill text-xs bg-purple-50 dark:bg-purple-900/40 text-purple-700 dark:text-purple-300" x-text="group.tags.regularity" x-show="group.tags.regularity"></span>
                           <span class="tag-pill text-xs bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300" x-text="[group.tags.meetingDay, group.tags.meetingTime].filter(Boolean).join(' ')" x-show="group.tags.meetingDay || group.tags.meetingTime"></span>
                         </div>
-                        <div class="mt-auto flex items-end gap-3">
+                        <div class="mt-auto flex items-end gap-3 flex-row">
                           <button @click="openGroupPage(group.url, group.name)"
                              class="inline-flex items-center gap-1.5 px-4 py-2 bg-radiant-600 text-white text-sm font-semibold rounded-lg hover:bg-radiant-700 transition-colors">
                             Learn More
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
                           </button>
-                          <div class="qr-container w-16 h-16 flex-shrink-0 bg-white rounded p-0.5" :id="'qr-' + group.id" x-effect="if(isExpanded) { $nextTick(() => renderQR(group)); }"></div>
+                          <div class="qr-container w-16 h-16 flex-shrink-0 bg-white rounded p-0.5 ml-auto" :id="'qr-' + group.id" x-effect="if(isExpanded) { $nextTick(() => renderQR(group)); }"></div>
                         </div>
                       </div>
                     </div>
@@ -229,7 +229,7 @@
               <span class="tag-pill bg-purple-50 dark:bg-purple-900/40 text-purple-700 dark:text-purple-300" x-text="detailGroup.tags.regularity" x-show="detailGroup.tags.regularity"></span>
               <span class="tag-pill bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300" x-text="[detailGroup.tags.meetingDay, detailGroup.tags.meetingTime].filter(Boolean).join(' ')" x-show="detailGroup.tags.meetingDay || detailGroup.tags.meetingTime"></span>
             </div>
-            <div class="flex items-end gap-4 pt-2 border-t border-gray-100 dark:border-gray-700">
+            <div class="flex items-end gap-4 pt-2 border-t border-gray-100 dark:border-gray-700 flex-row">
               <button @click="openGroupPage(detailGroup.url, detailGroup.name)"
                  class="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-radiant-600 text-white font-semibold rounded-xl hover:bg-radiant-700 transition-colors">
                 Learn More
@@ -249,8 +249,23 @@
   <!-- Bottom Filter Bar -->
   <nav class="filter-bar fixed bottom-0 inset-x-0 bg-white/95 dark:bg-gray-900/95 backdrop-blur-lg border-t border-gray-200 dark:border-gray-700 shadow-lg z-40 transition-colors duration-300">
     <div class="max-w-7xl mx-auto px-3 pt-1 pb-2.5">
-      <p class="text-[0.65rem] text-gray-400 dark:text-gray-500 text-center mb-1" x-text="'Showing ' + filteredCount + ' of ' + allGroups.length + ' groups'"></p>
-      <div class="flex flex-wrap items-center justify-center gap-1.5">
+      <!-- Mobile: collapse toggle — entire row is tappable -->
+      <div class="flex items-center justify-between gap-2 md:hidden mb-0.5 cursor-pointer"
+           @click="filterBarExpanded = !filterBarExpanded">
+        <p class="text-[0.65rem] text-gray-400 dark:text-gray-500" x-text="'Showing ' + filteredCount + ' of ' + allGroups.length + ' groups'"></p>
+        <div class="flex items-center gap-1 px-3 py-2 rounded-lg text-xs font-semibold text-gray-600 dark:text-gray-300 min-h-[44px]">
+          <span x-text="filterBarExpanded ? 'Hide' : 'Filters'"></span>
+          <svg class="w-4 h-4 transition-transform" :class="filterBarExpanded ? '' : 'rotate-180'" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+          </svg>
+        </div>
+      </div>
+      <!-- Desktop: count only (no toggle) -->
+      <p class="text-[0.65rem] text-gray-400 dark:text-gray-500 text-center mb-1 hidden md:block" x-text="'Showing ' + filteredCount + ' of ' + allGroups.length + ' groups'"></p>
+      <!-- Filter buttons: slide up/down on mobile, always visible on md+ -->
+      <div class="overflow-hidden transition-all duration-300 max-h-0 md:max-h-none"
+           :class="filterBarExpanded ? 'max-h-96 md:max-h-none' : ''">
+        <div class="flex flex-wrap items-center justify-center gap-1.5 pt-0 md:pt-0">
 
         <!-- Category filters -->
         <div class="flex items-center gap-1">
@@ -319,6 +334,7 @@
                 :disabled="!hasActiveFilters">
           Clear All
         </button>
+      </div>
       </div>
     </div>
   </nav>
