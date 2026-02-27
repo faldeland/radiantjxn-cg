@@ -37,6 +37,7 @@ function groupsApp() {
     lastUpdated: '',
     searchQuery: '',
     showSearch: false,
+    menuOpen: false,
     detailGroup: null,
     qrRendered: new Set(),
     refreshing: false,
