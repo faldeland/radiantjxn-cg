@@ -1,0 +1,16 @@
+{
+  "name": "radiantjxn-community-groups",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Radiant Church community groups aggregator site",
+  "scripts": {
+    "start": "node server.js",
+    "scrape": "node scraper/scrape.js",
+    "dev": "npx serve public"
+  },
+  "private": true,
+  "dependencies": {
+    "express": "^4.21.0",
+    "playwright": "^1.50.0"
+  }
+}

@@ -1,0 +1,200 @@
+{
+  "lastUpdated": "2026-02-27T18:07:03.355Z",
+  "sourcePages": [
+    { "type": "Gather", "url": "https://radiantjxn.churchcenter.com/groups/gather?enrollment=open_signup%2Crequest_to_join&filter=enrollment" },
+    { "type": "Grow",   "url": "https://radiantjxn.churchcenter.com/groups/grow" },
+    { "type": "Go",     "url": "https://radiantjxn.churchcenter.com/groups/go" },
+    { "type": "Gather", "url": "https://radiantjxn.churchcenter.com/groups/team-radiant" }
+  ],
+  "groups": [
+    {
+      "id": "awaken-bloom-prayer",
+      "name": "Awaken & Bloom Prayer",
+      "description": "During All Awaken and Bloom Events",
+      "imageUrl": "https://groups-production.s3.amazonaws.com/uploads/group/header_image/1828341/medium_image-1660839318276.jpg",
+      "url": "https://radiantjxn.churchcenter.com/groups/gather/awaken-bloom-prayer",
+      "category": "Adult", "demographic": "Co-Ed",
+      "tags": { "type": "Gather", "location": "Inquire Within", "season": "", "regularity": "Varies", "meetingDay": "Saturdays", "meetingTime": "8:30pm" }
+    },
+    {
+      "id": "community-outreach-bible-study",
+      "name": "Community Outreach Bible Study",
+      "description": "",
+      "imageUrl": "https://groups-production.s3.amazonaws.com/uploads/group/header_image/2834783/medium_image-1757529661770.jpg",
+      "url": "https://radiantjxn.churchcenter.com/groups/gather/community-outreach-bible-study",
+      "category": "Adult", "demographic": "Co-Ed",
+      "tags": { "type": "Gather", "location": "Inquire Within", "season": "", "regularity": "Varies", "meetingDay": "Saturdays", "meetingTime": "1-2pm" }
+    },
+    {
+      "id": "off-road-adventures",
+      "name": "Off-Road Adventures",
+      "description": "",
+      "imageUrl": "https://groups-production.s3.amazonaws.com/uploads/group/header_image/457620/medium_ORA.jpg",
+      "url": "https://radiantjxn.churchcenter.com/groups/gather/off-road-adventures",
+      "category": "Adult", "demographic": "Co-Ed",
+      "tags": { "type": "Gather", "location": "Inquire Within", "season": "", "regularity": "Varies", "meetingDay": "", "meetingTime": "" }
+    },
+    {
+      "id": "she-shines-in-jackson",
+      "name": "She Shines in Jackson",
+      "description": "",
+      "imageUrl": "https://groups-production.s3.amazonaws.com/uploads/group/header_image/2858283/medium_image-1759258692970.jpg",
+      "url": "https://radiantjxn.churchcenter.com/groups/gather/she-shines-in-jackson",
+      "category": "Adult", "demographic": "Women's",
+      "tags": { "type": "Gather", "location": "Downtown Jackson", "season": "", "regularity": "Monthly", "meetingDay": "Sundays", "meetingTime": "" }
+    },
+    {
+      "id": "the-forge",
+      "name": "The Forge",
+      "description": "",
+      "imageUrl": "https://groups-production.s3.amazonaws.com/uploads/group/header_image/2944640/medium_image-1768511757013(2).jpg",
+      "url": "https://radiantjxn.churchcenter.com/groups/gather/the-forge",
+      "category": "Young Adult", "demographic": "Men's",
+      "tags": { "type": "Gather", "location": "Sycamore Campus", "season": "", "regularity": "Weekly", "meetingDay": "", "meetingTime": "" }
+    },
+    {
+      "id": "women-s-church-league-softball",
+      "name": "Women's Church League Softball",
+      "description": "",
+      "imageUrl": "https://groups-production.s3.amazonaws.com/uploads/group/header_image/2591843/medium_IMG_0434.jpeg",
+      "url": "https://radiantjxn.churchcenter.com/groups/gather/women-s-church-league-softball",
+      "category": "Adult", "demographic": "Women's",
+      "tags": { "type": "Gather", "location": "Ella Sharp Park", "season": "", "regularity": "Weekly", "meetingDay": "Mondays", "meetingTime": "8:40pm" }
+    },
+    {
+      "id": "women-s-prayer-group-spring-arbor",
+      "name": "Women's Prayer Group Spring Arbor",
+      "description": "Bi-Weekly Tuesdays at 6:30PM",
+      "imageUrl": "https://groups-production.s3.amazonaws.com/uploads/group/header_image/262763/medium_image-1535922103656.jpg",
+      "url": "https://radiantjxn.churchcenter.com/groups/gather/women-s-prayer-group-spring-arbor",
+      "category": "Adult", "demographic": "Women's",
+      "tags": { "type": "Gather", "location": "Spring Arbor Rd Campus", "season": "", "regularity": "Bi-Weekly", "meetingDay": "Tuesdays", "meetingTime": "6:30pm" }
+    },
+    {
+      "id": "grief-share-your-journey-from-mourning-to-joy",
+      "name": "Grief Share: Your Journey from Mourning to Joy",
+      "description": "Meets weekly on Mondays from 6-8pm",
+      "imageUrl": "https://groups-production.s3.amazonaws.com/uploads/group/header_image/1862254/medium_image-1662492144975.jpg",
+      "url": "https://radiantjxn.churchcenter.com/groups/grow/grief-share-your-journey-from-mourning-to-joy",
+      "category": "Adult", "demographic": "Co-Ed",
+      "tags": { "type": "Grow", "location": "Inquire Within", "season": "", "regularity": "Weekly", "meetingDay": "Mondays", "meetingTime": "6-8pm" }
+    },
+    {
+      "id": "iron-sharpens-east",
+      "name": "Iron Sharpens - East",
+      "description": "Meets weekly on Saturdays from 7-9am",
+      "imageUrl": "https://groups-production.s3.amazonaws.com/uploads/group/header_image/2075030/medium_6FC08162-8991-41E4-BBC3-1272ABF628DB.png",
+      "url": "https://radiantjxn.churchcenter.com/groups/grow/iron-sharpens-east",
+      "category": "Adult", "demographic": "Men's",
+      "tags": { "type": "Grow", "location": "Biggby - East Michigan", "season": "", "regularity": "Weekly", "meetingDay": "Saturdays", "meetingTime": "7-9am" }
+    },
+    {
+      "id": "iron-sharpens-north",
+      "name": "Iron Sharpens - North",
+      "description": "",
+      "imageUrl": "https://groups-production.s3.amazonaws.com/uploads/group/header_image/2741593/medium_medium_medium_Iron_Men.png",
+      "url": "https://radiantjxn.churchcenter.com/groups/grow/iron-sharpens-north",
+      "category": "Adult", "demographic": "Men's",
+      "tags": { "type": "Grow", "location": "North Jackson", "season": "", "regularity": "Weekly", "meetingDay": "Fridays", "meetingTime": "6pm" }
+    },
+    {
+      "id": "iron-sharpens-south",
+      "name": "Iron Sharpens - South",
+      "description": "",
+      "imageUrl": "https://groups-production.s3.amazonaws.com/uploads/group/header_image/2590203/medium_medium_Iron_Men.png",
+      "url": "https://radiantjxn.churchcenter.com/groups/grow/iron-sharpens-south",
+      "category": "Adult", "demographic": "Men's",
+      "tags": { "type": "Grow", "location": "South Jackson", "season": "", "regularity": "Weekly", "meetingDay": "Saturdays", "meetingTime": "8-10am" }
+    },
+    {
+      "id": "iron-sharpens-west",
+      "name": "Iron Sharpens - West",
+      "description": "Meets weekly on Saturdays from 7-9am",
+      "imageUrl": "https://groups-production.s3.amazonaws.com/uploads/group/header_image/527501/medium_Iron_Men.png",
+      "url": "https://radiantjxn.churchcenter.com/groups/grow/iron-sharpens-west",
+      "category": "Adult", "demographic": "Men's",
+      "tags": { "type": "Grow", "location": "Biggby - Spring Arbor", "season": "", "regularity": "Weekly", "meetingDay": "Saturdays", "meetingTime": "7-9am" }
+    },
+    {
+      "id": "jesus-the-healer",
+      "name": "Jesus the Healer",
+      "description": "",
+      "imageUrl": "https://groups-production.s3.amazonaws.com/uploads/group/header_image/2944602/medium_image-1769351444650(2).jpg",
+      "url": "https://radiantjxn.churchcenter.com/groups/grow/jesus-the-healer",
+      "category": "Adult", "demographic": "Co-Ed",
+      "tags": { "type": "Grow", "location": "East Jackson", "season": "", "regularity": "Bi-Weekly", "meetingDay": "Thursdays", "meetingTime": "8:15pm" }
+    },
+    {
+      "id": "logos-rhema-hebrews",
+      "name": "Logos + Rhema: Hebrews",
+      "description": "Meets weekly on Saturdays from 10:30am-12:30pm",
+      "imageUrl": "https://groups-production.s3.amazonaws.com/uploads/group/header_image/2495142/medium_image-1726933054459.jpg",
+      "url": "https://radiantjxn.churchcenter.com/groups/grow/logos-rhema-hebrews",
+      "category": "Adult", "demographic": "Co-Ed",
+      "tags": { "type": "Grow", "location": "Biggby - Horton Rd", "season": "", "regularity": "Weekly", "meetingDay": "Saturdays", "meetingTime": "10:30am" }
+    },
+    {
+      "id": "who-is-your-go-to",
+      "name": "Who is Your \"Go To\"?",
+      "description": "",
+      "imageUrl": "https://groups-production.s3.amazonaws.com/uploads/group/header_image/2588851/medium_image-1737564708452.jpg",
+      "url": "https://radiantjxn.churchcenter.com/groups/grow/who-is-your-go-to",
+      "category": "Adult", "demographic": "Men's",
+      "tags": { "type": "Grow", "location": "Spring Arbor Rd Campus", "season": "", "regularity": "Weekly", "meetingDay": "Thursdays", "meetingTime": "8pm" }
+    },
+    {
+      "id": "women-seeking-god-first",
+      "name": "Women Seeking God First",
+      "description": "Daily Bible Reading with Online Chat Messaging",
+      "imageUrl": "https://groups-production.s3.amazonaws.com/uploads/group/header_image/2396101/medium_image-1721096218830.jpg",
+      "url": "https://radiantjxn.churchcenter.com/groups/grow/women-seeking-god-first",
+      "category": "Adult", "demographic": "Women's",
+      "tags": { "type": "Grow", "location": "Online", "season": "", "regularity": "Daily", "meetingDay": "Daily", "meetingTime": "" }
+    },
+    {
+      "id": "faithful-feasts",
+      "name": "Faithful Feasts",
+      "description": "",
+      "imageUrl": "https://groups-production.s3.amazonaws.com/uploads/group/header_image/113358/medium_radiant_hearts.jpg",
+      "url": "https://radiantjxn.churchcenter.com/groups/go/faithful-feasts",
+      "category": "Adult", "demographic": "Co-Ed",
+      "tags": { "type": "Go", "location": "Inquire Within", "season": "", "regularity": "As Needed", "meetingDay": "", "meetingTime": "" }
+    },
+    {
+      "id": "helping-hands",
+      "name": "Helping Hands",
+      "description": "As Needed",
+      "imageUrl": "https://groups-production.s3.amazonaws.com/uploads/group/header_image/1230911/medium_image-1599316157125.jpg",
+      "url": "https://radiantjxn.churchcenter.com/groups/go/helping-hands",
+      "category": "Adult", "demographic": "Co-Ed",
+      "tags": { "type": "Go", "location": "Inquire Within", "season": "", "regularity": "As Needed", "meetingDay": "Saturdays", "meetingTime": "" }
+    },
+    {
+      "id": "interfaith-shelter",
+      "name": "Interfaith Shelter",
+      "description": "Every 1st Sunday from 4:15pm - 6:00pm",
+      "imageUrl": "https://groups-production.s3.amazonaws.com/uploads/group/header_image/113398/medium_interfaith.jpg",
+      "url": "https://radiantjxn.churchcenter.com/groups/go/interfaith-shelter",
+      "category": "Adult", "demographic": "Co-Ed",
+      "tags": { "type": "Go", "location": "Downtown Jackson", "season": "", "regularity": "Monthly", "meetingDay": "Sundays", "meetingTime": "4:15pm" }
+    },
+    {
+      "id": "cleaning-team",
+      "name": "Cleaning Team",
+      "description": "Wednesday at 9:00 a.m. and other times available Wednesday - Friday.",
+      "imageUrl": "https://groups-production.s3.amazonaws.com/uploads/group/header_image/610145/medium_jeshoots-com-__ZMnefoI3k-unsplash.jpg",
+      "url": "https://radiantjxn.churchcenter.com/groups/team-radiant/cleaning-team",
+      "category": "Adult", "demographic": "Co-Ed",
+      "tags": { "type": "Gather", "location": "Inquire Within", "season": "", "regularity": "Weekly", "meetingDay": "Wednesdays", "meetingTime": "9am" }
+    },
+    {
+      "id": "radiant-facilities-care-team",
+      "name": "Radiant Facilities Care Team",
+      "description": "As needed",
+      "imageUrl": "https://groups-production.s3.amazonaws.com/uploads/group/header_image/1547296/medium_springarborrd.jpg",
+      "url": "https://radiantjxn.churchcenter.com/groups/team-radiant/radiant-facilities-care-team",
+      "category": "Adult", "demographic": "Co-Ed",
+      "tags": { "type": "Gather", "location": "Inquire Within", "season": "", "regularity": "As Needed", "meetingDay": "", "meetingTime": "" }
+    }
+  ]
+}

@@ -1,0 +1,69 @@
+[x-cloak] { display: none !important; }
+
+.tagline-fade {
+  transition: opacity 0.4s ease;
+}
+.tagline-fade.fading {
+  opacity: 0;
+}
+
+.card-compact { transition: all 0.3s ease; }
+.card-expanded { transition: all 0.3s ease; }
+
+.filter-btn {
+  transition: all 0.15s ease;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.section-header {
+  position: relative;
+}
+
+.tag-pill {
+  font-size: 0.65rem;
+  padding: 0.125rem 0.5rem;
+  border-radius: 9999px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+}
+
+.card-grid-compact {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 180px));
+  justify-content: center;
+  align-items: stretch;
+}
+
+.card-grid-expanded {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 480px));
+  justify-content: center;
+  align-items: stretch;
+}
+
+.qr-canvas canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+@media (max-width: 768px) {
+  .filter-bar { padding-bottom: env(safe-area-inset-bottom, 8px); }
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  -webkit-overflow-scrolling: touch;
+  background: url('../images/bg-light.png') no-repeat center center fixed;
+  background-size: cover;
+  background-color: #f9fafb;
+}
+
+html.dark body {
+  background: url('../images/bg-dark.png') no-repeat center center fixed;
+  background-size: cover;
+  background-color: #111827;
+}
