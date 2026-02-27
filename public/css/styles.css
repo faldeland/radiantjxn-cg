@@ -73,6 +73,12 @@
 
 @media (max-width: 768px) {
   .filter-bar { padding-bottom: env(safe-area-inset-bottom, 8px); }
+  .filter-bar .filter-btn {
+    font-size: 0.65rem;
+    padding: 0.25rem 0.5rem;
+    min-width: 36px;
+    min-height: 36px;
+  }
   /* Expanded tiles: full width, 30% less height (shorter image) */
   .card-grid-expanded {
     grid-template-columns: minmax(0, 1fr);
