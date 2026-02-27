@@ -40,14 +40,28 @@
       <div class="flex items-center gap-3">
         <img src="https://avatars.planningcenteronline.com/uploads/organization/123537-1387786808/avatar.2.png" alt="Radiant Church Jackson" class="w-9 h-9 rounded-lg object-cover">
         <div>
-          <h1 class="text-[1.82rem] sm:text-4xl font-bold leading-none flex flex-col sm:flex-row sm:inline-flex sm:gap-1">
+          <h1 class="text-[1.82rem] sm:text-4xl font-bold leading-none flex flex-col sm:flex-row sm:inline-flex sm:gap-2 gap-0.5">
             <span class="text-gray-900 dark:text-white">LIVE</span>
             <span class="text-radiant-600 tagline-fade block sm:inline" :class="taglineFading ? 'fading' : ''" x-text="currentTagline"></span>
           </h1>
         </div>
       </div>
       <div class="flex items-center gap-1.5">
-        <span class="text-xs text-gray-400 hidden sm:inline" x-show="lastUpdated" x-text="'Updated ' + lastUpdated"></span>
+        <!-- Tile size controls -->
+        <div class="flex items-center gap-0">
+          <button @click="decreaseTileSize()"
+                  class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-400 transition-colors disabled:opacity-30 disabled:cursor-default"
+                  :disabled="tileSize <= 1"
+                  title="Smaller tiles">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" d="M5 12h14"/></svg>
+          </button>
+          <button @click="increaseTileSize()"
+                  class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-400 transition-colors disabled:opacity-30 disabled:cursor-default"
+                  :disabled="tileSize >= tileSizes.length"
+                  title="Larger tiles">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" d="M12 5v14M5 12h14"/></svg>
+          </button>
+        </div>
         <!-- Theme toggle -->
         <button @click="toggleDarkMode()"
                 class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-400 transition-colors"
@@ -84,6 +98,11 @@
              @keydown.escape="showSearch = false; searchQuery = ''">
     </div>
   </header>
+
+  <!-- Updated timestamp -->
+  <span x-show="lastUpdated"
+        class="fixed top-1 right-2 z-50 text-[0.6rem] text-gray-400 dark:text-gray-500 pointer-events-none"
+        x-text="'Updated ' + lastUpdated"></span>
 
   <!-- Refresh Status Banner -->
   <div x-show="refreshMessage" x-transition
@@ -134,9 +153,9 @@
 
                   <!-- COMPACT CARD -->
                   <div x-show="!isExpanded"
-                       class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden shadow-sm hover:shadow-md transition-all cursor-pointer flex flex-col w-full"
+                       class="compact-card bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden shadow-sm hover:shadow-md transition-all cursor-pointer flex flex-col w-full"
                        :class="cat.borderClass"
-                       @click="openDetail(group)">
+                       @click.stop="openDetail(group)">
                     <div class="tile-image-wrap aspect-[2/1] overflow-hidden bg-gray-100 dark:bg-gray-700 flex-shrink-0">
                       <img :src="group.imageUrl" :alt="group.name"
                            class="tile-image w-full h-full object-cover object-center"
@@ -158,7 +177,7 @@
 
                   <!-- EXPANDED CARD -->
                   <div x-show="isExpanded"
-                       class="bg-white dark:bg-gray-800 rounded-2xl border-2 dark:border-gray-600 overflow-hidden shadow-md"
+                       class="expanded-card bg-white dark:bg-gray-800 rounded-2xl border-2 dark:border-gray-600 overflow-hidden shadow-md"
                        :class="cat.borderClass">
                     <div class="flex flex-col">
                       <div class="expanded-card-image w-full aspect-[16/10] overflow-hidden bg-gray-100 dark:bg-gray-700">

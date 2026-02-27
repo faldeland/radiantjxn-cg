@@ -47,9 +47,14 @@
   white-space: nowrap;
 }
 
+:root {
+  --tile-min: 150px;
+  --tile-max: 180px;
+}
+
 .card-grid-compact {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 180px));
+  grid-template-columns: repeat(auto-fill, minmax(var(--tile-min), var(--tile-max)));
   justify-content: center;
   align-items: stretch;
 }
@@ -77,7 +82,25 @@
   }
 }
 
+/* iPad Mini (768px) to iPad Air (1024px): enforce minimum tile size, no expanded transition */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .card-grid-compact,
+  .card-grid-expanded {
+    grid-template-columns: repeat(auto-fill, minmax(max(200px, var(--tile-min)), max(240px, var(--tile-max))));
+  }
+  .compact-card {
+    display: flex !important;
+  }
+  .expanded-card {
+    display: none !important;
+  }
+}
+
 html { scroll-behavior: smooth; }
+
+@media (max-width: 1024px) {
+  html { font-size: 110%; }
+}
 
 body {
   -webkit-overflow-scrolling: touch;

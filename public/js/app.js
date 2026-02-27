@@ -45,6 +45,20 @@ function groupsApp() {
     nextRefreshAt: null,
     darkMode: getThemeFromCookie(),
     filterBarExpanded: false,
+    tileSize: parseInt(getCookie('tileSize'), 10) || 6,
+    tileSizes: [
+      { min: 60, max: 75 },
+      { min: 75, max: 95 },
+      { min: 90, max: 110 },
+      { min: 110, max: 140 },
+      { min: 130, max: 160 },
+      { min: 150, max: 180 },
+      { min: 185, max: 220 },
+      { min: 230, max: 280 },
+      { min: 280, max: 350 },
+      { min: 350, max: 440 },
+      { min: 440, max: 550 },
+    ],
     taglines: ['FREE', 'EMPOWERED', 'CONNECTED', 'GENEROUS', 'LOVING OTHERS'],
     taglineIndex: 0,
     currentTagline: 'FREE',
@@ -71,6 +85,7 @@ function groupsApp() {
 
     async init() {
       this.applyTheme();
+      this.applyTileSize();
       this.startTaglineRotation();
       await this.loadGroups();
       await this.fetchRefreshStatus();
@@ -155,6 +170,26 @@ function groupsApp() {
 
     applyTheme() {
       document.documentElement.classList.toggle('dark', this.darkMode);
+    },
+
+    applyTileSize() {
+      const s = this.tileSizes[this.tileSize - 1] || this.tileSizes[2];
+      document.documentElement.style.setProperty('--tile-min', s.min + 'px');
+      document.documentElement.style.setProperty('--tile-max', s.max + 'px');
+    },
+
+    increaseTileSize() {
+      if (this.tileSize >= this.tileSizes.length) return;
+      this.tileSize++;
+      setCookie('tileSize', String(this.tileSize));
+      this.applyTileSize();
+    },
+
+    decreaseTileSize() {
+      if (this.tileSize <= 1) return;
+      this.tileSize--;
+      setCookie('tileSize', String(this.tileSize));
+      this.applyTileSize();
     },
 
     async loadGroups() {
@@ -294,7 +329,6 @@ function groupsApp() {
     },
 
     openDetail(group) {
-      if (this.isExpanded) return;
       this.detailGroup = group;
       this.$nextTick(() => {
         this.renderQRTo('qr-modal-' + group.id, group.url);
