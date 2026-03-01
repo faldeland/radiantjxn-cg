@@ -331,7 +331,8 @@ function groupsApp() {
     /** Strip /unproxy from Church Center URLs so links load correctly (e.g. on iPad Mini). */
     canonicalGroupUrl(url) {
       if (!url || typeof url !== 'string') return url || '';
-      return url.replace(/^(https?:\/\/[^/]+)\/unproxy(\/|$)/i, '$1$2');
+      const without = url.replace(/\/unproxy\/?/gi, '/');
+      return without.replace(/(^https?:\/\/[^/]+)\/+/g, '$1/');
     },
 
     openGroupPage(url) {
