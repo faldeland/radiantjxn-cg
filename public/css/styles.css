@@ -50,6 +50,18 @@
 :root {
   --tile-min: 150px;
   --tile-max: 180px;
+  --card-font-scale: 1;
+}
+
+/* Card-only font scaling (follows tile size; tile size saved in cookie) */
+.compact-card h4 {
+  font-size: calc(0.75rem * var(--card-font-scale)) !important;
+}
+.compact-card .tag-pill {
+  font-size: calc(0.65rem * var(--card-font-scale)) !important;
+}
+.compact-card .card-meta {
+  font-size: calc(0.6rem * var(--card-font-scale)) !important;
 }
 
 .card-grid-compact {

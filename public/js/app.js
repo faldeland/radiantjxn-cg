@@ -177,6 +177,9 @@ function groupsApp() {
       const s = this.tileSizes[this.tileSize - 1] || this.tileSizes[2];
       document.documentElement.style.setProperty('--tile-min', s.min + 'px');
       document.documentElement.style.setProperty('--tile-max', s.max + 'px');
+      // Card-only font scale: 0.75 at smallest tile → 1.2 at largest (saved via tileSize cookie)
+      const fontScale = 0.75 + ((this.tileSize - 1) / (this.tileSizes.length - 1)) * 0.45;
+      document.documentElement.style.setProperty('--card-font-scale', String(fontScale));
     },
 
     increaseTileSize() {
@@ -270,7 +273,7 @@ function groupsApp() {
     },
 
     get isExpanded() {
-      return this.filteredCount > 0 && this.filteredCount <= 6;
+      return false; // larger cards disabled at all screen sizes
     },
 
     get hasActiveFilters() {

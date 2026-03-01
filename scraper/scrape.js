@@ -82,6 +82,26 @@ function extractTag(text, patterns, fallback = '') {
   return fallback;
 }
 
+const MAX_LOCATION_LEN = 40;
+const LOCATION_SCHEDULE_STOPS = /\s+(?:every|weekly|monthly|daily|on\s+\w+day|meets?|from\s+\d|\.|,|$)/i;
+
+/** Keep only short meeting-place text; strip long descriptions and schedule wording. */
+function normalizeLocation(raw) {
+  if (raw == null || typeof raw !== 'string') return '';
+  let s = raw.trim().replace(/\s+/g, ' ');
+  if (s.length === 0) return '';
+  // Virtual/URL → "Online"
+  if (/^https?:\/\//i.test(s) || /^zoom\.|meet\.|teams\./i.test(s)) return 'Online';
+  // Already short and no schedule words → keep
+  if (s.length <= MAX_LOCATION_LEN && !LOCATION_SCHEDULE_STOPS.test(' ' + s)) return s;
+  // Cut at first schedule phrase or punctuation
+  const firstPart = s.split(LOCATION_SCHEDULE_STOPS)[0]?.trim() || s;
+  let out = firstPart.length <= MAX_LOCATION_LEN ? firstPart : firstPart.slice(0, MAX_LOCATION_LEN - 3).trim() + '…';
+  // If result looks like a sentence (starts with "we "/"the group "/"this group ") or is still too long, ask to inquire
+  if (/^(we |the group |this group |meets? at )/i.test(out) || out.length > MAX_LOCATION_LEN) return 'Inquire Within';
+  return out || 'Inquire Within';
+}
+
 function summarizeAbout(aboutText) {
   if (!aboutText || aboutText.trim().length === 0) return '';
   const cleaned = aboutText
@@ -239,7 +259,7 @@ async function scrapePage(browser, sourcePage, log = console.log) {
       url: dom.url,
       rawTags: attrs.tag_names || attrs.tags || [],
       schedule: attrs.schedule || '',
-      location: attrs.location || attrs.virtual_location_url || '',
+      location: normalizeLocation(attrs.location || attrs.virtual_location_url || ''),
       sourceType: type,
     };
   }).filter((g) => g.name); // drop any empty-name entries
@@ -308,7 +328,7 @@ export async function scrapeAllGroups(pageUrls, log = console.log) {
       demographic: override.demographic || auto.demographic,
       tags: {
         type: override.type || g.sourceType || extractTag(tagText, [/\b(Gather|Grow|Go)\b/i], 'Gather'),
-        location: override.location || g.location || extractTag(tagText, [/(?:at|@)\s+(.+?)(?:\.|,|$)/i], 'Inquire Within'),
+        location: override.location || normalizeLocation(g.location) || normalizeLocation(extractTag(tagText, [/(?:at|@)\s+(.+?)(?=\s+every|\s+on\s+\w+day|\s+weekly|\s+monthly|\s+daily|\.|,|$)/i, /(?:at|@)\s+(.+?)(?:\.|,|$)/i], '')) || 'Inquire Within',
         season: override.season || extractTag(tagText, [/\b(Spring|Summer|Fall|Winter)\s*\d{4}\b/i, /\b(Spring|Summer|Fall|Winter)\b/i], ''),
         regularity,
         meetingDay: override.meetingDay !== undefined ? override.meetingDay : meeting.meetingDay,

@@ -164,7 +164,7 @@
 
   <!-- Refresh Status Banner -->
   <div x-show="refreshMessage" x-transition
-       class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-2">
+       class="max-w-7xl mx-auto px-2 lg:px-8 pt-2">
     <div class="rounded-lg px-4 py-2.5 text-sm flex items-center justify-between"
          :class="refreshError ? 'bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-400' : 'bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400'">
       <span x-text="refreshMessage"></span>
@@ -174,7 +174,7 @@
 
   <!-- Main Content -->
   <div class="fixed inset-0 bg-white/85 dark:bg-black/75 backdrop-blur-[6px] z-0 transition-colors duration-300"></div>
-  <main class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-28 min-h-screen transition-colors duration-300">
+  <main class="relative z-10 max-w-7xl mx-auto px-2 lg:px-8 pt-4 pb-28 min-h-screen transition-colors duration-300">
 
     <!-- No Results -->
     <div x-show="filteredCount === 0" class="text-center py-20">
@@ -191,7 +191,7 @@
     <!-- Sections -->
     <template x-for="cat in categories" :key="cat.name">
       <section x-show="sectionHasGroups(cat.name)" class="mb-6">
-        <div class="section-header bg-transparent py-2 mb-3 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 transition-colors duration-300">
+        <div class="section-header bg-transparent py-2 mb-3 -mx-2 lg:-mx-8 px-2 lg:px-8 transition-colors duration-300">
           <h2 class="flex items-center gap-2">
             <span class="px-4 py-1.5 rounded-full text-sm font-bold text-white shadow-sm" :class="cat.activeClass" x-text="cat.name"></span>
             <span class="text-xs font-normal text-gray-500 dark:text-gray-400" x-text="'(' + sectionCount(cat.name) + ')'"></span>
@@ -228,7 +228,7 @@
                         <span class="tag-pill bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300" x-text="group.tags.regularity" x-show="group.tags.regularity"></span>
                       </div>
                       <p x-show="group.tags.meetingDay || group.tags.meetingTime"
-                         class="text-[0.6rem] text-gray-400 mt-auto pt-0.5 truncate"
+                         class="card-meta text-gray-400 mt-auto pt-0.5 truncate"
                          x-text="[group.tags.meetingDay, group.tags.meetingTime].filter(Boolean).join(' ')"></p>
                     </div>
                   </div>
