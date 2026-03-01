@@ -328,8 +328,14 @@ function groupsApp() {
       return this.filteredGroups.filter((g) => g.category === category && g.demographic === demographic);
     },
 
+    /** Strip /unproxy from Church Center URLs so links load correctly (e.g. on iPad Mini). */
+    canonicalGroupUrl(url) {
+      if (!url || typeof url !== 'string') return url || '';
+      return url.replace(/^(https?:\/\/[^/]+)\/unproxy(\/|$)/i, '$1$2');
+    },
+
     openGroupPage(url) {
-      window.location.href = url;
+      window.location.href = this.canonicalGroupUrl(url);
     },
 
     /** Limit text to maxWords for popup description; returns trimmed string, optionally with ellipsis. */
@@ -345,7 +351,7 @@ function groupsApp() {
     openDetail(group) {
       this.detailGroup = group;
       this.$nextTick(() => {
-        this.renderQRTo('qr-modal-' + group.id, group.url);
+        this.renderQRTo('qr-modal-' + group.id, this.canonicalGroupUrl(group.url));
       });
     },
 
@@ -369,7 +375,7 @@ function groupsApp() {
 
     renderQR(group) {
       if (!this.isExpanded) return;
-      this.renderQRTo('qr-' + group.id, group.url);
+      this.renderQRTo('qr-' + group.id, this.canonicalGroupUrl(group.url));
     },
 
     renderQRTo(containerId, url) {
@@ -401,7 +407,7 @@ function groupsApp() {
     renderAllVisibleQR() {
       if (!this.isExpanded) return;
       this.filteredGroups.forEach((g) => {
-        this.$nextTick(() => this.renderQRTo('qr-' + g.id, g.url));
+        this.$nextTick(() => this.renderQRTo('qr-' + g.id, this.canonicalGroupUrl(g.url)));
       });
     },
   };
