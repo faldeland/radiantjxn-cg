@@ -199,15 +199,24 @@ function groupsApp() {
     async loadGroups() {
       try {
         const resp = await fetch('data/groups.json?_=' + Date.now());
+        if (!resp.ok) {
+          this.allGroups = [];
+          return;
+        }
         const data = await resp.json();
-        this.allGroups = data.groups || [];
-        this.sourcePages = data.sourcePages || [];
+        const raw = Array.isArray(data.groups) ? data.groups : [];
+        this.allGroups = raw.map((g) => ({
+          ...g,
+          tags: g.tags && typeof g.tags === 'object' ? g.tags : { type: '', location: '', season: '', regularity: '', meetingDay: '', meetingTime: '' },
+        }));
+        this.sourcePages = Array.isArray(data.sourcePages) ? data.sourcePages : [];
         if (data.lastUpdated) {
           const d = new Date(data.lastUpdated);
           this.lastUpdated = d.toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit' });
         }
       } catch (e) {
         console.error('Failed to load groups data:', e);
+        this.allGroups = [];
       }
     },
 
