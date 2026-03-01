@@ -37,7 +37,7 @@ app.post('/api/refresh', async (req, res) => {
     log(`Starting refresh for ${pages.length} page(s)...`);
 
     const data = await scrapeAllGroups(pages, log);
-    const dest = saveGroups(data);
+    const dest = saveGroups(data, path.join(__dirname, 'public', 'data', 'groups.json'));
 
     log(`Refresh complete: ${data.groups.length} groups saved to ${dest}`);
     lastSuccessfulRefreshAt = Date.now();

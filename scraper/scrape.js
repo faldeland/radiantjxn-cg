@@ -372,6 +372,10 @@ export async function scrapeAllGroups(pageUrls, log = console.log) {
 
 export function saveGroups(data, outputPath) {
   const dest = outputPath || OUTPUT_PATH;
+  const dir = path.dirname(dest);
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir, { recursive: true });
+  }
   fs.writeFileSync(dest, JSON.stringify(data, null, 2));
   return dest;
 }
