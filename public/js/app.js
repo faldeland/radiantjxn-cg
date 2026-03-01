@@ -198,7 +198,7 @@ function groupsApp() {
 
     async loadGroups() {
       try {
-        const resp = await fetch('data/groups.json?_=' + Date.now());
+        const resp = await fetch('/data/groups.json?_=' + Date.now());
         if (!resp.ok) {
           this.allGroups = [];
           return;
