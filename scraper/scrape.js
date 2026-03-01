@@ -102,14 +102,17 @@ function normalizeLocation(raw) {
   return out || 'Inquire Within';
 }
 
+/** First few sentences or first chunk of about text for group description (used in model). */
 function summarizeAbout(aboutText) {
-  if (!aboutText || aboutText.trim().length === 0) return '';
+  if (!aboutText || typeof aboutText !== 'string') return '';
   const cleaned = aboutText
     .replace(/\s+/g, ' ')
     .replace(/\n+/g, ' ')
     .trim();
-  const sentences = cleaned.match(/[^.!?]+[.!?]+/g) || [cleaned];
-  return sentences.slice(0, 3).join(' ').trim();
+  if (!cleaned) return '';
+  const sentences = cleaned.match(/[^.!?]+[.!?]+/g);
+  if (sentences && sentences.length > 0) return sentences.slice(0, 3).join(' ').trim();
+  return cleaned.slice(0, 500).trim();
 }
 
 async function scrapeGroupDetail(page, groupUrl, log = console.log) {
@@ -120,7 +123,7 @@ async function scrapeGroupDetail(page, groupUrl, log = console.log) {
     const detail = await page.evaluate(() => {
       let aboutText = '';
 
-      // Look for "About" heading then grab content after it
+      // 1) Look for "About" heading then grab content after it
       const headings = document.querySelectorAll('h2, h3, h4, [class*="heading"], [class*="title"]');
       for (const h of headings) {
         if (/about/i.test(h.textContent?.trim())) {
@@ -138,10 +141,30 @@ async function scrapeGroupDetail(page, groupUrl, log = console.log) {
         }
       }
 
-      // Fallback: look for a description/about section by common patterns
+      // 2) Fallback: element with description/about/detail in class
       if (!aboutText) {
         const descEl = document.querySelector('[class*="description"], [class*="about"], [class*="detail"] p');
         if (descEl) aboutText = descEl.textContent?.trim() || '';
+      }
+
+      // 3) Fallback: first substantial paragraph in main content (Church Center / common layouts)
+      if (!aboutText) {
+        const main = document.querySelector('main, [role="main"], .content, [class*="content"]');
+        const container = main || document.body;
+        const paragraphs = container.querySelectorAll('p');
+        for (const p of paragraphs) {
+          const t = p.textContent?.trim() || '';
+          if (t.length > 20 && !/^(login|sign up|subscribe|http)/i.test(t)) {
+            aboutText = t;
+            break;
+          }
+        }
+      }
+
+      // 4) Fallback: meta description
+      if (!aboutText) {
+        const meta = document.querySelector('meta[name="description"]');
+        if (meta?.content) aboutText = meta.content.trim();
       }
 
       // Grab upcoming events text for schedule info
@@ -254,7 +277,7 @@ async function scrapePage(browser, sourcePage, log = console.log) {
     return {
       id: dom.slug,
       name: attrs.name || dom.name || '',
-      description: attrs.description || attrs.public_church_center_description || dom.description || '',
+      description: attrs.description || attrs.public_church_center_description || attrs.bio || attrs.summary || dom.description || '',
       imageUrl: attrs.header_image?.medium || attrs.header_image?.original || dom.imageUrl || '',
       url: dom.url,
       rawTags: attrs.tag_names || attrs.tags || [],
@@ -317,11 +340,12 @@ export async function scrapeAllGroups(pageUrls, log = console.log) {
     const regularity = override.regularity || autoRegularity || (meeting.isPlural ? 'Weekly' : 'Varies');
 
     const aboutSummary = summarizeAbout(g.aboutText);
+    const description = aboutSummary || (g.aboutText && g.aboutText.trim()) || g.description || '';
 
     return {
       id: g.id,
       name: g.name,
-      description: aboutSummary || g.description,
+      description,
       imageUrl: g.imageUrl,
       url: g.url,
       category: override.category || auto.category,

@@ -255,11 +255,12 @@
                           <span class="tag-pill text-xs bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300" x-text="[group.tags.meetingDay, group.tags.meetingTime].filter(Boolean).join(' ')" x-show="group.tags.meetingDay || group.tags.meetingTime"></span>
                         </div>
                         <div class="mt-auto flex items-end gap-3 flex-row">
-                          <button @click="openGroupPage(group.url, group.name)"
-                             class="inline-flex items-center gap-1.5 px-4 py-2 bg-radiant-600 text-white text-sm font-semibold rounded-lg hover:bg-radiant-700 transition-colors">
+                          <a :href="group.url"
+                             class="inline-flex items-center gap-1.5 px-4 py-2 bg-radiant-600 text-white text-sm font-semibold rounded-lg hover:bg-radiant-700 transition-colors no-underline"
+                             target="_blank" rel="noopener noreferrer">
                             Learn More
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-                          </button>
+                          </a>
                           <div class="qr-container w-16 h-16 flex-shrink-0 bg-white rounded p-0.5 ml-auto" :id="'qr-' + group.id" x-effect="if(isExpanded) { $nextTick(() => renderQR(group)); }"></div>
                         </div>
                       </div>
@@ -298,7 +299,6 @@
               <span class="tag-pill text-xs bg-radiant-100 dark:bg-radiant-900/40 text-radiant-700 dark:text-radiant-300" x-text="detailGroup.category"></span>
               <span class="tag-pill text-xs bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300" x-text="detailGroup.demographic"></span>
             </div>
-            <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed mb-4" x-text="detailGroup.description"></p>
             <div class="flex flex-wrap gap-1.5 mb-4">
               <span class="tag-pill" :class="typeColor(detailGroup.tags.type)" x-text="detailGroup.tags.type" x-show="detailGroup.tags.type"></span>
               <span class="tag-pill bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300" x-text="detailGroup.tags.location" x-show="detailGroup.tags.location"></span>
@@ -306,12 +306,16 @@
               <span class="tag-pill bg-purple-50 dark:bg-purple-900/40 text-purple-700 dark:text-purple-300" x-text="detailGroup.tags.regularity" x-show="detailGroup.tags.regularity"></span>
               <span class="tag-pill bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300" x-text="[detailGroup.tags.meetingDay, detailGroup.tags.meetingTime].filter(Boolean).join(' ')" x-show="detailGroup.tags.meetingDay || detailGroup.tags.meetingTime"></span>
             </div>
+            <p x-show="detailGroup.description"
+               class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed mb-4"
+               x-text="descriptionPreview(detailGroup.description)"></p>
             <div class="flex items-end gap-4 pt-2 border-t border-gray-100 dark:border-gray-700 flex-row">
-              <button @click="openGroupPage(detailGroup.url, detailGroup.name)"
-                 class="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-radiant-600 text-white font-semibold rounded-xl hover:bg-radiant-700 transition-colors">
+              <a :href="detailGroup.url"
+                 class="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-radiant-600 text-white font-semibold rounded-xl hover:bg-radiant-700 transition-colors no-underline text-center"
+                 target="_blank" rel="noopener noreferrer">
                 Learn More
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-              </button>
+              </a>
               <div class="w-20 h-20 flex-shrink-0 bg-white rounded p-0.5" :id="'qr-modal-' + detailGroup.id"
                    x-effect="if(detailGroup) { $nextTick(() => renderQRTo('qr-modal-' + detailGroup.id, detailGroup.url)); }">
               </div>

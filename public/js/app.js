@@ -332,6 +332,16 @@ function groupsApp() {
       window.location.href = url;
     },
 
+    /** Limit text to maxWords for popup description; returns trimmed string, optionally with ellipsis. */
+    descriptionPreview(text, maxWords = 200) {
+      if (!text || typeof text !== 'string') return '';
+      const trimmed = text.trim();
+      if (!trimmed) return '';
+      const words = trimmed.split(/\s+/);
+      if (words.length <= maxWords) return trimmed;
+      return words.slice(0, maxWords).join(' ') + '…';
+    },
+
     openDetail(group) {
       this.detailGroup = group;
       this.$nextTick(() => {
