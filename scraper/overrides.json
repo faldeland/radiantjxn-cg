@@ -19,7 +19,7 @@
   "awaken-bloom-prayer":            { "regularity": "Varies", "meetingDay": "Saturdays",  "meetingTime": "8:30pm" },
   "community-outreach-bible-study": { "regularity": "Varies", "meetingDay": "Saturdays",  "meetingTime": "1-2pm" },
   "community-bible-outreach":       { "location": "Spring Arbor Rd Campus" },
-  "off-road-adventures":            { "regularity": "Varies", "meetingDay": "",            "meetingTime": "" },
+  "off-road-adventures":            { "location": "God's Creation", "regularity": "Varies", "meetingDay": "",            "meetingTime": "" },
   "cleaning-team":                   { "regularity": "Weekly", "meetingDay": "Wednesdays",  "meetingTime": "9am" },
   "radiant-facilities-care-team":    { "location": "All Campuses", "regularity": "As Needed", "meetingDay": "", "meetingTime": "" }
 }
