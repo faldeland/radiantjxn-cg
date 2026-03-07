@@ -82,10 +82,10 @@ function extractTag(text, patterns, fallback = '') {
   return fallback;
 }
 
-const MAX_LOCATION_LEN = 40;
+const MAX_LOCATION_LEN = 30;
 const LOCATION_SCHEDULE_STOPS = /\s+(?:every|weekly|monthly|daily|on\s+\w+day|meets?|from\s+\d|\.|,|$)/i;
 
-/** Keep only short meeting-place text; strip long descriptions and schedule wording. */
+/** Keep only short meeting-place text; strip long descriptions and schedule wording. Returns '' if not a valid short location. */
 function normalizeLocation(raw) {
   if (raw == null || typeof raw !== 'string') return '';
   let s = raw.trim().replace(/\s+/g, ' ');
@@ -97,12 +97,63 @@ function normalizeLocation(raw) {
   // Cut at first schedule phrase or punctuation
   const firstPart = s.split(LOCATION_SCHEDULE_STOPS)[0]?.trim() || s;
   let out = firstPart.length <= MAX_LOCATION_LEN ? firstPart : firstPart.slice(0, MAX_LOCATION_LEN - 3).trim() + '…';
-  // If result looks like a sentence (starts with "we "/"the group "/"this group ") or is still too long, ask to inquire
-  if (/^(we |the group |this group |meets? at )/i.test(out) || out.length > MAX_LOCATION_LEN) return 'Inquire Within';
-  return out || 'Inquire Within';
+  // If result looks like a sentence or is still too long, return no tag
+  if (/^(we |the group |this group |meets? at )/i.test(out) || out.length > MAX_LOCATION_LEN) return '';
+  return out || '';
 }
 
-/** First few sentences or first chunk of about text for group description (used in model). */
+/** Returns a location tag ≤30 characters by searching all scraped group text; returns '' if none found. */
+function extractLocationTag(group) {
+  const tagText = `${group.name} ${group.description} ${group.aboutText || ''} ${group.eventsText || ''} ${group.schedule || ''} ${(group.rawTags || []).join(' ')}`;
+  const rawLocation = (group.rawLocation || '').trim();
+  const fullText = (rawLocation + ' ' + tagText).replace(/\s+/g, ' ').trim();
+
+  function fits(s) {
+    if (!s || typeof s !== 'string') return false;
+    const t = s.trim().replace(/\s+/g, ' ');
+    return t.length > 0 && t.length <= MAX_LOCATION_LEN && !/^(we |the group |this group |meets? at )/i.test(t);
+  }
+
+  // 1. Virtual/URL in raw location → Online
+  if (/^https?:\/\//i.test(rawLocation) || /zoom\.|meet\.|teams\.|virtual\s*meeting/i.test(rawLocation)) return 'Online';
+
+  // 2. Short location keywords anywhere in scraped text (home, business, church, campus, online)
+  const keywordMatch = fullText.match(/\b(home|homes|someone'?s?\s*home|at\s+home|business|church|campus|online|zoom|virtual\s*meeting)\b/i);
+  if (keywordMatch) {
+    const w = keywordMatch[0];
+    if (/home/i.test(w)) return 'Home';
+    if (/church/i.test(w)) return 'Church';
+    if (/campus/i.test(w)) return 'Campus';
+    if (/business/i.test(w)) return 'Business';
+    if (/online|zoom|virtual/i.test(w)) return 'Online';
+  }
+
+  // 3. "at X" / "@ X" patterns — take only if result fits
+  const atMatch = tagText.match(/(?:at|@)\s+(.+?)(?=\s+every|\s+on\s+\w+day|\s+weekly|\s+monthly|\s+daily|\.|,|$)/i) || tagText.match(/(?:at|@)\s+(.+?)(?:\.|,|$)/i);
+  if (atMatch) {
+    const x = atMatch[1].trim().replace(/\s+/g, ' ');
+    const short = x.length > MAX_LOCATION_LEN ? x.slice(0, MAX_LOCATION_LEN - 1).trim() + '…' : x;
+    if (fits(short)) return short;
+  }
+
+  // 4. "in Place" / "near Place" — city or venue name
+  const inPlaceMatch = fullText.match(/\b(?:in|near)\s+([A-Za-z][A-Za-z\s'.-]{0,28})\b/);
+  if (inPlaceMatch) {
+    const place = inPlaceMatch[1].trim().replace(/\s+/g, ' ');
+    const short = place.length > MAX_LOCATION_LEN ? place.slice(0, MAX_LOCATION_LEN - 1).trim() + '…' : place;
+    if (fits(short)) return short;
+  }
+
+  // 5. Raw location field — use only if it's a short, non-sentence phrase
+  if (rawLocation) {
+    const cleaned = rawLocation.replace(/\s+/g, ' ').trim();
+    const firstPart = cleaned.split(LOCATION_SCHEDULE_STOPS)[0]?.trim() || cleaned;
+    const out = firstPart.length <= MAX_LOCATION_LEN ? firstPart : firstPart.slice(0, MAX_LOCATION_LEN - 3).trim() + '…';
+    if (fits(out)) return out;
+  }
+
+  return '';
+}
 function summarizeAbout(aboutText) {
   if (!aboutText || typeof aboutText !== 'string') return '';
   const cleaned = aboutText
@@ -282,6 +333,7 @@ async function scrapePage(browser, sourcePage, log = console.log) {
       url: dom.url,
       rawTags: attrs.tag_names || attrs.tags || [],
       schedule: attrs.schedule || '',
+      rawLocation: attrs.location || attrs.virtual_location_url || '',
       location: normalizeLocation(attrs.location || attrs.virtual_location_url || ''),
       sourceType: type,
     };
@@ -352,7 +404,7 @@ export async function scrapeAllGroups(pageUrls, log = console.log) {
       demographic: override.demographic || auto.demographic,
       tags: {
         type: override.type || g.sourceType || extractTag(tagText, [/\b(Gather|Grow|Go)\b/i], 'Gather'),
-        location: override.location || normalizeLocation(g.location) || normalizeLocation(extractTag(tagText, [/(?:at|@)\s+(.+?)(?=\s+every|\s+on\s+\w+day|\s+weekly|\s+monthly|\s+daily|\.|,|$)/i, /(?:at|@)\s+(.+?)(?:\.|,|$)/i], '')) || 'Inquire Within',
+        location: override.location || extractLocationTag(g) || '',
         season: override.season || extractTag(tagText, [/\b(Spring|Summer|Fall|Winter)\s*\d{4}\b/i, /\b(Spring|Summer|Fall|Winter)\b/i], ''),
         regularity,
         meetingDay: override.meetingDay !== undefined ? override.meetingDay : meeting.meetingDay,
