@@ -1,5 +1,6 @@
 import express from 'express';
 import path from 'path';
+import fs from 'fs';
 import { fileURLToPath } from 'url';
 import { scrapeAllGroups, saveGroups, SOURCE_PAGES } from './scraper/scrape.js';
 
@@ -7,7 +8,30 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PORT = process.env.PORT || 3000;
 const app = express();
 
+// Persistent data path: set DATA_DIR (e.g. /data) on Railway with a volume mount so groups.json survives deploys
+const DATA_DIR = process.env.DATA_DIR || null;
+const GROUPS_PATH = DATA_DIR
+  ? path.join(DATA_DIR, 'groups.json')
+  : path.join(__dirname, 'public', 'data', 'groups.json');
+
+if (DATA_DIR) {
+  try {
+    fs.mkdirSync(DATA_DIR, { recursive: true });
+  } catch (err) {
+    console.warn('Could not ensure DATA_DIR exists:', err.message);
+  }
+}
+
 app.use(express.json());
+
+// Serve groups.json from the data path (persistent on Railway when DATA_DIR is a volume)
+app.get('/data/groups.json', (req, res) => {
+  if (!fs.existsSync(GROUPS_PATH)) {
+    return res.status(404).json({ error: 'No groups data yet. Trigger a refresh to scrape.' });
+  }
+  res.type('json').send(fs.readFileSync(GROUPS_PATH, 'utf8'));
+});
+
 app.use(express.static(path.join(__dirname, 'public'), { index: 'index.html' }));
 
 let scrapeInProgress = false;
@@ -37,7 +61,7 @@ app.post('/api/refresh', async (req, res) => {
     log(`Starting refresh for ${pages.length} page(s)...`);
 
     const data = await scrapeAllGroups(pages, log);
-    const dest = saveGroups(data, path.join(__dirname, 'public', 'data', 'groups.json'));
+    const dest = saveGroups(data, GROUPS_PATH);
 
     log(`Refresh complete: ${data.groups.length} groups saved to ${dest}`);
     lastSuccessfulRefreshAt = Date.now();

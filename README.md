@@ -63,7 +63,14 @@ Edit `scraper/overrides.json` to manually set group fields. Keys are group URL s
 
 Overrides take priority over scraped data on refresh.
 
-## Dependencies
+## Deploying to Railway (persistent data)
+
+Railway uses ephemeral filesystems, so `groups.json` is lost on each deploy unless you use a **volume**:
+
+1. In the Railway dashboard, open your service → **Variables** and add:
+   - `DATA_DIR` = `/data`
+2. Open **Volumes** → **Add Volume**, set mount path to `/data`, and attach it to the service.
+3. Redeploy. On first deploy there is no data yet: open the app and use **Refresh** once to scrape and save `groups.json` into the volume. After that, data persists across deploys.
 
 - **Express** - Static file serving and refresh API
 - **Playwright** - Headless browser for scraping Church Center SPAs
