@@ -308,7 +308,7 @@
             </div>
             <p x-show="detailGroup.description"
                class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed mb-4"
-               x-text="descriptionPreview(detailGroup.description)"></p>
+               x-text="descriptionPreview(detailGroup.description, 150)"></p>
             <div class="flex items-end gap-4 pt-2 border-t border-gray-100 dark:border-gray-700 flex-row">
               <a :href="canonicalGroupUrl(detailGroup.url)"
                  class="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-radiant-600 text-white font-semibold rounded-xl hover:bg-radiant-700 transition-colors no-underline text-center"
