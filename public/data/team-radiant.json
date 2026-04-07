@@ -1,0 +1,48 @@
+{
+  "sourceUrl": "https://radiantjxn.com/serve",
+  "lastUpdated": "2026-04-07T02:16:59.956Z",
+  "pageTitle": "Team Radiant",
+  "introParagraphs": [
+    "Here at Radiant we believe that the local church is the hope of the world and how we reach and serve our community with the love and life giving message of Jesus, so that they may become full devoted followers of Him.",
+    "By providing the best Sunday experience we can for those who walk through our doors, we can help them to live out their faith and be Jesus to this city. We also believe that every follower of Jesus has a part to play in serving the house of God. We know that serving the local church helps us to find community, grow in faith, and develop a servant’s heart to reach our city all while we serve those searching for Hope. From the parking lot to the pulpit, every position is eternal. So, no matter your gifting, talents or interests, we believe there is a place for you on Team Radiant!"
+  ],
+  "signUpUrl": "https://radiantjxn.churchcenter.com/people/forms/586040",
+  "closingNote": "After you submit your application, someone from our team will follow up with you and get you connected with a serving team.",
+  "opportunities": [
+    {
+      "id": "first-impressions",
+      "title": "First Impressions",
+      "tag": "Welcome",
+      "description": "First impressions mean everything! This team is often the face of Radiant Church and the first people our attendees come in contact with to help them feel welcome. We do this by greeting others at the doors, directing traffic in the parking lot, ushering during services, brewing fresh coffee and providing first-time visitors with information.",
+      "imageUrl": "/images/serve/greeters-3.png"
+    },
+    {
+      "id": "worship",
+      "title": "Worship",
+      "tag": "Music",
+      "description": "Leaders in the worship ministry use their musical abilities to lead the congregation into the presence of God through corporate worship. Whether through instruments or vocals, by stewarding their giftings well they eliminate distractions for others to encounter the Presence of God.",
+      "imageUrl": "/images/serve/worship-1.png"
+    },
+    {
+      "id": "prayer-ministry",
+      "title": "Prayer",
+      "tag": "Prayer",
+      "description": "The Prayer Team stands in the gap through intercession for our church family, our city, and the nations. Whether you serve in the prayer room on Sundays, join corporate prayer gatherings, or commit to praying behind the scenes, this team helps carry the heart of Jesus to every need.",
+      "imageUrl": "/images/serve/prayer-1.png"
+    },
+    {
+      "id": "next-generation",
+      "title": "Next Generation",
+      "tag": "Next Generation",
+      "description": "Radiant Church is passionately committed to discipling the next generation. This is a diverse area to serve in as ministries range from infants to high schoolers. There is a unique role available for everyone desiring to see young people fall in love with Jesus. We do require a background check of all volunteers in this area.",
+      "imageUrl": "/images/serve/kids-3.png"
+    },
+    {
+      "id": "production",
+      "title": "Production",
+      "tag": "Tech",
+      "description": "The Production Team uses their gifts and abilities to help facilitate an atmosphere for God’s Presence to be fully experienced while minimizing distractions. This team directs lights, sound, cameras, online broadcast and ProPresenter.",
+      "imageUrl": "/images/serve/production-1.png"
+    }
+  ]
+}

@@ -6,6 +6,8 @@
   "scripts": {
     "start": "node server.js",
     "scrape": "node scraper/scrape.js",
+    "scrape:team-radiant": "node scraper/team-radiant-scrape.js",
+    "scrape:social": "node scraper/social-images-scrape.js",
     "dev": "npx serve public"
   },
   "private": true,

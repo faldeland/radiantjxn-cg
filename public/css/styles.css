@@ -114,7 +114,12 @@
   }
 }
 
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+  /* Lock viewport: no rubber-band bounce at scroll limits (keeps sticky header / fixed nav steady) */
+  overscroll-behavior: none;
+  overscroll-behavior-y: none;
+}
 
 @media (max-width: 1024px) {
   html { font-size: 110%; }
@@ -122,6 +127,8 @@ html { scroll-behavior: smooth; }
 
 body {
   -webkit-overflow-scrolling: touch;
+  overscroll-behavior: none;
+  overscroll-behavior-y: none;
   background: url('../images/bg-light.png') no-repeat center center fixed;
   background-size: cover;
   background-color: #f9fafb;

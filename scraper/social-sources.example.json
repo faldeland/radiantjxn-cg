@@ -1,0 +1,7 @@
+{
+  "_readme": "Copy to social-sources.json. Built-in: og:image from radiant.church + radiantjxn.com (disable with skipBuiltInChurchSites). sitePages: more radiantjxn.com paths. npm run scrape:social",
+  "skipBuiltInChurchSites": false,
+  "sitePages": [],
+  "posts": [],
+  "directImages": []
+}

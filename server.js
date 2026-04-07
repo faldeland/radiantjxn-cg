@@ -3,6 +3,8 @@ import path from 'path';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
 import { scrapeAllGroups, saveGroups, SOURCE_PAGES } from './scraper/scrape.js';
+import { scrapeTeamRadiant, saveTeamRadiantData } from './scraper/team-radiant-scrape.js';
+import { scrapeSocialImages } from './scraper/social-images-scrape.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PORT = process.env.PORT || 3000;
@@ -13,6 +15,10 @@ const DATA_DIR = process.env.DATA_DIR || null;
 const GROUPS_PATH = DATA_DIR
   ? path.join(DATA_DIR, 'groups.json')
   : path.join(__dirname, 'public', 'data', 'groups.json');
+
+const TEAM_RADIANT_PATH = DATA_DIR
+  ? path.join(DATA_DIR, 'team-radiant.json')
+  : path.join(__dirname, 'public', 'data', 'team-radiant.json');
 
 if (DATA_DIR) {
   try {
@@ -32,9 +38,17 @@ app.get('/data/groups.json', (req, res) => {
   res.type('json').send(fs.readFileSync(GROUPS_PATH, 'utf8'));
 });
 
+app.get('/data/team-radiant.json', (req, res) => {
+  if (!fs.existsSync(TEAM_RADIANT_PATH)) {
+    return res.status(404).json({ error: 'No Team Radiant data yet. Run scrape or refresh from the Team Radiant page.' });
+  }
+  res.type('json').send(fs.readFileSync(TEAM_RADIANT_PATH, 'utf8'));
+});
+
 app.use(express.static(path.join(__dirname, 'public'), { index: 'index.html' }));
 
 let scrapeInProgress = false;
+let teamRadiantScrapeInProgress = false;
 const REFRESH_COOLDOWN_MS = 15 * 60 * 1000; // 15 minutes
 let lastSuccessfulRefreshAt = null;
 
@@ -90,6 +104,38 @@ app.get('/api/status', (req, res) => {
 
 app.get('/api/sources', (req, res) => {
   res.json({ pages: SOURCE_PAGES });
+});
+
+app.post('/api/refresh-team-radiant', async (req, res) => {
+  if (teamRadiantScrapeInProgress) {
+    return res.status(409).json({ error: 'A Team Radiant refresh is already in progress' });
+  }
+  teamRadiantScrapeInProgress = true;
+  const logs = [];
+  const log = (msg) => { console.log(msg); logs.push(msg); };
+  try {
+    try {
+      log('Refreshing social preview images (social-sources / og:image)...');
+      await scrapeSocialImages(log);
+    } catch (socialErr) {
+      log(`Social images skipped: ${socialErr.message}`);
+    }
+    log('Scraping Team Radiant from radiantjxn.com/serve...');
+    const data = await scrapeTeamRadiant(log);
+    const dest = saveTeamRadiantData(data, TEAM_RADIANT_PATH);
+    log(`Saved to ${dest}`);
+    res.json({
+      success: true,
+      opportunityCount: data.opportunities.length,
+      lastUpdated: data.lastUpdated,
+      logs,
+    });
+  } catch (err) {
+    log(`Team Radiant refresh failed: ${err.message}`);
+    res.status(500).json({ error: err.message, logs });
+  } finally {
+    teamRadiantScrapeInProgress = false;
+  }
 });
 
 app.listen(PORT, () => {
