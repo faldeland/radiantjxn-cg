@@ -179,7 +179,10 @@ function slugify(s) {
 }
 
 function cleanOpportunityTitle(title) {
-  return title.replace(/\s+Ministry\s*$/i, '').trim();
+  let t = title.replace(/\s+/g, ' ').trim();
+  t = t.replace(/\bgenerational\b/gi, 'Next Generation');
+  t = t.replace(/\s+Ministry\s*$/i, '').trim();
+  return t;
 }
 
 export async function scrapeTeamRadiant(log = console.log) {

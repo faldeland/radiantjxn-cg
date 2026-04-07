@@ -32,6 +32,19 @@ function teamRadiantApp() {
     Serve: `${SERVE_IMG}/ushers-1.png`,
   };
 
+  function normalizeOpportunityTitle(title) {
+    if (!title || typeof title !== 'string') return title;
+    let t = title.replace(/\s+/g, ' ').trim();
+    t = t.replace(/\bgenerational\b/gi, 'Next Generation');
+    t = t.replace(/\s+Ministry\s*$/i, '').trim();
+    return t;
+  }
+
+  function normalizeOpportunityTag(tag) {
+    if (!tag || typeof tag !== 'string') return tag;
+    return tag.replace(/\bgenerational\b/gi, 'Next Generation');
+  }
+
   return {
     menuOpen: false,
     darkMode: getThemeFromCookie(),
@@ -146,6 +159,8 @@ function teamRadiantApp() {
         const raw = Array.isArray(data.opportunities) ? data.opportunities : [];
         this.opportunities = raw.map((o) => ({
           ...o,
+          title: normalizeOpportunityTitle(o.title),
+          tag: normalizeOpportunityTag(o.tag),
           imageUrl:
             o.imageUrl ||
             FALLBACK_BY_ID[o.id] ||
