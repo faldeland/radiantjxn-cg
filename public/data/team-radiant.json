@@ -10,11 +10,11 @@
   "closingNote": "After you submit your application, someone from our team will follow up with you and get you connected with a serving team.",
   "opportunities": [
     {
-      "id": "first-impressions",
-      "title": "First Impressions",
-      "tag": "Welcome",
-      "description": "First impressions mean everything! This team is often the face of Radiant Church and the first people our attendees come in contact with to help them feel welcome. We do this by greeting others at the doors, directing traffic in the parking lot, ushering during services, brewing fresh coffee and providing first-time visitors with information.",
-      "imageUrl": "/images/serve/greeters-3.png"
+      "id": "prayer-ministry",
+      "title": "Prayer",
+      "tag": "Prayer",
+      "description": "The Prayer Team stands in the gap through intercession for our church family, our city, and the nations. Whether you serve in the prayer room on Sundays, join corporate prayer gatherings, or commit to praying behind the scenes, this team helps carry the heart of Jesus to every need.",
+      "imageUrl": "/images/serve/prayer-1.png"
     },
     {
       "id": "worship",
@@ -24,11 +24,11 @@
       "imageUrl": "/images/serve/worship-1.png"
     },
     {
-      "id": "prayer-ministry",
-      "title": "Prayer",
-      "tag": "Prayer",
-      "description": "The Prayer Team stands in the gap through intercession for our church family, our city, and the nations. Whether you serve in the prayer room on Sundays, join corporate prayer gatherings, or commit to praying behind the scenes, this team helps carry the heart of Jesus to every need.",
-      "imageUrl": "/images/serve/prayer-1.png"
+      "id": "first-impressions",
+      "title": "First Impressions",
+      "tag": "Welcome",
+      "description": "First impressions mean everything! This team is often the face of Radiant Church and the first people our attendees come in contact with to help them feel welcome. We do this by greeting others at the doors, directing traffic in the parking lot, ushering during services, brewing fresh coffee and providing first-time visitors with information.",
+      "imageUrl": "/images/serve/greeters-3.png"
     },
     {
       "id": "next-generation",

@@ -46,6 +46,35 @@ function ensurePrayerOpportunity(opportunities) {
   return [...opportunities, PRAYER_OPPORTUNITY];
 }
 
+/** Tile order: Prayer → Worship → First Impressions → Next Generation → Production; unknown rows last */
+const OPPORTUNITY_DISPLAY_ORDER = {
+  'prayer-ministry': 0,
+  prayer: 0,
+  worship: 1,
+  'first-impressions': 2,
+  'next-generation': 3,
+  generational: 3,
+  production: 4,
+};
+
+function sortTeamRadiantOpportunities(opportunities) {
+  if (!opportunities?.length) return opportunities;
+  const tagOrder = {
+    Prayer: 0,
+    Music: 1,
+    Welcome: 2,
+    'Next Generation': 3,
+    Tech: 4,
+    Serve: 5,
+  };
+  return [...opportunities].sort((a, b) => {
+    const ra = OPPORTUNITY_DISPLAY_ORDER[a.id] ?? tagOrder[a.tag] ?? 100;
+    const rb = OPPORTUNITY_DISPLAY_ORDER[b.id] ?? tagOrder[b.tag] ?? 100;
+    if (ra !== rb) return ra - rb;
+    return (a.title || '').localeCompare(b.title || '');
+  });
+}
+
 /** Rotate radiant.church vs radiantjxn.com hero art across ministry tags when replacing stock */
 const CHURCH_ROTATION_TAGS = ['Welcome', 'Music', 'Prayer', 'Next Generation', 'Tech', 'Serve'];
 
@@ -109,13 +138,7 @@ const FALLBACK = {
   closingNote:
     'After you submit your application, someone from our team will follow up with you and get you connected with a serving team.',
   opportunities: withImageUrls([
-    {
-      id: 'first-impressions',
-      title: 'First Impressions',
-      tag: 'Welcome',
-      description:
-        'First impressions mean everything! This team is often the face of Radiant Church and the first people our attendees come in contact with to help them feel welcome. We do this by greeting others at the doors, directing traffic in the parking lot, ushering during services, brewing fresh coffee and providing first-time visitors with information.',
-    },
+    PRAYER_OPPORTUNITY,
     {
       id: 'worship',
       title: 'Worship',
@@ -123,7 +146,13 @@ const FALLBACK = {
       description:
         'Leaders in the worship ministry use their musical abilities to lead the congregation into the presence of God through corporate worship. Whether through instruments or vocals, by stewarding their giftings well they eliminate distractions for others to encounter the Presence of God.',
     },
-    PRAYER_OPPORTUNITY,
+    {
+      id: 'first-impressions',
+      title: 'First Impressions',
+      tag: 'Welcome',
+      description:
+        'First impressions mean everything! This team is often the face of Radiant Church and the first people our attendees come in contact with to help them feel welcome. We do this by greeting others at the doors, directing traffic in the parking lot, ushering during services, brewing fresh coffee and providing first-time visitors with information.',
+    },
     {
       id: 'next-generation',
       title: 'Next Generation',
@@ -245,7 +274,9 @@ export async function scrapeTeamRadiant(log = console.log) {
           description: o.description.replace(/\s+/g, ' ').trim(),
         };
       });
-    let opportunities = withImageUrls(ensurePrayerOpportunity(rawList));
+    let opportunities = withImageUrls(
+      sortTeamRadiantOpportunities(ensurePrayerOpportunity(rawList)),
+    );
 
     if (opportunities.length === 0) {
       log('DOM parse yielded no opportunities; using fallback snapshot.');
