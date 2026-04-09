@@ -204,7 +204,7 @@
                      onerror="this.onerror=null; this.src='https://static1.squarespace.com/static/64de46f114810b67d8e4b5f4/t/64e4a511ec64064331d94556/1692706065731/radiant-church-jackson-logo-wide-stacked.png?format=500w'">
               </div>
               <div class="p-2 flex-grow flex flex-col">
-                <p class="text-[0.65rem] font-medium text-radiant-600 dark:text-radiant-400 mb-0.5" x-show="formatWhen(ev)" x-text="formatWhen(ev)"></p>
+                <p class="text-[0.65rem] font-medium text-radiant-600 dark:text-radiant-400 mb-0.5" x-show="formatTileWhen(ev)" x-text="formatTileWhen(ev)"></p>
                 <h4 class="text-xs font-bold text-gray-900 dark:text-gray-100 leading-tight" x-text="ev.title"></h4>
               </div>
             </div>
@@ -277,7 +277,7 @@
             </button>
           </div>
           <div class="p-5">
-            <p class="text-xs font-semibold text-radiant-600 dark:text-radiant-400 mb-1" x-show="formatWhen(selected)" x-text="formatWhen(selected)"></p>
+            <p class="text-xs font-semibold text-radiant-600 dark:text-radiant-400 mb-1" x-show="formatTileWhen(selected)" x-text="formatTileWhen(selected)"></p>
             <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2" x-text="selected.title"></h3>
             <p class="text-sm text-gray-600 dark:text-gray-300 mb-4 whitespace-pre-line" x-show="selected.summary" x-text="selected.summary"></p>
             <div x-show="selected.url" class="space-y-3">

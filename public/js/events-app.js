@@ -317,6 +317,64 @@ function eventsApp() {
       return ev.dateLabel || '';
     },
 
+    /** Date only (no clock), for tiles when the site did not show a time on the event. */
+    formatDateOnly(iso) {
+      if (!iso) return '';
+      const d = new Date(iso);
+      if (Number.isNaN(d.getTime())) return '';
+      return d.toLocaleDateString('en-US', {
+        weekday: 'short',
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric',
+      });
+    },
+
+    labelImpliesClockTime(label) {
+      if (!label || typeof label !== 'string') return false;
+      return /\b\d{1,2}:\d{2}\b|\b(?:am|pm)\b/i.test(label);
+    },
+
+    /** Midnight local start often means “date only” from Church Center / all-day style. */
+    isLikelyMidnightLocal(iso) {
+      if (!iso) return true;
+      const d = new Date(iso);
+      if (Number.isNaN(d.getTime())) return true;
+      return d.getHours() === 0 && d.getMinutes() === 0 && d.getSeconds() === 0;
+    },
+
+    /**
+     * Tile / modal line: omit clock unless the site showed a time (scraper showEventTime) or
+     * the date label includes a time; otherwise prefer dateLabel or date-only from startsAt.
+     */
+    formatTileWhen(ev) {
+      if (!ev) return '';
+      const label = (ev.dateLabel || '').trim();
+
+      if (ev.showEventTime === true) {
+        return this.formatWhen(ev);
+      }
+      if (ev.showEventTime === false) {
+        if (label) return label;
+        if (ev.startsAt) return this.formatDateOnly(ev.startsAt);
+        return '';
+      }
+
+      if (label && this.labelImpliesClockTime(label)) {
+        return this.formatWhen(ev);
+      }
+      if (label) {
+        return label;
+      }
+      if (ev.startsAt) {
+        if (this.isLikelyMidnightLocal(ev.startsAt)) {
+          return this.formatDateOnly(ev.startsAt);
+        }
+        return this.formatWhen(ev);
+      }
+      return '';
+    },
+
     eventImage(ev) {
       if (ev && ev.imageUrl && /^https?:\/\//i.test(ev.imageUrl)) return ev.imageUrl;
       return DEFAULT_EVENT_IMAGE;

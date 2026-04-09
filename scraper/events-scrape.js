@@ -257,6 +257,19 @@ function collectFromJsonNode(node, out, depth = 0) {
   }
 }
 
+/** True when visible <time> copy includes a clock time (site explicitly shows time). */
+function timeTextsShowClock(timeTexts) {
+  if (!timeTexts?.length) return false;
+  return timeTexts.some((t) => {
+    const s = String(t);
+    return (
+      /\b\d{1,2}:\d{2}\b/.test(s) ||
+      /\b\d{1,2}(?::\d{2})?\s*(?:a\.?m\.?|p\.?m\.?)\b/i.test(s) ||
+      /\b(?:noon|midnight)\b/i.test(s)
+    );
+  });
+}
+
 function mergeByUrl(events) {
   const map = new Map();
   for (const e of events) {
@@ -276,6 +289,7 @@ function mergeByUrl(events) {
       dateLabel: e.dateLabel || prev.dateLabel,
       imageUrl: e.imageUrl || prev.imageUrl,
       summary: e.summary || prev.summary,
+      showEventTime: e.showEventTime !== undefined ? e.showEventTime : prev.showEventTime,
     });
   }
   return [...map.values()];
@@ -333,7 +347,8 @@ async function enrichEventsFromDetailPages(page, events, log) {
 
   for (let i = 0; i < out.length; i++) {
     const ev = out[i];
-    if (ev.startsAt) continue;
+    const needDetail = !ev.startsAt || ev.showEventTime === undefined;
+    if (!needDetail) continue;
     if (!ev.url) continue;
     if (visits >= maxVisits) break;
     visits++;
@@ -420,6 +435,7 @@ async function enrichEventsFromDetailPages(page, events, log) {
       if (startsAt) out[i].startsAt = startsAt;
       if (endsAt) out[i].endsAt = endsAt;
       if (dateLabel) out[i].dateLabel = dateLabel;
+      out[i].showEventTime = timeTextsShowClock(extracted.timeTexts);
     } catch (err) {
       log?.(`Event detail scrape skipped (${ev.url}): ${err.message}`);
     }
@@ -551,6 +567,22 @@ export async function scrapeEvents(log = console.log) {
           if (m2) dateLabel = m2[1].trim();
         }
 
+        const cardTimeTexts = card
+          ? [...card.querySelectorAll('time')].map((t) => (t.textContent || '').trim()).filter(Boolean)
+          : [];
+        const timeTextsShowClockLocal = (txts) => {
+          if (!txts?.length) return false;
+          return txts.some((t) => {
+            const s = String(t);
+            return (
+              /\b\d{1,2}:\d{2}\b/.test(s) ||
+              /\b\d{1,2}(?::\d{2})?\s*(?:a\.?m\.?|p\.?m\.?)\b/i.test(s) ||
+              /\b(?:noon|midnight)\b/i.test(s)
+            );
+          });
+        };
+        const showEventTime = timeTextsShowClockLocal(cardTimeTexts);
+
         results.push({
           id: abs,
           title: title || 'Event',
@@ -560,13 +592,14 @@ export async function scrapeEvents(log = console.log) {
           dateLabel,
           imageUrl,
           summary: '',
+          showEventTime,
         });
       });
 
       return results;
     });
 
-    log(`Events listing DOM: ${domEvents.length} cards; enriching detail pages for missing dates…`);
+    log(`Events listing DOM: ${domEvents.length} cards; enriching detail pages (dates + time visibility)…`);
     domEvents = await enrichEventsFromDetailPages(page, domEvents, log);
 
     await context.close();
