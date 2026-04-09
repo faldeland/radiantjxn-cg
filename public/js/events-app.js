@@ -300,25 +300,7 @@ function eventsApp() {
       this.applyTileSize();
     },
 
-    formatWhen(ev) {
-      if (!ev) return '';
-      if (ev.startsAt) {
-        const d = new Date(ev.startsAt);
-        if (!Number.isNaN(d.getTime())) {
-          return d.toLocaleString('en-US', {
-            weekday: 'short',
-            month: 'short',
-            day: 'numeric',
-            year: 'numeric',
-            hour: 'numeric',
-            minute: '2-digit',
-          });
-        }
-      }
-      return ev.dateLabel || '';
-    },
-
-    /** Date only (no clock), for tiles when the site did not show a time on the event. */
+    /** Date only — never show clock on tiles/modal (ISO times from API are often wrong). */
     formatDateOnly(iso) {
       if (!iso) return '';
       const d = new Date(iso);
@@ -331,27 +313,24 @@ function eventsApp() {
       });
     },
 
-    labelImpliesClockTime(label) {
-      if (!label || typeof label !== 'string') return false;
-      return /\b\d{1,2}:\d{2}\b|\b(?:am|pm)\b/i.test(label);
+    /** Remove clock fragments from scraped labels (e.g. trailing ", 8:00 PM"). */
+    stripClockFromLabel(s) {
+      if (!s || typeof s !== 'string') return '';
+      return s
+        .replace(/\s*,\s*\d{1,2}:\d{2}(?::\d{2})?\s*(?:a\.?m\.?|p\.?m\.?)?\b/gi, '')
+        .replace(/\b\d{1,2}:\d{2}(?::\d{2})?\s*(?:a\.?m\.?|p\.?m\.?)\b/gi, '')
+        .replace(/\b\d{1,2}\s*(?:a\.?m\.?|p\.?m\.?)\b/gi, '')
+        .replace(/\s+at\s+\d{1,2}(?::\d{2})?\s*(?:a\.?m\.?|p\.?m\.?)\b/gi, '')
+        .replace(/,\s*$/g, '')
+        .replace(/\s{2,}/g, ' ')
+        .trim();
     },
 
-    /**
-     * Tile / modal line: show clock only when scraper saw a time on the page (showEventTime) or
-     * dateLabel itself includes a time. Never infer time from ISO alone — API defaults (e.g. 8pm)
-     * often disagree with what Church Center displays.
-     */
+    /** Tile + modal date line: dates only, no time. */
     formatTileWhen(ev) {
       if (!ev) return '';
       const label = (ev.dateLabel || '').trim();
-
-      const showClock =
-        ev.showEventTime === true || (label && this.labelImpliesClockTime(label));
-
-      if (showClock) {
-        return this.formatWhen(ev);
-      }
-      if (label) return label;
+      if (label) return this.stripClockFromLabel(label);
       if (ev.startsAt) return this.formatDateOnly(ev.startsAt);
       return '';
     },
