@@ -31,6 +31,26 @@ function eventsApp() {
     return `${ev.title || ''} ${ev.summary || ''} ${ev.url || ''}`.toLowerCase();
   }
 
+  /** Match scraper/events-scrape.js sortUpcomingEvents (soonest first; stable tie-break). */
+  function sortEventsForDisplay(events) {
+    function parseTimeMs(iso) {
+      if (!iso || typeof iso !== 'string') return null;
+      const t = Date.parse(iso);
+      return Number.isFinite(t) ? t : null;
+    }
+    if (!events?.length) return events;
+    return [...events].sort((a, b) => {
+      const ta = parseTimeMs(a.startsAt) ?? parseTimeMs(a.endsAt);
+      const tb = parseTimeMs(b.startsAt) ?? parseTimeMs(b.endsAt);
+      const aKey = ta ?? Number.MAX_SAFE_INTEGER;
+      const bKey = tb ?? Number.MAX_SAFE_INTEGER;
+      if (aKey !== bKey) return aKey - bKey;
+      const byTitle = (a.title || '').localeCompare(b.title || '', undefined, { sensitivity: 'base' });
+      if (byTitle !== 0) return byTitle;
+      return (a.url || '').localeCompare(b.url || '');
+    });
+  }
+
   function eventMatchesTrack(hay, trackName) {
     switch (trackName) {
       case 'Next Steps':
@@ -310,7 +330,8 @@ function eventsApp() {
         const data = await resp.json();
         this.pageTitle = 'Events';
         this.sourceUrl = data.sourceUrl || '';
-        this.events = Array.isArray(data.events) ? data.events : [];
+        const rawEvents = Array.isArray(data.events) ? data.events : [];
+        this.events = sortEventsForDisplay(rawEvents);
         if (data.lastUpdated) {
           const d = new Date(data.lastUpdated);
           this.lastUpdated = d.toLocaleString('en-US', {

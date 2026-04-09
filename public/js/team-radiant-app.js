@@ -35,6 +35,48 @@ function teamRadiantApp() {
     'creative-arts-worship',
   ];
 
+  /** Same order as scraper/team-radiant-scrape.js TILE_ORDER (serialized tile order). */
+  const TILE_ORDER = [
+    'prayer-team',
+    'worship-vocals',
+    'worship-band',
+    'fi-coffee',
+    'fi-greeters',
+    'fi-information',
+    'fi-ushers',
+    'fi-parking',
+    'fi-medical',
+    'fi-merchandise',
+    'ng-infants',
+    'ng-early-childhood',
+    'ng-elementary',
+    'ng-check-in',
+    'ng-radiant-friends',
+    'stu-jr-high',
+    'stu-sr-high',
+    'cg-leader',
+    'caw-service-director',
+    'caw-producer',
+    'caw-graphic-tech',
+    'caw-audio-tech',
+    'caw-camera-operator',
+  ];
+
+  function sortOpportunitiesForDisplay(opportunities) {
+    if (!opportunities?.length) return opportunities;
+    return [...opportunities].sort((a, b) => {
+      const ia = TILE_ORDER.indexOf(a.id);
+      const ib = TILE_ORDER.indexOf(b.id);
+      if (ia !== -1 && ib !== -1) return ia - ib;
+      if (ia !== -1) return -1;
+      if (ib !== -1) return 1;
+      const ga = GROUP_ORDER.indexOf(a.groupId);
+      const gb = GROUP_ORDER.indexOf(b.groupId);
+      if (ga !== gb) return (ga === -1 ? 99 : ga) - (gb === -1 ? 99 : gb);
+      return (a.title || '').localeCompare(b.title || '', undefined, { sensitivity: 'base' });
+    });
+  }
+
   /** Shown under the section heading for specific groups */
   const GROUP_SUBTITLES = {
     worship: 'Worship Team',
@@ -268,7 +310,7 @@ function teamRadiantApp() {
         this.signUpUrl = data.signUpUrl || '';
         this.sourceUrl = data.sourceUrl || '';
         const raw = Array.isArray(data.opportunities) ? data.opportunities : [];
-        this.opportunities = raw.map((o) => ({
+        const mapped = raw.map((o) => ({
           ...o,
           title: normalizeOpportunityTitle(o.title),
           tag: normalizeOpportunityTag(o.tag),
@@ -281,6 +323,7 @@ function teamRadiantApp() {
             FALLBACK_IMAGES[o.tag] ||
             FALLBACK_IMAGES.Serve,
         }));
+        this.opportunities = sortOpportunitiesForDisplay(mapped);
         if (data.lastUpdated) {
           const d = new Date(data.lastUpdated);
           this.lastUpdated = d.toLocaleString('en-US', {
