@@ -76,6 +76,7 @@ function eventsApp() {
         );
       case "Men's":
         if (/women/.test(hay)) return false;
+        if (/\bawaken\b/.test(hay)) return true;
         return (
           /\bmen'?s\b/.test(hay) ||
           /\bmens\b/.test(hay) ||
