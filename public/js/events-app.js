@@ -15,6 +15,68 @@ function eventsApp() {
     return theme === 'light' ? false : true;
   }
 
+  function getEventTracksFromCookie() {
+    const raw = getCookie('eventTrackFilters');
+    if (!raw) return [];
+    try {
+      const parsed = JSON.parse(raw);
+      return Array.isArray(parsed) ? parsed : [];
+    } catch {
+      return [];
+    }
+  }
+
+  /** Lowercased text used to match bottom-track filters */
+  function eventHaystack(ev) {
+    return `${ev.title || ''} ${ev.summary || ''} ${ev.url || ''}`.toLowerCase();
+  }
+
+  function eventMatchesTrack(hay, trackName) {
+    switch (trackName) {
+      case 'Next Steps':
+        return /next\s+steps?/.test(hay) || hay.includes('next step') || hay.includes('new to radiant');
+      case 'Baptism':
+        return hay.includes('baptism');
+      case 'Discipleship':
+        return hay.includes('discipleship') || /\bdisciple\b/.test(hay);
+      case 'Marriage':
+        return (
+          hay.includes('marriage') ||
+          hay.includes('rekindle') ||
+          hay.includes('vision retreat') ||
+          hay.includes('premarital') ||
+          hay.includes('spouse')
+        );
+      case "Women's":
+        return (
+          /women'?s?/.test(hay) ||
+          hay.includes('womxn') ||
+          hay.includes('ladies') ||
+          /rise\s*up/.test(hay)
+        );
+      case "Men's":
+        if (/women/.test(hay)) return false;
+        return (
+          /\bmen'?s\b/.test(hay) ||
+          /\bmens\b/.test(hay) ||
+          /\bfor men\b/.test(hay) ||
+          /\bbrotherhood\b/.test(hay)
+        );
+      case 'School of Spirit':
+        return hay.includes('school of the spirit') || hay.includes('school of spirit');
+      case 'Mission Trip':
+        return (
+          hay.includes('mission trip') ||
+          hay.includes('costa rica') ||
+          hay.includes('haiti') ||
+          /\bmission\b.*\b(sign|trip|deadline)/.test(hay) ||
+          hay.includes('global trip')
+        );
+      default:
+        return false;
+    }
+  }
+
   const DEFAULT_EVENT_IMAGE =
     'https://static1.squarespace.com/static/64de46f114810b67d8e4b5f4/t/64e4a511ec64064331d94556/1692706065731/radiant-church-jackson-logo-wide-stacked.png?format=500w';
 
@@ -41,6 +103,18 @@ function eventsApp() {
     taglineFading: false,
     showSearch: false,
     searchQuery: '',
+    filterBarExpanded: false,
+    eventTrackFilters: getEventTracksFromCookie(),
+    eventTracks: [
+      { name: 'Next Steps', activeClass: 'bg-radiant-600 text-white shadow-sm' },
+      { name: 'Baptism', activeClass: 'bg-sky-600 text-white shadow-sm' },
+      { name: 'Discipleship', activeClass: 'bg-emerald-600 text-white shadow-sm' },
+      { name: 'Marriage', activeClass: 'bg-rose-600 text-white shadow-sm' },
+      { name: "Women's", activeClass: 'bg-fuchsia-600 text-white shadow-sm' },
+      { name: "Men's", activeClass: 'bg-blue-700 text-white shadow-sm' },
+      { name: 'School of Spirit', activeClass: 'bg-violet-600 text-white shadow-sm' },
+      { name: 'Mission Trip', activeClass: 'bg-amber-600 text-white shadow-sm' },
+    ],
     pageTitle: 'Events',
     sourceUrl: '',
     lastUpdated: '',
@@ -58,12 +132,46 @@ function eventsApp() {
     },
 
     get filteredEvents() {
+      let list = this.events;
       const q = (this.searchQuery || '').trim().toLowerCase();
-      if (!q) return this.events;
-      return this.events.filter((e) => {
-        const hay = `${e.title || ''} ${e.summary || ''} ${e.dateLabel || ''}`.toLowerCase();
-        return hay.includes(q);
-      });
+      if (q) {
+        list = list.filter((e) => {
+          const hay = `${e.title || ''} ${e.summary || ''} ${e.dateLabel || ''}`.toLowerCase();
+          return hay.includes(q);
+        });
+      }
+      if (this.eventTrackFilters.length > 0) {
+        list = list.filter((e) => {
+          const hay = eventHaystack(e);
+          return this.eventTrackFilters.some((track) => eventMatchesTrack(hay, track));
+        });
+      }
+      return list;
+    },
+
+    get hasActiveEventFilters() {
+      return this.eventTrackFilters.length > 0 || (this.searchQuery || '').trim().length > 0;
+    },
+
+    saveEventTrackFiltersCookie() {
+      setCookie('eventTrackFilters', JSON.stringify(this.eventTrackFilters));
+    },
+
+    toggleEventTrack(name) {
+      const idx = this.eventTrackFilters.indexOf(name);
+      if (idx === -1) this.eventTrackFilters.push(name);
+      else this.eventTrackFilters.splice(idx, 1);
+      this.saveEventTrackFiltersCookie();
+    },
+
+    isEventTrackActive(name) {
+      return this.eventTrackFilters.includes(name);
+    },
+
+    clearEventFilters() {
+      this.eventTrackFilters = [];
+      this.searchQuery = '';
+      this.saveEventTrackFiltersCookie();
     },
 
     async init() {
@@ -72,6 +180,46 @@ function eventsApp() {
       this.startTaglineRotation();
       await this.loadData();
       await this.fetchRefreshStatus();
+      let closeIfOutsideRef = null;
+      let scrollCloseRef = null;
+      this.$watch('filterBarExpanded', (expanded) => {
+        if (expanded) {
+          closeIfOutsideRef = (e) => {
+            if (e.target && e.target.closest && e.target.closest('.filter-bar')) return;
+            const x = e.clientX ?? e.changedTouches?.[0]?.clientX;
+            const y = e.clientY ?? e.changedTouches?.[0]?.clientY;
+            if (x != null && y != null) {
+              const atPoint = document.elementFromPoint(x, y);
+              if (atPoint && atPoint.closest('.filter-bar')) return;
+            }
+            this.filterBarExpanded = false;
+            document.removeEventListener('touchend', closeIfOutsideRef);
+            document.removeEventListener('click', closeIfOutsideRef);
+          };
+          document.addEventListener('touchend', closeIfOutsideRef, { passive: true });
+          document.addEventListener('click', closeIfOutsideRef);
+          const scrollStartY = window.scrollY;
+          scrollCloseRef = (e) => {
+            const el = e.target;
+            const isMainViewportScroll = el === document || el === document.documentElement || el === document.body;
+            if (!isMainViewportScroll) return;
+            if (Math.abs(window.scrollY - scrollStartY) < 50) return;
+            this.filterBarExpanded = false;
+            window.removeEventListener('scroll', scrollCloseRef, { passive: true });
+          };
+          window.addEventListener('scroll', scrollCloseRef, { passive: true });
+        } else {
+          if (closeIfOutsideRef) {
+            document.removeEventListener('touchend', closeIfOutsideRef);
+            document.removeEventListener('click', closeIfOutsideRef);
+            closeIfOutsideRef = null;
+          }
+          if (scrollCloseRef) {
+            window.removeEventListener('scroll', scrollCloseRef, { passive: true });
+            scrollCloseRef = null;
+          }
+        }
+      });
     },
 
     startTaglineRotation() {
