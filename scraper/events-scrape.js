@@ -257,11 +257,12 @@ function collectFromJsonNode(node, out, depth = 0) {
   }
 }
 
-/** True when visible <time> copy includes a clock time (site explicitly shows time). */
+/** True when visible <time> copy includes a clock time (site explicitly shows event time). */
 function timeTextsShowClock(timeTexts) {
   if (!timeTexts?.length) return false;
   return timeTexts.some((t) => {
     const s = String(t);
+    if (/registration\s+closes/i.test(s)) return false;
     return (
       /\b\d{1,2}:\d{2}\b/.test(s) ||
       /\b\d{1,2}(?::\d{2})?\s*(?:a\.?m\.?|p\.?m\.?)\b/i.test(s) ||
@@ -574,6 +575,7 @@ export async function scrapeEvents(log = console.log) {
           if (!txts?.length) return false;
           return txts.some((t) => {
             const s = String(t);
+            if (/registration\s+closes/i.test(s)) return false;
             return (
               /\b\d{1,2}:\d{2}\b/.test(s) ||
               /\b\d{1,2}(?::\d{2})?\s*(?:a\.?m\.?|p\.?m\.?)\b/i.test(s) ||

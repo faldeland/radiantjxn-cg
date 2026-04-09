@@ -336,43 +336,23 @@ function eventsApp() {
       return /\b\d{1,2}:\d{2}\b|\b(?:am|pm)\b/i.test(label);
     },
 
-    /** Midnight local start often means “date only” from Church Center / all-day style. */
-    isLikelyMidnightLocal(iso) {
-      if (!iso) return true;
-      const d = new Date(iso);
-      if (Number.isNaN(d.getTime())) return true;
-      return d.getHours() === 0 && d.getMinutes() === 0 && d.getSeconds() === 0;
-    },
-
     /**
-     * Tile / modal line: omit clock unless the site showed a time (scraper showEventTime) or
-     * the date label includes a time; otherwise prefer dateLabel or date-only from startsAt.
+     * Tile / modal line: show clock only when scraper saw a time on the page (showEventTime) or
+     * dateLabel itself includes a time. Never infer time from ISO alone — API defaults (e.g. 8pm)
+     * often disagree with what Church Center displays.
      */
     formatTileWhen(ev) {
       if (!ev) return '';
       const label = (ev.dateLabel || '').trim();
 
-      if (ev.showEventTime === true) {
-        return this.formatWhen(ev);
-      }
-      if (ev.showEventTime === false) {
-        if (label) return label;
-        if (ev.startsAt) return this.formatDateOnly(ev.startsAt);
-        return '';
-      }
+      const showClock =
+        ev.showEventTime === true || (label && this.labelImpliesClockTime(label));
 
-      if (label && this.labelImpliesClockTime(label)) {
+      if (showClock) {
         return this.formatWhen(ev);
       }
-      if (label) {
-        return label;
-      }
-      if (ev.startsAt) {
-        if (this.isLikelyMidnightLocal(ev.startsAt)) {
-          return this.formatDateOnly(ev.startsAt);
-        }
-        return this.formatWhen(ev);
-      }
+      if (label) return label;
+      if (ev.startsAt) return this.formatDateOnly(ev.startsAt);
       return '';
     },
 
