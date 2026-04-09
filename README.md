@@ -32,7 +32,7 @@ Open [http://localhost:3000](http://localhost:3000).
 │   ├── images/                # Background images (light/dark themes)
 │   └── data/groups.json       # Scraped group data
 └── scraper/
-    ├── scrape.js              # Playwright scraper for Church Center
+    ├── community-groups-scrape.js  # Playwright scraper for Church Center groups
     └── overrides.json         # Manual overrides for group metadata
 ```
 

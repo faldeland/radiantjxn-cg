@@ -16,20 +16,119 @@ function teamRadiantApp() {
   }
 
   const SERVE_IMG = '/images/serve';
+  const GROUP_LABELS = {
+    prayer: 'Prayer',
+    worship: 'Worship',
+    'first-impressions': 'First Impressions Ministry',
+    'next-generation': 'Generational Ministries',
+    'radiant-students': 'Radiant Students',
+    'community-groups': 'Community Groups',
+    'creative-arts-worship': 'Creative Arts and Worship',
+  };
+  const GROUP_ORDER = [
+    'prayer',
+    'worship',
+    'first-impressions',
+    'next-generation',
+    'radiant-students',
+    'community-groups',
+    'creative-arts-worship',
+  ];
+
+  /** Shown under the section heading for specific groups */
+  const GROUP_SUBTITLES = {
+    worship: 'Worship Team',
+    'next-generation': 'Radiant Kids',
+    'creative-arts-worship': 'Production Team',
+  };
+
+  /**
+   * Canonical role copy for the detail modal (matches scraper/team-radiant-scrape.js CURATED_OPPORTUNITIES).
+   * Used so the detail view always shows full prompt text even if team-radiant.json is stale.
+   */
+  const TEAM_RADIANT_DETAIL_COPY = {
+    'prayer-team':
+      'Stand in the gap through intercession for our church family, our city, and the nations—in the prayer room on Sundays, in corporate prayer, or behind the scenes.',
+    'worship-vocals':
+      'This team expresses their worship through singing and physical gestures to invite others to enter into and encounter the presence of the Lord.',
+    'worship-band':
+      'This team expresses their worship through instruments commonly used in our culture such as: Drums, Percussion, Guitars, Piano, and Orchestral Strings to invite others to enter into and encounter the presence of the Lord.',
+    'fi-coffee':
+      'The coffee team exists to enhance fellowship, set an approachable atmosphere, and promote community through quality coffee and service.',
+    'fi-greeters':
+      'This friendly team loves people and makes them feel at home here at Radiant. They welcome guests with a smile, encouragement, and a comforting atmosphere so that hearts are open to the Gospel message.',
+    'fi-information':
+      'This team connects guests to the Church community, providing resources and information on all of our current events, ministry opportunities, and services at Radiant.',
+    'fi-ushers':
+      'This team prepares a positive worship experience by welcoming and assisting people to a seat, facilitating the offering and communion, and maintaining a distraction-free environment.',
+    'fi-parking':
+      'This team is the first impression of Radiant and operates to create an orderly atmosphere and welcoming environment. If you want to be the very first to welcome our guests to Radiant, this is the team for you.',
+    'fi-medical':
+      'These individuals work with our Safety Team to supply medical care in case of emergency. Previous medical training and experience are required.',
+    'fi-merchandise':
+      'This team promotes our church and its mission by offering quality merchandise that sparks conversations and shares the message of Christ with our community. Every purchase helps spread the word and create opportunities for faith encounters.',
+    'ng-infants':
+      'For ages 6 weeks to 23 months. Infants receive individual attention from trained volunteers. We attend to your child’s physical and spiritual needs by holding, talking to, and praying for each child.',
+    'ng-early-childhood':
+      'For ages 2 years to kindergarten. Children in this age group enjoy experiential play, a lesson that teaches age-appropriate Biblical truths, and a time of interactive praise and worship. The monthly memory verse engages kids to hide God’s Word in their hearts. After a simple snack and story, children depart with ideas for continued learning at home.',
+    'ng-elementary':
+      'For 1st–4th graders. Children experience a purposeful and fun worship service. They strengthen friendships with leaders and other kids through play. Together, we connect with God in worship, praising Him through music, dance, giving, and prayer. In every service, kids receive Biblical truth with life application, putting God’s Word to work in their lives today, while also laying a firm foundation for the future.',
+    'ng-check-in':
+      'This team welcomes all families as they arrive and is often the first contact for first-time guests. This team utilizes a computer system to print name tags for new children and walks families through self-check-in stations to print their own tags. Security tags are an essential component to child safety in Radiant Kids.',
+    'ng-radiant-friends':
+      'This team works closely with kids who need a friend by their side to enjoy Sunday classes. Whether engaging in their age-appropriate class or spending time in the friends room, this team understands that every child is uniquely created by God and has a place in His Kingdom. For children with special needs. Spring Arbor Campus only.',
+    'stu-jr-high':
+      'For 5th–7th grade (Sunday mornings). Radiant Students worship together in the main sanctuary before being dismissed to their class for an age-appropriate message, prayer, and group discussions with real-life applications.',
+    'stu-sr-high':
+      'For 7th–12th grade (Sunday nights). This group meets every Sunday from 6:00 PM to 8:15 PM. There will be a customized service with time to hang out, play games, and make new friends. We will then move into a time of intentional worship and a message with small group discussions targeted at strengthening our faith.',
+    'cg-leader':
+      'Facilitate a weekly Community Group: welcome people, guide discussion around Scripture and sermon application, pray together, and help members build real relationships that point one another to Jesus. Training and ongoing support are provided.',
+    'caw-service-director':
+      'Directs camera operators, graphic techs, and technical directors for both livestream and IMAG in-house. Able to remain calm under pressure and demonstrates excellent verbal communication. Has a thorough understanding of the order of each service. Some experience is preferred but not required.',
+    'caw-producer':
+      'Operates the broadcast panel to switch live video for both livestream and IMAG in-house. Able to retain focus and follow instructions from the video director. Must be technically minded. No experience is required.',
+    'caw-graphic-tech':
+      'Controls ProPresenter for livestream and IMAG in-house. Able to retain focus and has excellent hand-eye coordination. Must work well on a team. No experience is required.',
+    'caw-audio-tech':
+      'Mixes worship and teaching for in-house experience and for livestream. This is a highly technical position and requires someone who has had previous audio experience.',
+    'caw-camera-operator':
+      'Responsible for capturing high-quality footage, expertly framing shots, and executing smooth camera movements to bring the director’s vision to life. They work closely with the production team, ensuring that the visuals are technically precise and creatively engaging throughout the shoot.',
+  };
+
   const FALLBACK_BY_ID = {
-    'first-impressions': `${SERVE_IMG}/greeters-3.png`,
-    worship: `${SERVE_IMG}/worship-1.png`,
-    'prayer-ministry': `${SERVE_IMG}/prayer-1.png`,
-    'next-generation': `${SERVE_IMG}/kids-3.png`,
-    production: `${SERVE_IMG}/production-1.png`,
+    'prayer-team': `${SERVE_IMG}/prayer-2.png`,
+    'worship-vocals': `${SERVE_IMG}/vocals.png`,
+    'worship-band': `${SERVE_IMG}/instrumentals-1.png`,
+    'fi-coffee': `${SERVE_IMG}/coffee-1.png`,
+    'fi-greeters': `${SERVE_IMG}/greeters-4.png`,
+    'fi-information': `${SERVE_IMG}/greeters-3.png`,
+    'fi-ushers': `${SERVE_IMG}/ushers-1.png`,
+    'fi-parking': `${SERVE_IMG}/parking-1.png`,
+    'fi-medical': `${SERVE_IMG}/prayer-1.png`,
+    'fi-merchandise': `${SERVE_IMG}/greeters-1.png`,
+    'ng-infants': `${SERVE_IMG}/kids-1.png`,
+    'ng-early-childhood': `${SERVE_IMG}/kids-2.png`,
+    'ng-elementary': `${SERVE_IMG}/kids-6.png`,
+    'ng-check-in': `${SERVE_IMG}/kids-checkin-1.png`,
+    'ng-radiant-friends': `${SERVE_IMG}/kids-5.png`,
+    'stu-jr-high': `${SERVE_IMG}/kids-4.png`,
+    'stu-sr-high': `${SERVE_IMG}/kids-6.png`,
+    'caw-service-director': `${SERVE_IMG}/production-3.png`,
+    'caw-producer': `${SERVE_IMG}/producer-1.png`,
+    'caw-graphic-tech': `${SERVE_IMG}/graphics-tech-1.png`,
+    'caw-audio-tech': `${SERVE_IMG}/audio-tech-1.png`,
+    'caw-camera-operator': `${SERVE_IMG}/camera-operator-1.png`,
+    'cg-leader': `${SERVE_IMG}/greeters-2.png`,
   };
   const FALLBACK_IMAGES = {
-    Welcome: `${SERVE_IMG}/greeters-3.png`,
+    Welcome: `${SERVE_IMG}/greeters-4.png`,
     Music: `${SERVE_IMG}/worship-1.png`,
-    Prayer: `${SERVE_IMG}/prayer-1.png`,
-    'Next Generation': `${SERVE_IMG}/kids-3.png`,
-    Tech: `${SERVE_IMG}/production-1.png`,
+    Prayer: `${SERVE_IMG}/prayer-2.png`,
+    'Next Generation': `${SERVE_IMG}/kids-6.png`,
+    Tech: `${SERVE_IMG}/production-3.png`,
+    Students: `${SERVE_IMG}/kids-6.png`,
     Serve: `${SERVE_IMG}/ushers-1.png`,
+    Community: `${SERVE_IMG}/greeters-2.png`,
   };
 
   function normalizeOpportunityTitle(title) {
@@ -90,9 +189,21 @@ function teamRadiantApp() {
       const q = (this.searchQuery || '').trim().toLowerCase();
       if (!q) return this.opportunities;
       return this.opportunities.filter((o) => {
-        const hay = `${o.title || ''} ${o.description || ''} ${o.tag || ''}`.toLowerCase();
+        const gl = o.groupLabel || GROUP_LABELS[o.groupId] || '';
+        const sub = (o.groupId && GROUP_SUBTITLES[o.groupId]) || '';
+        const hay = `${o.title || ''} ${o.description || ''} ${o.tag || ''} ${gl} ${sub}`.toLowerCase();
         return hay.includes(q);
       });
+    },
+
+    get groupedSections() {
+      const list = this.filteredOpportunities;
+      return GROUP_ORDER.map((groupId) => ({
+        groupId,
+        label: GROUP_LABELS[groupId] || groupId,
+        subtitle: GROUP_SUBTITLES[groupId] || '',
+        items: list.filter((o) => (o.groupId || '') === groupId),
+      })).filter((s) => s.items.length > 0);
     },
 
     async init() {
@@ -161,6 +272,9 @@ function teamRadiantApp() {
           ...o,
           title: normalizeOpportunityTitle(o.title),
           tag: normalizeOpportunityTag(o.tag),
+          groupLabel: o.groupLabel || GROUP_LABELS[o.groupId] || '',
+          signUpUrl: o.signUpUrl || data.signUpUrl || '',
+          description: (TEAM_RADIANT_DETAIL_COPY[o.id] || o.description || '').trim(),
           imageUrl:
             o.imageUrl ||
             FALLBACK_BY_ID[o.id] ||
@@ -219,6 +333,12 @@ function teamRadiantApp() {
       );
     },
 
+    /** Full detail copy for modal (canonical map + fallback) */
+    detailDescription(opp) {
+      if (!opp) return '';
+      return (TEAM_RADIANT_DETAIL_COPY[opp.id] || opp.description || '').trim();
+    },
+
     tagClass() {
       return 'bg-radiant-100 text-radiant-800 dark:bg-radiant-900/40 dark:text-radiant-200';
     },
@@ -232,6 +352,15 @@ function teamRadiantApp() {
         this.qrRendered.delete('qr-modal-' + this.selected.id);
       }
       this.selected = null;
+    },
+
+    signUpLinkFor(opp) {
+      if (!opp) return this.signUpUrl || '';
+      return opp.signUpUrl || this.signUpUrl || '';
+    },
+
+    groupSubtitle(groupId) {
+      return (groupId && GROUP_SUBTITLES[groupId]) || '';
     },
 
     renderQRTo(containerId, url) {

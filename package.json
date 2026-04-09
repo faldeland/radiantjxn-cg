@@ -5,8 +5,9 @@
   "description": "Radiant Church community groups aggregator site",
   "scripts": {
     "start": "node server.js",
-    "scrape": "node scraper/scrape.js",
+    "scrape": "node scraper/community-groups-scrape.js",
     "scrape:team-radiant": "node scraper/team-radiant-scrape.js",
+    "scrape:events": "node scraper/events-scrape.js",
     "scrape:social": "node scraper/social-images-scrape.js",
     "dev": "npx serve public"
   },

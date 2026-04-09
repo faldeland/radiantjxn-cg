@@ -2,9 +2,10 @@ import express from 'express';
 import path from 'path';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
-import { scrapeAllGroups, saveGroups, SOURCE_PAGES } from './scraper/scrape.js';
+import { scrapeAllGroups, saveGroups, SOURCE_PAGES } from './scraper/community-groups-scrape.js';
 import { scrapeTeamRadiant, saveTeamRadiantData } from './scraper/team-radiant-scrape.js';
 import { scrapeSocialImages } from './scraper/social-images-scrape.js';
+import { scrapeEvents, saveEventsData } from './scraper/events-scrape.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PORT = process.env.PORT || 3000;
@@ -19,6 +20,10 @@ const GROUPS_PATH = DATA_DIR
 const TEAM_RADIANT_PATH = DATA_DIR
   ? path.join(DATA_DIR, 'team-radiant.json')
   : path.join(__dirname, 'public', 'data', 'team-radiant.json');
+
+const EVENTS_PATH = DATA_DIR
+  ? path.join(DATA_DIR, 'events.json')
+  : path.join(__dirname, 'public', 'data', 'events.json');
 
 if (DATA_DIR) {
   try {
@@ -45,12 +50,21 @@ app.get('/data/team-radiant.json', (req, res) => {
   res.type('json').send(fs.readFileSync(TEAM_RADIANT_PATH, 'utf8'));
 });
 
+app.get('/data/events.json', (req, res) => {
+  if (!fs.existsSync(EVENTS_PATH)) {
+    return res.status(404).json({ error: 'No events data yet. Refresh from the Events page or run scrape:events.' });
+  }
+  res.type('json').send(fs.readFileSync(EVENTS_PATH, 'utf8'));
+});
+
 app.use(express.static(path.join(__dirname, 'public'), { index: 'index.html' }));
 
 let scrapeInProgress = false;
 let teamRadiantScrapeInProgress = false;
+let eventsScrapeInProgress = false;
 const REFRESH_COOLDOWN_MS = 15 * 60 * 1000; // 15 minutes
 let lastSuccessfulRefreshAt = null;
+let lastSuccessfulEventsRefreshAt = null;
 
 app.post('/api/refresh', async (req, res) => {
   if (scrapeInProgress) {
@@ -99,6 +113,11 @@ app.get('/api/status', (req, res) => {
     scrapeInProgress,
     lastSuccessfulRefreshAt,
     nextRefreshAt: lastSuccessfulRefreshAt ? lastSuccessfulRefreshAt + REFRESH_COOLDOWN_MS : null,
+    eventsScrapeInProgress,
+    lastSuccessfulEventsRefreshAt,
+    nextEventsRefreshAt: lastSuccessfulEventsRefreshAt
+      ? lastSuccessfulEventsRefreshAt + REFRESH_COOLDOWN_MS
+      : null,
   });
 });
 
@@ -135,6 +154,51 @@ app.post('/api/refresh-team-radiant', async (req, res) => {
     res.status(500).json({ error: err.message, logs });
   } finally {
     teamRadiantScrapeInProgress = false;
+  }
+});
+
+app.post('/api/refresh-events', async (req, res) => {
+  if (eventsScrapeInProgress) {
+    return res.status(409).json({ error: 'An events refresh is already in progress' });
+  }
+
+  if (
+    lastSuccessfulEventsRefreshAt &&
+    Date.now() - lastSuccessfulEventsRefreshAt < REFRESH_COOLDOWN_MS
+  ) {
+    const nextAt = lastSuccessfulEventsRefreshAt + REFRESH_COOLDOWN_MS;
+    const minutesLeft = Math.ceil((nextAt - Date.now()) / 60000);
+    return res.status(429).json({
+      error: `Refresh is limited to once every 15 minutes. Try again in ${minutesLeft} minute${minutesLeft !== 1 ? 's' : ''}.`,
+      nextEventsRefreshAt: nextAt,
+    });
+  }
+
+  eventsScrapeInProgress = true;
+  const logs = [];
+  const log = (msg) => {
+    console.log(msg);
+    logs.push(msg);
+  };
+
+  try {
+    log('Scraping upcoming events from Church Center…');
+    const data = await scrapeEvents(log);
+    const dest = saveEventsData(data, EVENTS_PATH);
+    log(`Saved ${data.events.length} events to ${dest}`);
+    lastSuccessfulEventsRefreshAt = Date.now();
+    res.json({
+      success: true,
+      eventCount: data.events.length,
+      lastUpdated: data.lastUpdated,
+      logs,
+      nextEventsRefreshAt: lastSuccessfulEventsRefreshAt + REFRESH_COOLDOWN_MS,
+    });
+  } catch (err) {
+    log(`Events refresh failed: ${err.message}`);
+    res.status(500).json({ error: err.message, logs });
+  } finally {
+    eventsScrapeInProgress = false;
   }
 });
 

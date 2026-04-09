@@ -1,6 +1,6 @@
 {
   "sourceUrl": "https://radiantjxn.com/serve",
-  "lastUpdated": "2026-04-07T02:16:59.956Z",
+  "lastUpdated": "2026-04-09T01:09:12.814Z",
   "pageTitle": "Team Radiant",
   "introParagraphs": [
     "Here at Radiant we believe that the local church is the hope of the world and how we reach and serve our community with the love and life giving message of Jesus, so that they may become full devoted followers of Him.",
@@ -10,39 +10,211 @@
   "closingNote": "After you submit your application, someone from our team will follow up with you and get you connected with a serving team.",
   "opportunities": [
     {
-      "id": "prayer-ministry",
-      "title": "Prayer",
+      "groupId": "prayer",
+      "id": "prayer-team",
+      "title": "Prayer Team",
       "tag": "Prayer",
-      "description": "The Prayer Team stands in the gap through intercession for our church family, our city, and the nations. Whether you serve in the prayer room on Sundays, join corporate prayer gatherings, or commit to praying behind the scenes, this team helps carry the heart of Jesus to every need.",
-      "imageUrl": "/images/serve/prayer-1.png"
+      "description": "Stand in the gap through intercession for our church family, our city, and the nations—in the prayer room on Sundays, in corporate prayer, or behind the scenes.",
+      "signUpUrl": "https://radiantjxn.churchcenter.com/people/forms/586040",
+      "imageUrl": "/images/serve/prayer-2.png"
     },
     {
-      "id": "worship",
-      "title": "Worship",
+      "groupId": "worship",
+      "id": "worship-vocals",
+      "title": "Vocal",
       "tag": "Music",
-      "description": "Leaders in the worship ministry use their musical abilities to lead the congregation into the presence of God through corporate worship. Whether through instruments or vocals, by stewarding their giftings well they eliminate distractions for others to encounter the Presence of God.",
-      "imageUrl": "/images/serve/worship-1.png"
+      "description": "This team expresses their worship through singing and physical gestures to invite others to enter into and encounter the presence of the Lord.",
+      "signUpUrl": "https://radiantjxn.churchcenter.com/people/forms/586040",
+      "imageUrl": "/images/serve/vocals.png"
     },
     {
-      "id": "first-impressions",
-      "title": "First Impressions",
+      "groupId": "worship",
+      "id": "worship-band",
+      "title": "Instruments",
+      "tag": "Music",
+      "description": "This team expresses their worship through instruments commonly used in our culture such as: Drums, Percussion, Guitars, Piano, and Orchestral Strings to invite others to enter into and encounter the presence of the Lord.",
+      "signUpUrl": "https://radiantjxn.churchcenter.com/people/forms/586040",
+      "imageUrl": "/images/serve/instrumentals-1.png"
+    },
+    {
+      "groupId": "first-impressions",
+      "id": "fi-coffee",
+      "title": "Coffee",
       "tag": "Welcome",
-      "description": "First impressions mean everything! This team is often the face of Radiant Church and the first people our attendees come in contact with to help them feel welcome. We do this by greeting others at the doors, directing traffic in the parking lot, ushering during services, brewing fresh coffee and providing first-time visitors with information.",
+      "description": "The coffee team exists to enhance fellowship, set an approachable atmosphere, and promote community through quality coffee and service.",
+      "signUpUrl": "https://radiantjxn.churchcenter.com/people/forms/586040",
+      "imageUrl": "/images/serve/coffee-1.png"
+    },
+    {
+      "groupId": "first-impressions",
+      "id": "fi-greeters",
+      "title": "Greeter",
+      "tag": "Welcome",
+      "description": "This friendly team loves people and makes them feel at home here at Radiant. They welcome guests with a smile, encouragement, and a comforting atmosphere so that hearts are open to the Gospel message.",
+      "signUpUrl": "https://radiantjxn.churchcenter.com/people/forms/586040",
+      "imageUrl": "/images/serve/greeters-4.png"
+    },
+    {
+      "groupId": "first-impressions",
+      "id": "fi-information",
+      "title": "Information Center",
+      "tag": "Welcome",
+      "description": "This team connects guests to the Church community, providing resources and information on all of our current events, ministry opportunities, and services at Radiant.",
+      "signUpUrl": "https://radiantjxn.churchcenter.com/people/forms/586040",
       "imageUrl": "/images/serve/greeters-3.png"
     },
     {
-      "id": "next-generation",
-      "title": "Next Generation",
-      "tag": "Next Generation",
-      "description": "Radiant Church is passionately committed to discipling the next generation. This is a diverse area to serve in as ministries range from infants to high schoolers. There is a unique role available for everyone desiring to see young people fall in love with Jesus. We do require a background check of all volunteers in this area.",
-      "imageUrl": "/images/serve/kids-3.png"
+      "groupId": "first-impressions",
+      "id": "fi-ushers",
+      "title": "Usher",
+      "tag": "Welcome",
+      "description": "This team prepares a positive worship experience by welcoming and assisting people to a seat, facilitating the offering and communion, and maintaining a distraction-free environment.",
+      "signUpUrl": "https://radiantjxn.churchcenter.com/people/forms/586040",
+      "imageUrl": "/images/serve/ushers-1.png"
     },
     {
-      "id": "production",
-      "title": "Production",
+      "groupId": "first-impressions",
+      "id": "fi-parking",
+      "title": "Parking",
+      "tag": "Welcome",
+      "description": "This team is the first impression of Radiant and operates to create an orderly atmosphere and welcoming environment. If you want to be the very first to welcome our guests to Radiant, this is the team for you.",
+      "signUpUrl": "https://radiantjxn.churchcenter.com/people/forms/586040",
+      "imageUrl": "/images/serve/parking-1.png"
+    },
+    {
+      "groupId": "first-impressions",
+      "id": "fi-medical",
+      "title": "Medical Responder",
+      "tag": "Welcome",
+      "description": "These individuals work with our Safety Team to supply medical care in case of emergency. Previous medical training and experience are required.",
+      "signUpUrl": "https://radiantjxn.churchcenter.com/people/forms/586040",
+      "imageUrl": "/images/serve/prayer-1.png"
+    },
+    {
+      "groupId": "first-impressions",
+      "id": "fi-merchandise",
+      "title": "Merchandise Team",
+      "tag": "Welcome",
+      "description": "This team promotes our church and its mission by offering quality merchandise that sparks conversations and shares the message of Christ with our community. Every purchase helps spread the word and create opportunities for faith encounters.",
+      "signUpUrl": "https://radiantjxn.churchcenter.com/people/forms/586040",
+      "imageUrl": "/images/serve/greeters-1.png"
+    },
+    {
+      "groupId": "next-generation",
+      "id": "ng-infants",
+      "title": "Infants",
+      "tag": "Next Generation",
+      "description": "For ages 6 weeks to 23 months. Infants receive individual attention from trained volunteers. We attend to your child’s physical and spiritual needs by holding, talking to, and praying for each child.",
+      "signUpUrl": "https://radiantjxn.churchcenter.com/people/forms/586040",
+      "imageUrl": "/images/serve/kids-1.png"
+    },
+    {
+      "groupId": "next-generation",
+      "id": "ng-early-childhood",
+      "title": "Early Childhood",
+      "tag": "Next Generation",
+      "description": "For ages 2 years to kindergarten. Children in this age group enjoy experiential play, a lesson that teaches age-appropriate Biblical truths, and a time of interactive praise and worship. The monthly memory verse engages kids to hide God’s Word in their hearts. After a simple snack and story, children depart with ideas for continued learning at home.",
+      "signUpUrl": "https://radiantjxn.churchcenter.com/people/forms/586040",
+      "imageUrl": "/images/serve/kids-2.png"
+    },
+    {
+      "groupId": "next-generation",
+      "id": "ng-elementary",
+      "title": "Elementary",
+      "tag": "Next Generation",
+      "description": "For 1st–4th graders. Children experience a purposeful and fun worship service. They strengthen friendships with leaders and other kids through play. Together, we connect with God in worship, praising Him through music, dance, giving, and prayer. In every service, kids receive Biblical truth with life application, putting God’s Word to work in their lives today, while also laying a firm foundation for the future.",
+      "signUpUrl": "https://radiantjxn.churchcenter.com/people/forms/586040",
+      "imageUrl": "/images/serve/kids-6.png"
+    },
+    {
+      "groupId": "next-generation",
+      "id": "ng-check-in",
+      "title": "Check-In",
+      "tag": "Next Generation",
+      "description": "This team welcomes all families as they arrive and is often the first contact for first-time guests. This team utilizes a computer system to print name tags for new children and walks families through self-check-in stations to print their own tags. Security tags are an essential component to child safety in Radiant Kids.",
+      "signUpUrl": "https://radiantjxn.churchcenter.com/people/forms/586040",
+      "imageUrl": "/images/serve/kids-checkin-1.png"
+    },
+    {
+      "groupId": "next-generation",
+      "id": "ng-radiant-friends",
+      "title": "Radiant Friends",
+      "tag": "Next Generation",
+      "description": "This team works closely with kids who need a friend by their side to enjoy Sunday classes. Whether engaging in their age-appropriate class or spending time in the friends room, this team understands that every child is uniquely created by God and has a place in His Kingdom. For children with special needs. Spring Arbor Campus only.",
+      "signUpUrl": "https://radiantjxn.churchcenter.com/people/forms/586040",
+      "imageUrl": "/images/serve/kids-5.png"
+    },
+    {
+      "groupId": "radiant-students",
+      "id": "stu-jr-high",
+      "title": "Jr High",
+      "tag": "Students",
+      "description": "For 5th–7th grade (Sunday mornings). Radiant Students worship together in the main sanctuary before being dismissed to their class for an age-appropriate message, prayer, and group discussions with real-life applications.",
+      "signUpUrl": "https://radiantjxn.churchcenter.com/people/forms/586040",
+      "imageUrl": "/images/serve/kids-4.png"
+    },
+    {
+      "groupId": "radiant-students",
+      "id": "stu-sr-high",
+      "title": "Sr High",
+      "tag": "Students",
+      "description": "For 7th–12th grade (Sunday nights). This group meets every Sunday from 6:00 PM to 8:15 PM. There will be a customized service with time to hang out, play games, and make new friends. We will then move into a time of intentional worship and a message with small group discussions targeted at strengthening our faith.",
+      "signUpUrl": "https://radiantjxn.churchcenter.com/people/forms/586040",
+      "imageUrl": "/images/serve/kids-6.png"
+    },
+    {
+      "groupId": "community-groups",
+      "id": "cg-leader",
+      "title": "Community Group Leader",
+      "tag": "Community",
+      "description": "Facilitate a weekly Community Group: welcome people, guide discussion around Scripture and sermon application, pray together, and help members build real relationships that point one another to Jesus. Training and ongoing support are provided.",
+      "signUpUrl": "https://radiantjxn.churchcenter.com/people/forms/586040",
+      "imageUrl": "/images/serve/greeters-2.png"
+    },
+    {
+      "groupId": "creative-arts-worship",
+      "id": "caw-service-director",
+      "title": "Service Director",
       "tag": "Tech",
-      "description": "The Production Team uses their gifts and abilities to help facilitate an atmosphere for God’s Presence to be fully experienced while minimizing distractions. This team directs lights, sound, cameras, online broadcast and ProPresenter.",
-      "imageUrl": "/images/serve/production-1.png"
+      "description": "Directs camera operators, graphic techs, and technical directors for both livestream and IMAG in-house. Able to remain calm under pressure and demonstrates excellent verbal communication. Has a thorough understanding of the order of each service. Some experience is preferred but not required.",
+      "signUpUrl": "https://radiantjxn.churchcenter.com/people/forms/586040",
+      "imageUrl": "/images/serve/production-3.png"
+    },
+    {
+      "groupId": "creative-arts-worship",
+      "id": "caw-producer",
+      "title": "Producer",
+      "tag": "Tech",
+      "description": "Operates the broadcast panel to switch live video for both livestream and IMAG in-house. Able to retain focus and follow instructions from the video director. Must be technically minded. No experience is required.",
+      "signUpUrl": "https://radiantjxn.churchcenter.com/people/forms/586040",
+      "imageUrl": "/images/serve/producer-1.png"
+    },
+    {
+      "groupId": "creative-arts-worship",
+      "id": "caw-graphic-tech",
+      "title": "Graphic Technician",
+      "tag": "Tech",
+      "description": "Controls ProPresenter for livestream and IMAG in-house. Able to retain focus and has excellent hand-eye coordination. Must work well on a team. No experience is required.",
+      "signUpUrl": "https://radiantjxn.churchcenter.com/people/forms/586040",
+      "imageUrl": "/images/serve/graphics-tech-1.png"
+    },
+    {
+      "groupId": "creative-arts-worship",
+      "id": "caw-audio-tech",
+      "title": "Audio Technician",
+      "tag": "Tech",
+      "description": "Mixes worship and teaching for in-house experience and for livestream. This is a highly technical position and requires someone who has had previous audio experience.",
+      "signUpUrl": "https://radiantjxn.churchcenter.com/people/forms/586040",
+      "imageUrl": "/images/serve/audio-tech-1.png"
+    },
+    {
+      "groupId": "creative-arts-worship",
+      "id": "caw-camera-operator",
+      "title": "Camera Operator",
+      "tag": "Tech",
+      "description": "Responsible for capturing high-quality footage, expertly framing shots, and executing smooth camera movements to bring the director’s vision to life. They work closely with the production team, ensuring that the visuals are technically precise and creatively engaging throughout the shoot.",
+      "signUpUrl": "https://radiantjxn.churchcenter.com/people/forms/586040",
+      "imageUrl": "/images/serve/camera-operator-1.png"
     }
   ]
 }
