@@ -37,8 +37,10 @@ export function parseHumanEventDates(text) {
     };
   }
 
-  // May 27, 2026
-  m = raw.match(/\b((?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*)\s+(\d{1,2}),?\s+(\d{4})\b/i);
+  // May 27, 2026 or May 31st, 2026
+  m = raw.match(
+    /\b((?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*)\s+(\d{1,2})(?:st|nd|rd|th)?,?\s+(\d{4})\b/i,
+  );
   if (m) {
     const mon = m[1];
     const day = parseInt(m[2], 10);
@@ -58,8 +60,10 @@ export function parseHumanEventDates(text) {
     return { startsAt: toIso(s), endsAt: null, dateLabel: m[0] };
   }
 
-  // May 13 (no year): assume this year; if that date is >60 days in the past, use next year
-  m = raw.match(/\b((?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*)\s+(\d{1,2})\b/i);
+  // May 13 or May 31st (no year): assume this year; if that date is >60 days in the past, use next year
+  m = raw.match(
+    /\b((?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*)\s+(\d{1,2})(?:st|nd|rd|th)?\b/i,
+  );
   if (m) {
     const mon = m[1];
     const day = parseInt(m[2], 10);
@@ -77,30 +81,99 @@ export function parseHumanEventDates(text) {
   return { startsAt: null, endsAt: null, dateLabel: raw.slice(0, 160) };
 }
 
-/** Apply parseHumanEventDates when ISO fields are missing but we have a label or blurbs. */
+/** Human-readable date / range for tiles (en-US). */
+export function dateLabelFromIso(startsAt, endsAt) {
+  if (!startsAt || typeof startsAt !== 'string') return '';
+  const s = new Date(startsAt);
+  if (Number.isNaN(s.getTime())) return '';
+  const o = { month: 'short', day: 'numeric', year: 'numeric' };
+  if (!endsAt) return s.toLocaleDateString('en-US', o);
+  const e = new Date(endsAt);
+  if (Number.isNaN(e.getTime())) return s.toLocaleDateString('en-US', o);
+  if (s.toDateString() === e.toDateString()) {
+    return s.toLocaleDateString('en-US', { weekday: 'short', ...o });
+  }
+  if (s.getFullYear() === e.getFullYear() && s.getMonth() === e.getMonth()) {
+    const mon = s.toLocaleDateString('en-US', { month: 'short' });
+    return `${mon} ${s.getDate()}–${e.getDate()}, ${s.getFullYear()}`;
+  }
+  return `${s.toLocaleDateString('en-US', o)} – ${e.toLocaleDateString('en-US', o)}`;
+}
+
+/** Apply parseHumanEventDates when ISO fields are missing; always backfill dateLabel from ISO when missing. */
 function mergeParsedDates(ev) {
-  if (!ev || ev.startsAt) return ev;
-  if (ev.dateLabel) {
-    const p = parseHumanEventDates(ev.dateLabel);
+  if (!ev) return ev;
+  let next = { ...ev };
+  const label = String(next.dateLabel || '').trim();
+
+  if (next.startsAt && !label) {
+    next.dateLabel = dateLabelFromIso(next.startsAt, next.endsAt);
+    return next;
+  }
+
+  if (next.startsAt) return next;
+
+  if (label) {
+    const p = parseHumanEventDates(label);
     if (p.startsAt) {
-      return {
-        ...ev,
+      next = {
+        ...next,
         startsAt: p.startsAt,
-        endsAt: ev.endsAt || p.endsAt || null,
-        dateLabel: ev.dateLabel || p.dateLabel,
+        endsAt: next.endsAt || p.endsAt || null,
+        dateLabel: label || p.dateLabel,
       };
+      if (!String(next.dateLabel || '').trim()) {
+        next.dateLabel = dateLabelFromIso(next.startsAt, next.endsAt);
+      }
+      return next;
     }
   }
-  if (ev.summary) {
+  if (next.summary) {
+    const plain = String(next.summary).replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
+    const p = parseHumanEventDates(plain);
+    if (p.startsAt) {
+      next = {
+        ...next,
+        startsAt: p.startsAt,
+        endsAt: next.endsAt || p.endsAt || null,
+        dateLabel: next.dateLabel || p.dateLabel,
+      };
+      if (!String(next.dateLabel || '').trim()) {
+        next.dateLabel = dateLabelFromIso(next.startsAt, next.endsAt);
+      }
+      return next;
+    }
+  }
+  return next;
+}
+
+/** Last pass: every event should have dateLabel if we have any parseable date. */
+function ensureEventDateFields(ev) {
+  if (!ev) return ev;
+  const label = String(ev.dateLabel || '').trim();
+  if (ev.startsAt && !label) {
+    return { ...ev, dateLabel: dateLabelFromIso(ev.startsAt, ev.endsAt) };
+  }
+  if (!ev.startsAt && label) {
+    const p = parseHumanEventDates(label);
+    if (p.startsAt) {
+      const out = { ...ev, startsAt: p.startsAt, endsAt: ev.endsAt || p.endsAt || null };
+      if (!String(out.dateLabel || '').trim()) out.dateLabel = dateLabelFromIso(out.startsAt, out.endsAt);
+      return out;
+    }
+  }
+  if (!ev.startsAt && ev.summary) {
     const plain = String(ev.summary).replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
     const p = parseHumanEventDates(plain);
     if (p.startsAt) {
-      return {
+      const out = {
         ...ev,
         startsAt: p.startsAt,
         endsAt: ev.endsAt || p.endsAt || null,
         dateLabel: ev.dateLabel || p.dateLabel,
       };
+      if (!String(out.dateLabel || '').trim()) out.dateLabel = dateLabelFromIso(out.startsAt, out.endsAt);
+      return out;
     }
   }
   return ev;
@@ -247,6 +320,7 @@ function collectFromJsonNode(node, out, depth = 0) {
         dateLabel: dlFromApi,
         imageUrl,
         summary,
+        showEventTime: false,
       });
     }
   }
@@ -326,7 +400,9 @@ export function sortUpcomingEvents(events) {
 }
 
 export function buildEventsPayload(domEvents, apiEvents) {
-  const merged = mergeByUrl([...(apiEvents || []), ...(domEvents || [])]).map(mergeParsedDates);
+  const merged = mergeByUrl([...(apiEvents || []), ...(domEvents || [])])
+    .map(mergeParsedDates)
+    .map(ensureEventDateFields);
   const filtered = filterLikelyUpcoming(merged);
   const sorted = sortUpcomingEvents(filtered);
   return {
@@ -342,13 +418,14 @@ export function buildEventsPayload(domEvents, apiEvents) {
  */
 async function enrichEventsFromDetailPages(page, events, log) {
   if (!events?.length) return events;
-  const maxVisits = 80;
+  const maxVisits = 200;
   let visits = 0;
   const out = events.map((e) => ({ ...e }));
 
   for (let i = 0; i < out.length; i++) {
     const ev = out[i];
-    const needDetail = !ev.startsAt || ev.showEventTime === undefined;
+    const hasLabel = String(ev.dateLabel || '').trim();
+    const needDetail = !ev.startsAt || !hasLabel;
     if (!needDetail) continue;
     if (!ev.url) continue;
     if (visits >= maxVisits) break;
@@ -425,13 +502,11 @@ async function enrichEventsFromDetailPages(page, events, log) {
       let endsAt = extracted.endsAt;
       let dateLabel = out[i].dateLabel;
 
-      if (!startsAt || !endsAt) {
-        const blob = [...extracted.timeTexts, extracted.mainSample].join(' | ');
-        const p = parseHumanEventDates(blob);
-        if (!startsAt && p.startsAt) startsAt = p.startsAt;
-        if (!endsAt && p.endsAt) endsAt = p.endsAt;
-        if (!dateLabel && p.dateLabel) dateLabel = p.dateLabel;
-      }
+      const blob = [...extracted.timeTexts, extracted.mainSample].join(' | ');
+      const p = parseHumanEventDates(blob);
+      if (!startsAt && p.startsAt) startsAt = p.startsAt;
+      if (!endsAt && p.endsAt) endsAt = p.endsAt;
+      if (!String(dateLabel || '').trim() && p.dateLabel) dateLabel = p.dateLabel;
 
       if (startsAt) out[i].startsAt = startsAt;
       if (endsAt) out[i].endsAt = endsAt;
