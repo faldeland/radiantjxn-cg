@@ -314,6 +314,19 @@ function eventsApp() {
     },
 
     /**
+     * Limit an HTML summary to maxWords words (matching community-group descriptionPreview).
+     * When within the limit, the original HTML is returned so formatting is preserved.
+     * When over the limit, tags are stripped and the first maxWords plain-text words are returned.
+     */
+    summaryPreview(html, maxWords = 150) {
+      if (!html || typeof html !== 'string') return '';
+      const plain = html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+      const words = plain.split(' ');
+      if (words.length <= maxWords) return html;
+      return words.slice(0, maxWords).join(' ') + '…';
+    },
+
+    /**
      * Build a readable date / range from ISO fields — always includes year, always shows range.
      * Mirrors dateLabelFromIso in the scraper.
      */
