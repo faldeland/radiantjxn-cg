@@ -62,7 +62,8 @@ app.use(express.static(path.join(__dirname, 'public'), { index: 'index.html' }))
 let scrapeInProgress = false;
 let teamRadiantScrapeInProgress = false;
 let eventsScrapeInProgress = false;
-const REFRESH_COOLDOWN_MS = 15 * 60 * 1000; // 15 minutes
+const REFRESH_COOLDOWN_MINUTES = 5;
+const REFRESH_COOLDOWN_MS = REFRESH_COOLDOWN_MINUTES * 60 * 1000;
 let lastSuccessfulRefreshAt = null;
 let lastSuccessfulEventsRefreshAt = null;
 
@@ -75,7 +76,7 @@ app.post('/api/refresh', async (req, res) => {
     const nextAt = lastSuccessfulRefreshAt + REFRESH_COOLDOWN_MS;
     const minutesLeft = Math.ceil((nextAt - Date.now()) / 60000);
     return res.status(429).json({
-      error: `Refresh is limited to once every 15 minutes. Try again in ${minutesLeft} minute${minutesLeft !== 1 ? 's' : ''}.`,
+      error: `Refresh is limited to once every ${REFRESH_COOLDOWN_MINUTES} minutes. Try again in ${minutesLeft} minute${minutesLeft !== 1 ? 's' : ''}.`,
       nextRefreshAt: nextAt,
     });
   }
@@ -169,7 +170,7 @@ app.post('/api/refresh-events', async (req, res) => {
     const nextAt = lastSuccessfulEventsRefreshAt + REFRESH_COOLDOWN_MS;
     const minutesLeft = Math.ceil((nextAt - Date.now()) / 60000);
     return res.status(429).json({
-      error: `Refresh is limited to once every 15 minutes. Try again in ${minutesLeft} minute${minutesLeft !== 1 ? 's' : ''}.`,
+      error: `Refresh is limited to once every ${REFRESH_COOLDOWN_MINUTES} minutes. Try again in ${minutesLeft} minute${minutesLeft !== 1 ? 's' : ''}.`,
       nextEventsRefreshAt: nextAt,
     });
   }
