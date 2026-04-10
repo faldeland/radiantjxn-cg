@@ -286,6 +286,54 @@ function pickDatesFromBag(bag) {
   return { startsAt, endsAt, dateLabel };
 }
 
+const MAX_EVENT_SUMMARY_CHARS = 250000;
+
+/** HTML or plain text from API / JSON:API blobs. */
+function pickSummaryFromBag(bag) {
+  if (!bag || typeof bag !== 'object') return '';
+  const raw =
+    bag.summary ||
+    bag.description ||
+    bag.content ||
+    bag.body ||
+    bag.details ||
+    bag.long_description ||
+    bag.html_description ||
+    bag.html_description_html ||
+    bag.about ||
+    bag.overview ||
+    bag.note ||
+    bag.public_description ||
+    '';
+  const s = String(raw).trim();
+  if (!s) return '';
+  return s.length > MAX_EVENT_SUMMARY_CHARS ? s.slice(0, MAX_EVENT_SUMMARY_CHARS) : s;
+}
+
+function textLenRough(s) {
+  return String(s || '')
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim().length;
+}
+
+/** Keep the richer description when merging API + DOM + detail passes. */
+function pickRicherSummary(a, b) {
+  const as = String(a || '').trim();
+  const bs = String(b || '').trim();
+  if (!bs) return as;
+  if (!as) return bs;
+  const al = textLenRough(as);
+  const bl = textLenRough(bs);
+  if (bl > al) return bs;
+  if (al > bl) return as;
+  return as.length >= bs.length ? as : bs;
+}
+
+function hasMeaningfulSummary(ev) {
+  return textLenRough(ev?.summary) >= 25;
+}
+
 function collectFromJsonNode(node, out, depth = 0) {
   if (depth > 14 || node == null) return;
   if (Array.isArray(node)) {
@@ -310,7 +358,7 @@ function collectFromJsonNode(node, out, depth = 0) {
       const title = (bag.name || bag.title || '').trim();
       const { startsAt, endsAt, dateLabel: dlFromApi } = pickDatesFromBag(bag);
       const imageUrl = (bag.image_url || bag.image || bag.avatar_url || '').trim() || '';
-      const summary = (bag.summary || bag.description || '').trim().slice(0, 500) || '';
+      const summary = pickSummaryFromBag(bag);
       out.push({
         id: url,
         title: title || 'Event',
@@ -363,7 +411,7 @@ function mergeByUrl(events) {
       endsAt: e.endsAt || prev.endsAt,
       dateLabel: e.dateLabel || prev.dateLabel,
       imageUrl: e.imageUrl || prev.imageUrl,
-      summary: e.summary || prev.summary,
+      summary: pickRicherSummary(e.summary, prev.summary),
       showEventTime: e.showEventTime !== undefined ? e.showEventTime : prev.showEventTime,
     });
   }
@@ -413,8 +461,8 @@ export function buildEventsPayload(domEvents, apiEvents) {
 }
 
 /**
- * Visit each event registration page and read structured dates (time elements, JSON-LD).
- * Listing cards often omit ISO times; detail pages usually include them.
+ * Visit each event registration page for dates, times visibility, and HTML description.
+ * Descriptions often exist only on the detail page, so we also visit when summary is empty/short.
  */
 async function enrichEventsFromDetailPages(page, events, log) {
   if (!events?.length) return events;
@@ -425,7 +473,7 @@ async function enrichEventsFromDetailPages(page, events, log) {
   for (let i = 0; i < out.length; i++) {
     const ev = out[i];
     const hasLabel = String(ev.dateLabel || '').trim();
-    const needDetail = !ev.startsAt || !hasLabel;
+    const needDetail = !ev.startsAt || !hasLabel || !hasMeaningfulSummary(ev);
     if (!needDetail) continue;
     if (!ev.url) continue;
     if (visits >= maxVisits) break;
@@ -444,6 +492,7 @@ async function enrichEventsFromDetailPages(page, events, log) {
 
         let startsAt = null;
         let endsAt = null;
+        let summaryFromLd = '';
 
         const withDt = [...document.querySelectorAll('time[datetime]')];
         const dts = withDt.map((t) => t.getAttribute('datetime')).filter(Boolean);
@@ -477,6 +526,13 @@ async function enrichEventsFromDetailPages(page, events, log) {
                 const ed = cur.endDate || cur.enddate;
                 if (sd && !startsAt) startsAt = isoOk(sd) || isoOk(String(sd));
                 if (ed && !endsAt) endsAt = isoOk(ed) || isoOk(String(ed));
+                if (!summaryFromLd && cur.description != null) {
+                  const d = cur.description;
+                  if (typeof d === 'string') summaryFromLd = d.trim();
+                  else if (typeof d === 'object' && d !== null) {
+                    summaryFromLd = String(d.text || d.value || '').trim();
+                  }
+                }
               }
               for (const k of Object.keys(cur)) {
                 if (k === '@context') continue;
@@ -495,7 +551,48 @@ async function enrichEventsFromDetailPages(page, events, log) {
         const main = document.querySelector('main') || document.body;
         const mainSample = (main.innerText || '').replace(/\s+/g, ' ').slice(0, 4000);
 
-        return { startsAt, endsAt, timeTexts, mainSample };
+        const plainLen = (html) =>
+          (html || '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim().length;
+
+        function domDescriptionHtml() {
+          const selectors = [
+            '[class*="EventDescription"]',
+            '[class*="event-description"]',
+            '[class*="Description"]',
+            '[data-testid*="description"]',
+            'main [class*="prose"]',
+            'main [class*="RichText"]',
+            'main [class*="rich-text"]',
+            '[class*="RegistrationEvent"] [class*="content"]',
+          ];
+          for (const sel of selectors) {
+            try {
+              const el = document.querySelector(sel);
+              if (el && plainLen(el.innerHTML) > 35) return el.innerHTML.trim();
+            } catch (e) {
+              /* ignore */
+            }
+          }
+          const m = document.querySelector('main');
+          if (m) {
+            for (const h of m.querySelectorAll('h2, h3, h4')) {
+              if (!/details|about|description/i.test(h.textContent || '')) continue;
+              let sib = h.nextElementSibling;
+              while (sib) {
+                if (plainLen(sib.innerHTML) > 40) return sib.innerHTML.trim();
+                sib = sib.nextElementSibling;
+              }
+            }
+          }
+          return '';
+        }
+
+        let summaryHtml = domDescriptionHtml();
+        if (plainLen(summaryHtml) < 25 && summaryFromLd) {
+          summaryHtml = summaryFromLd;
+        }
+
+        return { startsAt, endsAt, timeTexts, mainSample, summaryHtml };
       });
 
       let startsAt = extracted.startsAt;
@@ -512,6 +609,11 @@ async function enrichEventsFromDetailPages(page, events, log) {
       if (endsAt) out[i].endsAt = endsAt;
       if (dateLabel) out[i].dateLabel = dateLabel;
       out[i].showEventTime = timeTextsShowClock(extracted.timeTexts);
+      if (extracted.summaryHtml) {
+        let s = pickRicherSummary(extracted.summaryHtml, out[i].summary);
+        if (s.length > MAX_EVENT_SUMMARY_CHARS) s = s.slice(0, MAX_EVENT_SUMMARY_CHARS);
+        out[i].summary = s;
+      }
     } catch (err) {
       log?.(`Event detail scrape skipped (${ev.url}): ${err.message}`);
     }
