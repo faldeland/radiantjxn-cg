@@ -548,6 +548,29 @@ async function enrichEventsFromDetailPages(page, events, log) {
         const timeTexts = [...document.querySelectorAll('time')]
           .map((t) => (t.textContent || '').trim())
           .filter(Boolean);
+
+        // Infer start/end from multiple bare <time> text values (e.g. Bloom/Awaken use
+        // separate <time> elements with text like "May 13, 2026" and "May 17, 2026").
+        if (!startsAt) {
+          const parsedFromText = timeTexts
+            .filter((t) => !/registration|closes|deadline/i.test(t))
+            .map((t) => {
+              const ms = Date.parse(t);
+              return Number.isFinite(ms) ? ms : null;
+            })
+            .filter((ms) => ms !== null)
+            .sort((a, b) => a - b);
+          if (parsedFromText.length >= 1) {
+            startsAt = isoOk(new Date(parsedFromText[0]).toISOString());
+            if (parsedFromText.length >= 2) {
+              const lastMs = parsedFromText[parsedFromText.length - 1];
+              if (lastMs !== parsedFromText[0]) {
+                endsAt = isoOk(new Date(lastMs).toISOString());
+              }
+            }
+          }
+        }
+
         const main = document.querySelector('main') || document.body;
         const mainSample = (main.innerText || '').replace(/\s+/g, ' ').slice(0, 4000);
 
@@ -603,7 +626,22 @@ async function enrichEventsFromDetailPages(page, events, log) {
       const p = parseHumanEventDates(blob);
       if (!startsAt && p.startsAt) startsAt = p.startsAt;
       if (!endsAt && p.endsAt) endsAt = p.endsAt;
-      if (!String(dateLabel || '').trim() && p.dateLabel) dateLabel = p.dateLabel;
+
+      // Prefer richer dateLabel: prefer if detail has year, range, or longer text
+      const existing = String(dateLabel || '').trim();
+      const candidate = String(p.dateLabel || '').trim();
+      if (candidate && candidate !== existing) {
+        const existingHasYear = /\b20\d{2}\b/.test(existing);
+        const existingHasRange = /[–—\-]/.test(existing);
+        const candidateHasYear = /\b20\d{2}\b/.test(candidate);
+        const candidateHasRange = /[–—\-]/.test(candidate);
+        const preferCandidate =
+          !existing ||
+          (!existingHasYear && candidateHasYear) ||
+          (!existingHasRange && candidateHasRange) ||
+          (candidateHasYear && candidateHasRange && !(existingHasYear && existingHasRange));
+        if (preferCandidate) dateLabel = candidate;
+      }
 
       if (startsAt) out[i].startsAt = startsAt;
       if (endsAt) out[i].endsAt = endsAt;

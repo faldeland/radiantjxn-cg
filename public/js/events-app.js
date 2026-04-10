@@ -300,19 +300,6 @@ function eventsApp() {
       this.applyTileSize();
     },
 
-    /** Date only — never show clock on tiles/modal (ISO times from API are often wrong). */
-    formatDateOnly(iso) {
-      if (!iso) return '';
-      const d = new Date(iso);
-      if (Number.isNaN(d.getTime())) return '';
-      return d.toLocaleDateString('en-US', {
-        weekday: 'short',
-        month: 'short',
-        day: 'numeric',
-        year: 'numeric',
-      });
-    },
-
     /** Remove clock fragments from scraped labels (e.g. trailing ", 8:00 PM"). */
     stripClockFromLabel(s) {
       if (!s || typeof s !== 'string') return '';
@@ -326,13 +313,57 @@ function eventsApp() {
         .trim();
     },
 
-    /** Tile + modal date line: dates only, no time. */
+    /**
+     * Build a readable date / range from ISO fields — always includes year, always shows range.
+     * Mirrors dateLabelFromIso in the scraper.
+     */
+    formatDateRange(startsAt, endsAt) {
+      if (!startsAt) return '';
+      const s = new Date(startsAt);
+      if (Number.isNaN(s.getTime())) return '';
+      const o = { month: 'short', day: 'numeric', year: 'numeric' };
+      if (!endsAt) return s.toLocaleDateString('en-US', o);
+      const e = new Date(endsAt);
+      if (Number.isNaN(e.getTime())) return s.toLocaleDateString('en-US', o);
+      if (s.toDateString() === e.toDateString()) {
+        return s.toLocaleDateString('en-US', { weekday: 'short', ...o });
+      }
+      if (s.getFullYear() === e.getFullYear() && s.getMonth() === e.getMonth()) {
+        const mon = s.toLocaleDateString('en-US', { month: 'short' });
+        return `${mon} ${s.getDate()}–${e.getDate()}, ${s.getFullYear()}`;
+      }
+      return `${s.toLocaleDateString('en-US', o)} – ${e.toLocaleDateString('en-US', o)}`;
+    },
+
+    labelHasYear(s) {
+      return /\b(20\d{2})\b/.test(s || '');
+    },
+
+    labelHasRange(s) {
+      return /[–—\-]|\bthrough\b|\bto\b/i.test(s || '');
+    },
+
+    /**
+     * Tile + modal date line: no clock, always shows year, always shows range when known.
+     * Prefers ISO-derived range (authoritative) over raw label when ISO is available.
+     */
     formatTileWhen(ev) {
       if (!ev) return '';
-      const label = (ev.dateLabel || '').trim();
-      if (label) return this.stripClockFromLabel(label);
-      if (ev.startsAt) return this.formatDateOnly(ev.startsAt);
-      return '';
+      const label = this.stripClockFromLabel(ev.dateLabel || '');
+      const hasIso = !!ev.startsAt;
+
+      if (hasIso) {
+        const fromIso = this.formatDateRange(ev.startsAt, ev.endsAt);
+        // Prefer ISO range when label has no year or no range that ISO provides
+        if (!label) return fromIso;
+        if (ev.endsAt && !this.labelHasRange(label)) return fromIso;
+        if (!this.labelHasYear(label)) return fromIso;
+        return label;
+      }
+
+      if (!label) return '';
+      // No ISO: return label as-is (year may be missing — scraper should fix on refresh)
+      return label;
     },
 
     eventImage(ev) {
