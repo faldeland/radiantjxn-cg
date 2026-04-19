@@ -1,6 +1,6 @@
 {
   "sourceUrl": "https://radiantjxn.com/serve",
-  "lastUpdated": "2026-04-19T00:33:55.962Z",
+  "lastUpdated": "2026-04-19T00:39:13.655Z",
   "pageTitle": "Team Radiant",
   "introParagraphs": [
     "By providing the best Sunday experience we can for those who walk through our doors, we can help them to live out their faith and be Jesus to this city.  We also believe that every follower of Jesus has a part to play in serving the house of God. We know that serving the local church helps us to find community, grow in faith, and develop a servant’s heart to reach our city all while we serve those searching for Hope.  From the parking lot to the pulpit, every position is eternal. So, no matter your gifting, talents or interests, we believe there is a place for you on Team Radiant!"
@@ -74,7 +74,7 @@
     {
       "groupId": "first-impressions",
       "id": "fi-medical",
-      "title": "Medical Responder",
+      "title": "Safety",
       "tag": "Welcome",
       "description": "These individuals work with our Safety Team to supply medical care in case of emergency. Previous medical training and experience are required.",
       "signUpUrl": "https://radiantjxn.churchcenter.com/people/forms/586040",
@@ -137,18 +137,9 @@
     {
       "groupId": "radiant-students",
       "id": "stu-middle-school",
-      "title": "Middle School",
+      "title": "5th–7th",
       "tag": "Students",
       "description": "Radiant Students exists to help middle schoolers experience three things: wonder for who God is, discovery of who He created them to be, and passion for loving others. 5th–7th graders worship in the main sanctuary each Sunday before joining their classroom for a powerful, age-appropriate message, prayer, and discussion with real-life application—designed to help students take ownership of their faith.",
-      "signUpUrl": "https://radiantjxn.churchcenter.com/people/forms/586040",
-      "imageUrl": "/images/serve/kids-4.png"
-    },
-    {
-      "groupId": "radiant-students",
-      "id": "stu-jr-high",
-      "title": "Jr High",
-      "tag": "Students",
-      "description": "For 5th–7th grade (Sunday mornings). Radiant Students worship together in the main sanctuary before being dismissed to their class for an age-appropriate message, prayer, and group discussions with real-life applications.",
       "signUpUrl": "https://radiantjxn.churchcenter.com/people/forms/586040",
       "imageUrl": "/images/serve/kids-4.png"
     },

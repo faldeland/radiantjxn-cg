@@ -52,7 +52,6 @@ function teamRadiantApp() {
     'ng-check-in',
     'ng-radiant-friends',
     'stu-middle-school',
-    'stu-jr-high',
     'stu-sr-high',
     'cg-gather',
     'cg-grow',
@@ -126,8 +125,6 @@ function teamRadiantApp() {
       'This team works closely with kids who need a friend by their side to enjoy Sunday classes. Whether engaging in their age-appropriate class or spending time in the friends room, this team understands that every child is uniquely created by God and has a place in His Kingdom. For children with special needs. Spring Arbor Campus only.',
     'stu-middle-school':
       'Radiant Students exists to help middle schoolers experience three things: wonder for who God is, discovery of who He created them to be, and passion for loving others. 5th–7th graders worship in the main sanctuary each Sunday before joining their classroom for a powerful, age-appropriate message, prayer, and discussion with real-life application—designed to help students take ownership of their faith.',
-    'stu-jr-high':
-      'For 5th–7th grade (Sunday mornings). Radiant Students worship together in the main sanctuary before being dismissed to their class for an age-appropriate message, prayer, and group discussions with real-life applications.',
     'stu-sr-high':
       'For 7th–12th grade (Sunday nights). This group meets every Sunday from 6:00 PM to 8:15 PM. There will be a customized service with time to hang out, play games, and make new friends. We will then move into a time of intentional worship and a message with small group discussions targeted at strengthening our faith.',
     'cg-gather':
@@ -168,7 +165,6 @@ function teamRadiantApp() {
     'ng-check-in': `${SERVE_IMG}/kids-checkin-1.png`,
     'ng-radiant-friends': `${SERVE_IMG}/kids-5.png`,
     'stu-middle-school': `${SERVE_IMG}/kids-4.png`,
-    'stu-jr-high': `${SERVE_IMG}/kids-4.png`,
     'stu-sr-high': `${SERVE_IMG}/kids-6.png`,
     'caw-service-director': `${SERVE_IMG}/production-3.png`,
     'caw-producer': `${SERVE_IMG}/producer-1.png`,

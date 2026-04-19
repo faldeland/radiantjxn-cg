@@ -33,7 +33,6 @@ const IMAGE_BY_ID = {
   'ng-check-in': `${SERVE_IMG}/kids-checkin-1.png`,
   'ng-radiant-friends': `${SERVE_IMG}/kids-5.png`,
   'stu-middle-school': `${SERVE_IMG}/kids-4.png`,
-  'stu-jr-high': `${SERVE_IMG}/kids-4.png`,
   'stu-sr-high': `${SERVE_IMG}/kids-6.png`,
   'caw-service-director': `${SERVE_IMG}/production-3.png`,
   'caw-producer': `${SERVE_IMG}/producer-1.png`,
@@ -138,7 +137,7 @@ const CURATED_OPPORTUNITIES = [
   {
     groupId: 'first-impressions',
     id: 'fi-medical',
-    title: 'Medical Responder',
+    title: 'Safety',
     tag: 'Welcome',
     description:
       'These individuals work with our Safety Team to supply medical care in case of emergency. Previous medical training and experience are required.',
@@ -194,18 +193,10 @@ const CURATED_OPPORTUNITIES = [
   {
     groupId: 'radiant-students',
     id: 'stu-middle-school',
-    title: 'Middle School',
+    title: '5th–7th',
     tag: 'Students',
     description:
       'Radiant Students exists to help middle schoolers experience three things: wonder for who God is, discovery of who He created them to be, and passion for loving others. 5th–7th graders worship in the main sanctuary each Sunday before joining their classroom for a powerful, age-appropriate message, prayer, and discussion with real-life application—designed to help students take ownership of their faith.',
-  },
-  {
-    groupId: 'radiant-students',
-    id: 'stu-jr-high',
-    title: 'Jr High',
-    tag: 'Students',
-    description:
-      'For 5th–7th grade (Sunday mornings). Radiant Students worship together in the main sanctuary before being dismissed to their class for an age-appropriate message, prayer, and group discussions with real-life applications.',
   },
   {
     groupId: 'radiant-students',
@@ -316,7 +307,6 @@ const TILE_ORDER = [
   'ng-check-in',
   'ng-radiant-friends',
   'stu-middle-school',
-  'stu-jr-high',
   'stu-sr-high',
   'cg-gather',
   'cg-grow',
