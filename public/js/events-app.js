@@ -358,24 +358,20 @@ function eventsApp() {
 
     /**
      * Tile + modal date line: no clock, always shows year, always shows range when known.
-     * Prefers ISO-derived range (authoritative) over raw label when ISO is available.
+     * Trusts dateLabel as the authoritative source when it already contains a year
+     * (the scraper now guarantees this). Falls back to ISO derivation only when the
+     * label is missing or has no year.
      */
     formatTileWhen(ev) {
       if (!ev) return '';
       const label = this.stripClockFromLabel(ev.dateLabel || '');
-      const hasIso = !!ev.startsAt;
 
-      if (hasIso) {
-        const fromIso = this.formatDateRange(ev.startsAt, ev.endsAt);
-        // Prefer ISO range when label has no year or no range that ISO provides
-        if (!label) return fromIso;
-        if (ev.endsAt && !this.labelHasRange(label)) return fromIso;
-        if (!this.labelHasYear(label)) return fromIso;
-        return label;
-      }
+      // Label with year is authoritative — use it as-is
+      if (label && this.labelHasYear(label)) return label;
 
-      if (!label) return '';
-      // No ISO: return label as-is (year may be missing — scraper should fix on refresh)
+      // No year in label (or no label) — derive from ISO dates
+      if (ev.startsAt) return this.formatDateRange(ev.startsAt, ev.endsAt);
+
       return label;
     },
 

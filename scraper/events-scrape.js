@@ -551,6 +551,8 @@ async function enrichEventsFromDetailPages(page, events, log) {
 
         // Infer start/end from multiple bare <time> text values (e.g. Bloom/Awaken use
         // separate <time> elements with text like "May 13, 2026" and "May 17, 2026").
+        // Only set endsAt when the span is ≥ 2 calendar days to avoid overnight events
+        // (e.g. "Apr 24 1pm – Apr 25 11am") being treated as multi-day ranges.
         if (!startsAt) {
           const parsedFromText = timeTexts
             .filter((t) => !/registration|closes|deadline/i.test(t))
@@ -564,7 +566,8 @@ async function enrichEventsFromDetailPages(page, events, log) {
             startsAt = isoOk(new Date(parsedFromText[0]).toISOString());
             if (parsedFromText.length >= 2) {
               const lastMs = parsedFromText[parsedFromText.length - 1];
-              if (lastMs !== parsedFromText[0]) {
+              const diffDays = (lastMs - parsedFromText[0]) / 86400000;
+              if (diffDays >= 2) {
                 endsAt = isoOk(new Date(lastMs).toISOString());
               }
             }

@@ -45,7 +45,7 @@ const IMAGE_BY_ID = {
 };
 
 const IMAGE_BY_TAG = {
-  Welcome: `${SERVE_IMG}/greeters-4.png`,
+  'First Impressions': `${SERVE_IMG}/greeters-4.png`,
   Music: `${SERVE_IMG}/worship-1.png`,
   Prayer: `${SERVE_IMG}/prayer-2.png`,
   'Next Generation': `${SERVE_IMG}/kids-6.png`,
@@ -98,7 +98,7 @@ const CURATED_OPPORTUNITIES = [
     groupId: 'first-impressions',
     id: 'fi-coffee',
     title: 'Coffee',
-    tag: 'Welcome',
+    tag: 'First Impressions',
     description:
       'The coffee team exists to enhance fellowship, set an approachable atmosphere, and promote community through quality coffee and service.',
   },
@@ -106,7 +106,7 @@ const CURATED_OPPORTUNITIES = [
     groupId: 'first-impressions',
     id: 'fi-greeters',
     title: 'Greeter',
-    tag: 'Welcome',
+    tag: 'First Impressions',
     description:
       'This friendly team loves people and makes them feel at home here at Radiant. They welcome guests with a smile, encouragement, and a comforting atmosphere so that hearts are open to the Gospel message.',
   },
@@ -114,7 +114,7 @@ const CURATED_OPPORTUNITIES = [
     groupId: 'first-impressions',
     id: 'fi-information',
     title: 'Information Center',
-    tag: 'Welcome',
+    tag: 'First Impressions',
     description:
       'This team connects guests to the Church community, providing resources and information on all of our current events, ministry opportunities, and services at Radiant.',
   },
@@ -122,7 +122,7 @@ const CURATED_OPPORTUNITIES = [
     groupId: 'first-impressions',
     id: 'fi-ushers',
     title: 'Usher',
-    tag: 'Welcome',
+    tag: 'First Impressions',
     description:
       'This team prepares a positive worship experience by welcoming and assisting people to a seat, facilitating the offering and communion, and maintaining a distraction-free environment.',
   },
@@ -130,7 +130,7 @@ const CURATED_OPPORTUNITIES = [
     groupId: 'first-impressions',
     id: 'fi-parking',
     title: 'Parking',
-    tag: 'Welcome',
+    tag: 'First Impressions',
     description:
       'This team is the first impression of Radiant and operates to create an orderly atmosphere and welcoming environment. If you want to be the very first to welcome our guests to Radiant, this is the team for you.',
   },
@@ -138,7 +138,7 @@ const CURATED_OPPORTUNITIES = [
     groupId: 'first-impressions',
     id: 'fi-medical',
     title: 'Safety',
-    tag: 'Welcome',
+    tag: 'First Impressions',
     description:
       'These individuals work with our Safety Team to supply medical care in case of emergency. Previous medical training and experience are required.',
   },
@@ -146,7 +146,7 @@ const CURATED_OPPORTUNITIES = [
     groupId: 'first-impressions',
     id: 'fi-merchandise',
     title: 'Merchandise Team',
-    tag: 'Welcome',
+    tag: 'First Impressions',
     description:
       'This team promotes our church and its mission by offering quality merchandise that sparks conversations and shares the message of Christ with our community. Every purchase helps spread the word and create opportunities for faith encounters.',
   },
@@ -201,7 +201,7 @@ const CURATED_OPPORTUNITIES = [
   {
     groupId: 'radiant-students',
     id: 'stu-sr-high',
-    title: 'Sr High',
+    title: 'Jr & Sr High',
     tag: 'Students',
     description:
       'For 7th–12th grade (Sunday nights). This group meets every Sunday from 6:00 PM to 8:15 PM. There will be a customized service with time to hang out, play games, and make new friends. We will then move into a time of intentional worship and a message with small group discussions targeted at strengthening our faith.',
@@ -282,18 +282,25 @@ const CURATED_OPPORTUNITIES = [
 
 const GROUP_ORDER = [
   'prayer',
+  'creative-arts-worship',
   'first-impressions',
   'next-generation',
   'radiant-students',
   'community-groups',
   'discipleship',
-  'creative-arts-worship',
 ];
 
 /** Full tile order (group blocks follow GROUP_ORDER; roles ordered within each block) */
 const TILE_ORDER = [
   'prayer-team',
   'prayer-intercessory',
+  'worship-vocals',
+  'worship-band',
+  'caw-service-director',
+  'caw-producer',
+  'caw-graphic-tech',
+  'caw-audio-tech',
+  'caw-camera-operator',
   'fi-coffee',
   'fi-greeters',
   'fi-information',
@@ -312,13 +319,6 @@ const TILE_ORDER = [
   'cg-grow',
   'cg-go',
   'disc-leader',
-  'worship-vocals',
-  'worship-band',
-  'caw-service-director',
-  'caw-producer',
-  'caw-graphic-tech',
-  'caw-audio-tech',
-  'caw-camera-operator',
 ];
 
 function sortTeamRadiantOpportunities(opportunities) {
@@ -343,7 +343,7 @@ function buildCuratedOpportunities(signUpUrl) {
 }
 
 /** Rotate radiant.church vs radiantjxn.com hero art across ministry tags when replacing stock */
-const CHURCH_ROTATION_TAGS = ['Prayer', 'Music', 'Welcome', 'Next Generation', 'Students', 'Community', 'Tech', 'Serve'];
+const CHURCH_ROTATION_TAGS = ['Prayer', 'Music', 'First Impressions', 'Next Generation', 'Students', 'Community', 'Tech', 'Serve'];
 
 function isUnsplashStock(url) {
   return typeof url === 'string' && url.includes('images.unsplash.com');

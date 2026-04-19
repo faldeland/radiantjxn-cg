@@ -1,18 +1,7 @@
 {
   "sourceUrl": "https://radiantjxn.churchcenter.com/registrations/events",
-  "lastUpdated": "2026-04-10T00:27:00.646Z",
+  "lastUpdated": "2026-04-19T00:49:00.600Z",
   "events": [
-    {
-      "id": "https://radiantjxn.churchcenter.com/registrations/events/3558367",
-      "title": "Costa Rica | Sign Up Deadline",
-      "url": "https://radiantjxn.churchcenter.com/registrations/events/3558367",
-      "startsAt": "2026-04-12T04:00:00.000Z",
-      "endsAt": "2026-04-12T22:00:00.000Z",
-      "dateLabel": "Apr 12, 2026",
-      "imageUrl": "https://registrations-production.s3.amazonaws.com/uploads/event/logo/3558367/medium_image-1774880868809.jpeg",
-      "summary": "<div><p><strong>Costa Rica Missions Trip</strong></p><p>Join us as we partner with Pastor Armando and his church in Costa Rica to help support their growing ministry and new church location. During this trip, our team will assist with construction on the new building, distribute food within the community, and host worship, teaching, and evangelistic outreach in the evenings. It will be a meaningful opportunity to serve, share the love of Christ, and support what God is doing through the local church.</p><p><strong>Requirements</strong></p><ul><li>A valid passport that does not expire within six months of your return date.</li></ul><p><strong>Cost</strong></p><ul><li><strong>Total Trip Cost:</strong> $2,000<br>(Includes trip expenses, ministry projects, and estimated travel costs.)</li></ul><p><strong>Payment Schedule</strong></p><ul><li><strong>$500 deposit due at registration</strong> – April 12</li><li><strong>Remaining $1,500 due by</strong> Sep. 17</li></ul><p><strong>Who Can Join</strong></p><ul><li>Must be <strong>18 or older</strong> to register alone.</li><li><strong>Minors</strong> must be accompanied by a parent or guardian. Please send an email to jallen@radiantjxn.com to register a minor.&nbsp;</li></ul><div></div></div>",
-      "showEventTime": true
-    },
     {
       "id": "https://radiantjxn.churchcenter.com/registrations/events/3180657",
       "title": "Next Steps Class | Sycamore",
@@ -32,7 +21,18 @@
       "endsAt": "2026-04-25T00:30:00.000Z",
       "dateLabel": "Apr 24, 2026",
       "imageUrl": "https://registrations-production.s3.amazonaws.com/uploads/event/logo/3544134/medium_image-1774289279070.jpeg",
-      "summary": "<div><p>Join us on April 24th at 6:30 PM for our very first women’s event—<strong>RISE UP!</strong></p><p>This special evening is all about stepping boldly into your God-given calling as a woman of faith. Through powerful worship, encouraging messages, and meaningful fellowship,&nbsp; you’ll gather together to be strengthened, uplifted, and inspired to RISE UP. Enjoy this evening with charcuterie and a make-your-own bouquet bar—designed for you to relax, connect, and be refreshed.<br><br>We hope to see you there!</p><p>Please note: Radiant Kids will not be available for this event.</p><div></div></div>",
+      "summary": "<div><p>Join us on April 24th at 6:30 PM for our very first women’s event—<strong>RISE UP!</strong></p><p>This special evening is all about stepping boldly into your God-given calling as a woman of faith. Through powerful worship, encouraging messages, and meaningful fellowship,&nbsp; you’ll gather together to be strengthened, uplifted, and inspired to RISE UP. Enjoy this evening with charcuterie and a make-your-own bouquet bar—designed for you to relax, connect, and be refreshed.<br><br>We hope to see you there!</p><p>Please note: Radiant Kids will not be available for this event! We kindly ask that children are left at home, so ladies can enjoy being fully present.</p><div></div></div>",
+      "showEventTime": true
+    },
+    {
+      "id": "https://radiantjxn.churchcenter.com/registrations/events/3589360",
+      "title": "Refresh | Awaken & Bloom Alumni",
+      "url": "https://radiantjxn.churchcenter.com/registrations/events/3589360",
+      "startsAt": "2026-05-02T04:00:00.000Z",
+      "endsAt": "2026-05-02T21:00:00.000Z",
+      "dateLabel": "May 2, 2026",
+      "imageUrl": "https://registrations-production.s3.amazonaws.com/uploads/event/logo/3589360/medium_image-1776202097063.jpeg",
+      "summary": "<div><p>Bloom &amp; Awaken Alumni, this one’s for you! Join us for a day of engaging with the Lord’s voice in nature out at the Radiant Retreat Center. This day is designed for you to rediscover the resources &amp; tools from your event, to maintain your freedom. Pack a lunch, bring a lawn chair, and join us on Saturday, May 2nd from 9-5pm. Registration is required. We hope to see you there.&nbsp;</p><div></div></div>",
       "showEventTime": true
     },
     {
@@ -102,6 +102,17 @@
       "showEventTime": true
     },
     {
+      "id": "https://radiantjxn.churchcenter.com/registrations/events/3180660",
+      "title": "Next Steps Class | Spring Arbor",
+      "url": "https://radiantjxn.churchcenter.com/registrations/events/3180660",
+      "startsAt": "2026-05-17T04:00:00.000Z",
+      "endsAt": "2026-05-24T04:00:00.000Z",
+      "dateLabel": "May 17–24, 2026",
+      "imageUrl": "https://registrations-production.s3.amazonaws.com/uploads/event/logo/3180660/medium_image-1758904530544.jpg",
+      "summary": "<div><p>Next Steps is a gathering designed to accelerate us into full engagement with Jesus and His purpose for our life. If you're new to Radiant, your spiritual growth has plateaued or you just need a little help finding what your next step is, this group is for you.&nbsp;</p><p><em>It is important you are able to attend both sessions, if you have a conflict please select another session.</em><br><br>Radiant Kids is available during each of our Sunday services.</p><div></div></div>",
+      "showEventTime": true
+    },
+    {
       "id": "https://radiantjxn.churchcenter.com/registrations/events/3390580",
       "title": "Awaken",
       "url": "https://radiantjxn.churchcenter.com/registrations/events/3390580",
@@ -157,6 +168,17 @@
       "showEventTime": false
     },
     {
+      "id": "https://radiantjxn.churchcenter.com/registrations/events/3588724",
+      "title": "Radiant Kids Summer Camp",
+      "url": "https://radiantjxn.churchcenter.com/registrations/events/3588724",
+      "startsAt": "2026-08-10T04:00:00.000Z",
+      "endsAt": "2026-08-13T04:00:00.000Z",
+      "dateLabel": "Aug 10–13, 2026",
+      "imageUrl": "https://registrations-production.s3.amazonaws.com/uploads/event/logo/3588724/medium_image-1776195239801.jpeg",
+      "summary": "<div><div><p>Summer Camp is an experience like no other! Students have an opportunity to build friendships and encounter God in a new way. This will be one of the best weeks for your student with strategically planned adventure activities and powerful worship services. Elementary and Middle School camps will both be hosted at Grace Adventures Camp from August 10th - 13th.<br><br><em>Early Bird Cost: $375 until 7/12/26<br>Cost: $395 after 7/12/26</em><br><br>This cost per camper includes all events, housing, meals, and a t-shirt. <br><br><a href=\"https://www.youtube.com/watch?v=mS57TFlZvs0&amp;fbclid=IwY2xjawRNykpleHRuA2FlbQIxMABicmlkETFBS1FwVHJPSlBKaWlFQmhQc3J0YwZhcHBfaWQQMjIyMDM5MTc4ODIwMDg5MgABHke1yppn7tD7pR2R8Ddiybst5kxlUiRCpUvREt6zFdU41I1Jc1xJ8L-ZFtje_aem_JmWZ6vcAaWWnWGNv66fYdw\"><strong>[ WATCH THE PROMO VIDEO ]</strong></a><strong><br></strong><a href=\"https://www.summercamp.church/?fbclid=IwY2xjawRNyiRleHRuA2FlbQIxMABicmlkETFBS1FwVHJPSlBKaWlFQmhQc3J0YwZhcHBfaWQQMjIyMDM5MTc4ODIwMDg5MgABHmOZUhPKklzb3mddvna1URlJoTUPY5BXXMHhcsTX54HxK5i5sswjom5-6mYJ_aem_jGSJ0vkCSCfNoz4dj5yhSg\"><strong>[ VISIT THE WEBSITE ]</strong></a><strong><br><br>REGISTER FOR CAMP </strong><a href=\"https://radiantcoast.churchcenter.com/registrations/events/3436500?fbclid=IwY2xjawRNymFleHRuA2FlbQIxMABicmlkETFBS1FwVHJPSlBKaWlFQmhQc3J0YwZhcHBfaWQQMjIyMDM5MTc4ODIwMDg5MgABHozxOYzgVQsfm0Vv-J8iaW05eGGLt6RCvQoix_t8xg4mcLQk7rXZNTl_wi7S_aem_qlCuPXwAwj7OcNRFk4c32A\"><strong>HERE</strong></a><strong><br></strong><br><strong>ELEMENTARY CAMP<br>• </strong>For campers entering 2nd-5th grades this fall<br><strong>• </strong>Activities: Swimming, blobbing, banana boating, watermat, gaga ball, volleyball, basketball, rec. field, nine-square-in-the-air, chapel games, bb guns, slingshots, gym time, flying squirrel, cargo net, scavenger hunt, campfire and s'mores, crafts, and more.<br><br><strong>MIDDLE SCHOOL CAMP<br>• </strong>For campers entering 6th-8th grades this fall<br><strong>• </strong>Activities: Swimming, blobbing, tubing, battle barge, kayaking/canoeing, gaga ball, volleyball, basketball, chapel games, zipline, laser tag, crafts, archery, riffles, rec. field, climbing wall, crud wars, gym time, campfire and s'mores, and more.<br><br><strong>FINANCES &amp; DISCOUNTS</strong><br>The cost of camp is $395 per camper. If you register before July 12th to will receive a $20 discount per camper. A $75 deposit is due at signup to reserve your student's spot. A free waiting list option is also available. Contact your church office if you require financial assistance. For households with more than one student attending, a $50 discount is automatically applied to every camper after the first one.<br><br><strong>OPTIONAL TRANSPORTATION</strong> [Radiant Jackson Campers Only]<strong><br></strong>For drop-off and pick-up for your camper, you can choose to do this in person, or for an additional $30, your camper can ride the bus to and from camp. Be sure to select the appropriate transportation add-on for your camper when registering. If you have any questions regarding transportation, please reach out to your home church.&nbsp;</p><div></div></div><div></div></div>",
+      "showEventTime": false
+    },
+    {
       "id": "https://radiantjxn.churchcenter.com/registrations/events/3353456",
       "title": "Bloom",
       "url": "https://radiantjxn.churchcenter.com/registrations/events/3353456",
@@ -166,17 +188,6 @@
       "imageUrl": "https://registrations-production.s3.amazonaws.com/uploads/event/logo/3353456/medium_image-1697740576504.jpg",
       "summary": "<div><blockquote>&nbsp;</blockquote><p><br>Bloom is a four-day event for women, focused on seeking the Father’s heart without distraction. This intentional time will allow you to listen, and receive the powerful truths God speaks over you. You will leave with a renewed identity as a beloved daughter of our Heavenly Father. When we agree with God and walk in our identity we will begin to walk and lead in freedom. The event cost is $400</p><p><br></p><div></div></div>",
       "showEventTime": true
-    },
-    {
-      "id": "https://radiantjxn.churchcenter.com/registrations/events/3515896",
-      "title": "Costa Rica Mission Trip | Sign up",
-      "url": "https://radiantjxn.churchcenter.com/registrations/events/3515896",
-      "startsAt": "2026-10-17T04:00:00.000Z",
-      "endsAt": "2026-10-23T04:00:00.000Z",
-      "dateLabel": "Oct 17–23, 2026",
-      "imageUrl": "https://registrations-production.s3.amazonaws.com/uploads/event/logo/3515896/medium_image-1773070775202.jpeg",
-      "summary": "<div><p><strong>Costa Rica Missions Trip</strong></p><p>Join us as we partner with Pastor Armando and his church in Costa Rica to help support their growing ministry and new church location. During this trip, our team will assist with construction on the new building, distribute food within the community, and host worship, teaching, and evangelistic outreach in the evenings. It will be a meaningful opportunity to serve, share the love of Christ, and support what God is doing through the local church.</p><p><strong>Requirements</strong></p><ul><li>A valid passport that does not expire within six months of your return date.</li></ul><p><strong>Cost</strong></p><ul><li><strong>Total Trip Cost:</strong> $2,000<br> (Includes trip expenses, ministry projects, and estimated travel costs.)</li></ul><p><strong>Payment Schedule</strong></p><ul><li><strong>$500 deposit due at registration</strong> – April 12</li><li><strong>Remaining $1,500 due by</strong> Sep. 17</li></ul><p><strong>Who Can Join</strong></p><ul><li>Must be <strong>18 or older</strong> to register alone.</li><li><strong>Minors</strong> must be accompanied by a parent or guardian. Please send an email to jallen@radiantjxn.com to register a minor.&nbsp;</li></ul><div></div></div>",
-      "showEventTime": false
     },
     {
       "id": "https://radiantjxn.churchcenter.com/registrations/events/3390593",

@@ -18,8 +18,8 @@ function teamRadiantApp() {
   const SERVE_IMG = '/images/serve';
   const GROUP_LABELS = {
     prayer: 'Prayer',
-    'first-impressions': 'First Impressions Ministry',
-    'next-generation': 'Generational Ministries',
+    'first-impressions': 'First Impressions',
+    'next-generation': 'Next Generation',
     'radiant-students': 'Radiant Students',
     'community-groups': 'Community Groups',
     discipleship: 'Discipleship',
@@ -27,18 +27,25 @@ function teamRadiantApp() {
   };
   const GROUP_ORDER = [
     'prayer',
+    'creative-arts-worship',
     'first-impressions',
     'next-generation',
     'radiant-students',
     'community-groups',
     'discipleship',
-    'creative-arts-worship',
   ];
 
   /** Same order as scraper/team-radiant-scrape.js TILE_ORDER (serialized tile order). */
   const TILE_ORDER = [
     'prayer-team',
     'prayer-intercessory',
+    'worship-vocals',
+    'worship-band',
+    'caw-service-director',
+    'caw-producer',
+    'caw-graphic-tech',
+    'caw-audio-tech',
+    'caw-camera-operator',
     'fi-coffee',
     'fi-greeters',
     'fi-information',
@@ -57,13 +64,6 @@ function teamRadiantApp() {
     'cg-grow',
     'cg-go',
     'disc-leader',
-    'worship-vocals',
-    'worship-band',
-    'caw-service-director',
-    'caw-producer',
-    'caw-graphic-tech',
-    'caw-audio-tech',
-    'caw-camera-operator',
   ];
 
   function sortOpportunitiesForDisplay(opportunities) {
@@ -177,7 +177,7 @@ function teamRadiantApp() {
     'cg-go': `${SERVE_IMG}/greeters-4.png`,
   };
   const FALLBACK_IMAGES = {
-    Welcome: `${SERVE_IMG}/greeters-4.png`,
+    'First Impressions': `${SERVE_IMG}/greeters-4.png`,
     Music: `${SERVE_IMG}/worship-1.png`,
     Prayer: `${SERVE_IMG}/prayer-2.png`,
     'Next Generation': `${SERVE_IMG}/kids-6.png`,

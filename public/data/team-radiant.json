@@ -1,6 +1,6 @@
 {
   "sourceUrl": "https://radiantjxn.com/serve",
-  "lastUpdated": "2026-04-19T00:39:13.655Z",
+  "lastUpdated": "2026-04-19T00:51:27.000Z",
   "pageTitle": "Team Radiant",
   "introParagraphs": [
     "By providing the best Sunday experience we can for those who walk through our doors, we can help them to live out their faith and be Jesus to this city.  We also believe that every follower of Jesus has a part to play in serving the house of God. We know that serving the local church helps us to find community, grow in faith, and develop a servant’s heart to reach our city all while we serve those searching for Hope.  From the parking lot to the pulpit, every position is eternal. So, no matter your gifting, talents or interests, we believe there is a place for you on Team Radiant!"
@@ -25,168 +25,6 @@
       "description": "Pray for those in need during every service from the Ministry Center. This team covers our worship gatherings with intercession, standing in the gap so that every person who walks through our doors encounters the presence of God.",
       "signUpUrl": "https://radiantjxn.churchcenter.com/people/forms/586040",
       "imageUrl": "/images/serve/prayer-1.png"
-    },
-    {
-      "groupId": "first-impressions",
-      "id": "fi-coffee",
-      "title": "Coffee",
-      "tag": "Welcome",
-      "description": "The coffee team exists to enhance fellowship, set an approachable atmosphere, and promote community through quality coffee and service.",
-      "signUpUrl": "https://radiantjxn.churchcenter.com/people/forms/586040",
-      "imageUrl": "/images/serve/coffee-1.png"
-    },
-    {
-      "groupId": "first-impressions",
-      "id": "fi-greeters",
-      "title": "Greeter",
-      "tag": "Welcome",
-      "description": "This friendly team loves people and makes them feel at home here at Radiant. They welcome guests with a smile, encouragement, and a comforting atmosphere so that hearts are open to the Gospel message.",
-      "signUpUrl": "https://radiantjxn.churchcenter.com/people/forms/586040",
-      "imageUrl": "/images/serve/greeters-4.png"
-    },
-    {
-      "groupId": "first-impressions",
-      "id": "fi-information",
-      "title": "Information Center",
-      "tag": "Welcome",
-      "description": "This team connects guests to the Church community, providing resources and information on all of our current events, ministry opportunities, and services at Radiant.",
-      "signUpUrl": "https://radiantjxn.churchcenter.com/people/forms/586040",
-      "imageUrl": "/images/serve/greeters-3.png"
-    },
-    {
-      "groupId": "first-impressions",
-      "id": "fi-ushers",
-      "title": "Usher",
-      "tag": "Welcome",
-      "description": "This team prepares a positive worship experience by welcoming and assisting people to a seat, facilitating the offering and communion, and maintaining a distraction-free environment.",
-      "signUpUrl": "https://radiantjxn.churchcenter.com/people/forms/586040",
-      "imageUrl": "/images/serve/ushers-1.png"
-    },
-    {
-      "groupId": "first-impressions",
-      "id": "fi-parking",
-      "title": "Parking",
-      "tag": "Welcome",
-      "description": "This team is the first impression of Radiant and operates to create an orderly atmosphere and welcoming environment. If you want to be the very first to welcome our guests to Radiant, this is the team for you.",
-      "signUpUrl": "https://radiantjxn.churchcenter.com/people/forms/586040",
-      "imageUrl": "/images/serve/parking-1.png"
-    },
-    {
-      "groupId": "first-impressions",
-      "id": "fi-medical",
-      "title": "Safety",
-      "tag": "Welcome",
-      "description": "These individuals work with our Safety Team to supply medical care in case of emergency. Previous medical training and experience are required.",
-      "signUpUrl": "https://radiantjxn.churchcenter.com/people/forms/586040",
-      "imageUrl": "/images/serve/prayer-1.png"
-    },
-    {
-      "groupId": "first-impressions",
-      "id": "fi-merchandise",
-      "title": "Merchandise Team",
-      "tag": "Welcome",
-      "description": "This team promotes our church and its mission by offering quality merchandise that sparks conversations and shares the message of Christ with our community. Every purchase helps spread the word and create opportunities for faith encounters.",
-      "signUpUrl": "https://radiantjxn.churchcenter.com/people/forms/586040",
-      "imageUrl": "/images/serve/greeters-1.png"
-    },
-    {
-      "groupId": "next-generation",
-      "id": "ng-infants",
-      "title": "Infants",
-      "tag": "Next Generation",
-      "description": "For ages 6 weeks to 23 months. Infants receive individual attention from trained volunteers. We attend to your child’s physical and spiritual needs by holding, talking to, and praying for each child.",
-      "signUpUrl": "https://radiantjxn.churchcenter.com/people/forms/586040",
-      "imageUrl": "/images/serve/kids-1.png"
-    },
-    {
-      "groupId": "next-generation",
-      "id": "ng-early-childhood",
-      "title": "Early Childhood",
-      "tag": "Next Generation",
-      "description": "For ages 2 years to kindergarten. Children in this age group enjoy experiential play, a lesson that teaches age-appropriate Biblical truths, and a time of interactive praise and worship. The monthly memory verse engages kids to hide God’s Word in their hearts. After a simple snack and story, children depart with ideas for continued learning at home.",
-      "signUpUrl": "https://radiantjxn.churchcenter.com/people/forms/586040",
-      "imageUrl": "/images/serve/kids-2.png"
-    },
-    {
-      "groupId": "next-generation",
-      "id": "ng-elementary",
-      "title": "Elementary",
-      "tag": "Next Generation",
-      "description": "For 1st–4th graders. Children experience a purposeful and fun worship service. They strengthen friendships with leaders and other kids through play. Together, we connect with God in worship, praising Him through music, dance, giving, and prayer. In every service, kids receive Biblical truth with life application, putting God’s Word to work in their lives today, while also laying a firm foundation for the future.",
-      "signUpUrl": "https://radiantjxn.churchcenter.com/people/forms/586040",
-      "imageUrl": "/images/serve/kids-6.png"
-    },
-    {
-      "groupId": "next-generation",
-      "id": "ng-check-in",
-      "title": "Check-In",
-      "tag": "Next Generation",
-      "description": "This team welcomes all families as they arrive and is often the first contact for first-time guests. This team utilizes a computer system to print name tags for new children and walks families through self-check-in stations to print their own tags. Security tags are an essential component to child safety in Radiant Kids.",
-      "signUpUrl": "https://radiantjxn.churchcenter.com/people/forms/586040",
-      "imageUrl": "/images/serve/kids-checkin-1.png"
-    },
-    {
-      "groupId": "next-generation",
-      "id": "ng-radiant-friends",
-      "title": "Radiant Friends",
-      "tag": "Next Generation",
-      "description": "This team works closely with kids who need a friend by their side to enjoy Sunday classes. Whether engaging in their age-appropriate class or spending time in the friends room, this team understands that every child is uniquely created by God and has a place in His Kingdom. For children with special needs. Spring Arbor Campus only.",
-      "signUpUrl": "https://radiantjxn.churchcenter.com/people/forms/586040",
-      "imageUrl": "/images/serve/kids-5.png"
-    },
-    {
-      "groupId": "radiant-students",
-      "id": "stu-middle-school",
-      "title": "5th–7th",
-      "tag": "Students",
-      "description": "Radiant Students exists to help middle schoolers experience three things: wonder for who God is, discovery of who He created them to be, and passion for loving others. 5th–7th graders worship in the main sanctuary each Sunday before joining their classroom for a powerful, age-appropriate message, prayer, and discussion with real-life application—designed to help students take ownership of their faith.",
-      "signUpUrl": "https://radiantjxn.churchcenter.com/people/forms/586040",
-      "imageUrl": "/images/serve/kids-4.png"
-    },
-    {
-      "groupId": "radiant-students",
-      "id": "stu-sr-high",
-      "title": "Sr High",
-      "tag": "Students",
-      "description": "For 7th–12th grade (Sunday nights). This group meets every Sunday from 6:00 PM to 8:15 PM. There will be a customized service with time to hang out, play games, and make new friends. We will then move into a time of intentional worship and a message with small group discussions targeted at strengthening our faith.",
-      "signUpUrl": "https://radiantjxn.churchcenter.com/people/forms/586040",
-      "imageUrl": "/images/serve/kids-6.png"
-    },
-    {
-      "groupId": "community-groups",
-      "id": "cg-gather",
-      "title": "Gather Group Leader",
-      "tag": "Community",
-      "description": "Lead a Gather Group focused on welcoming new faces into community. Help people take their first steps toward belonging at Radiant by creating an open, hospitable environment where guests become friends and friends become family.",
-      "signUpUrl": "https://radiantjxn.churchcenter.com/people/forms/586040",
-      "imageUrl": "/images/serve/greeters-2.png"
-    },
-    {
-      "groupId": "community-groups",
-      "id": "cg-grow",
-      "title": "Grow Group Leader",
-      "tag": "Community",
-      "description": "Facilitate a Grow Group rooted in Scripture and sermon application. Guide members deeper in their faith through intentional discussion, prayer, and accountability—helping one another grow into the people God has called them to be.",
-      "signUpUrl": "https://radiantjxn.churchcenter.com/people/forms/586040",
-      "imageUrl": "/images/serve/greeters-3.png"
-    },
-    {
-      "groupId": "community-groups",
-      "id": "cg-go",
-      "title": "Go Group Leader",
-      "tag": "Community",
-      "description": "Lead a Go Group that turns faith into action. Mobilize your group to serve the local community, live out the Great Commission, and make a tangible difference in Jackson and beyond. Training and ongoing support are provided.",
-      "signUpUrl": "https://radiantjxn.churchcenter.com/people/forms/586040",
-      "imageUrl": "/images/serve/greeters-4.png"
-    },
-    {
-      "groupId": "discipleship",
-      "id": "disc-leader",
-      "title": "Discipleship Group Leader",
-      "tag": "Discipleship",
-      "description": "Walk alongside others in intentional one-on-one or small group discipleship. Help believers at Radiant grow in their knowledge of Scripture, deepen their prayer life, and develop the habits and character that mark a devoted follower of Jesus. Training and support are provided.",
-      "signUpUrl": "https://radiantjxn.churchcenter.com/people/forms/586040",
-      "imageUrl": "/images/serve/community-group-leader-1.png"
     },
     {
       "groupId": "creative-arts-worship",
@@ -250,6 +88,168 @@
       "description": "Responsible for capturing high-quality footage, expertly framing shots, and executing smooth camera movements to bring the director’s vision to life. They work closely with the production team, ensuring that the visuals are technically precise and creatively engaging throughout the shoot.",
       "signUpUrl": "https://radiantjxn.churchcenter.com/people/forms/586040",
       "imageUrl": "/images/serve/camera-operator-1.png"
+    },
+    {
+      "groupId": "first-impressions",
+      "id": "fi-coffee",
+      "title": "Coffee",
+      "tag": "First Impressions",
+      "description": "The coffee team exists to enhance fellowship, set an approachable atmosphere, and promote community through quality coffee and service.",
+      "signUpUrl": "https://radiantjxn.churchcenter.com/people/forms/586040",
+      "imageUrl": "/images/serve/coffee-1.png"
+    },
+    {
+      "groupId": "first-impressions",
+      "id": "fi-greeters",
+      "title": "Greeter",
+      "tag": "First Impressions",
+      "description": "This friendly team loves people and makes them feel at home here at Radiant. They welcome guests with a smile, encouragement, and a comforting atmosphere so that hearts are open to the Gospel message.",
+      "signUpUrl": "https://radiantjxn.churchcenter.com/people/forms/586040",
+      "imageUrl": "/images/serve/greeters-4.png"
+    },
+    {
+      "groupId": "first-impressions",
+      "id": "fi-information",
+      "title": "Information Center",
+      "tag": "First Impressions",
+      "description": "This team connects guests to the Church community, providing resources and information on all of our current events, ministry opportunities, and services at Radiant.",
+      "signUpUrl": "https://radiantjxn.churchcenter.com/people/forms/586040",
+      "imageUrl": "/images/serve/greeters-3.png"
+    },
+    {
+      "groupId": "first-impressions",
+      "id": "fi-ushers",
+      "title": "Usher",
+      "tag": "First Impressions",
+      "description": "This team prepares a positive worship experience by welcoming and assisting people to a seat, facilitating the offering and communion, and maintaining a distraction-free environment.",
+      "signUpUrl": "https://radiantjxn.churchcenter.com/people/forms/586040",
+      "imageUrl": "/images/serve/ushers-1.png"
+    },
+    {
+      "groupId": "first-impressions",
+      "id": "fi-parking",
+      "title": "Parking",
+      "tag": "First Impressions",
+      "description": "This team is the first impression of Radiant and operates to create an orderly atmosphere and welcoming environment. If you want to be the very first to welcome our guests to Radiant, this is the team for you.",
+      "signUpUrl": "https://radiantjxn.churchcenter.com/people/forms/586040",
+      "imageUrl": "/images/serve/parking-1.png"
+    },
+    {
+      "groupId": "first-impressions",
+      "id": "fi-medical",
+      "title": "Safety",
+      "tag": "First Impressions",
+      "description": "These individuals work with our Safety Team to supply medical care in case of emergency. Previous medical training and experience are required.",
+      "signUpUrl": "https://radiantjxn.churchcenter.com/people/forms/586040",
+      "imageUrl": "/images/serve/prayer-1.png"
+    },
+    {
+      "groupId": "first-impressions",
+      "id": "fi-merchandise",
+      "title": "Merchandise Team",
+      "tag": "First Impressions",
+      "description": "This team promotes our church and its mission by offering quality merchandise that sparks conversations and shares the message of Christ with our community. Every purchase helps spread the word and create opportunities for faith encounters.",
+      "signUpUrl": "https://radiantjxn.churchcenter.com/people/forms/586040",
+      "imageUrl": "/images/serve/greeters-1.png"
+    },
+    {
+      "groupId": "next-generation",
+      "id": "ng-infants",
+      "title": "Infants",
+      "tag": "Next Generation",
+      "description": "For ages 6 weeks to 23 months. Infants receive individual attention from trained volunteers. We attend to your child’s physical and spiritual needs by holding, talking to, and praying for each child.",
+      "signUpUrl": "https://radiantjxn.churchcenter.com/people/forms/586040",
+      "imageUrl": "/images/serve/kids-1.png"
+    },
+    {
+      "groupId": "next-generation",
+      "id": "ng-early-childhood",
+      "title": "Early Childhood",
+      "tag": "Next Generation",
+      "description": "For ages 2 years to kindergarten. Children in this age group enjoy experiential play, a lesson that teaches age-appropriate Biblical truths, and a time of interactive praise and worship. The monthly memory verse engages kids to hide God’s Word in their hearts. After a simple snack and story, children depart with ideas for continued learning at home.",
+      "signUpUrl": "https://radiantjxn.churchcenter.com/people/forms/586040",
+      "imageUrl": "/images/serve/kids-2.png"
+    },
+    {
+      "groupId": "next-generation",
+      "id": "ng-elementary",
+      "title": "Elementary",
+      "tag": "Next Generation",
+      "description": "For 1st–4th graders. Children experience a purposeful and fun worship service. They strengthen friendships with leaders and other kids through play. Together, we connect with God in worship, praising Him through music, dance, giving, and prayer. In every service, kids receive Biblical truth with life application, putting God’s Word to work in their lives today, while also laying a firm foundation for the future.",
+      "signUpUrl": "https://radiantjxn.churchcenter.com/people/forms/586040",
+      "imageUrl": "/images/serve/kids-6.png"
+    },
+    {
+      "groupId": "next-generation",
+      "id": "ng-check-in",
+      "title": "Check-In",
+      "tag": "Next Generation",
+      "description": "This team welcomes all families as they arrive and is often the first contact for first-time guests. This team utilizes a computer system to print name tags for new children and walks families through self-check-in stations to print their own tags. Security tags are an essential component to child safety in Radiant Kids.",
+      "signUpUrl": "https://radiantjxn.churchcenter.com/people/forms/586040",
+      "imageUrl": "/images/serve/kids-checkin-1.png"
+    },
+    {
+      "groupId": "next-generation",
+      "id": "ng-radiant-friends",
+      "title": "Radiant Friends",
+      "tag": "Next Generation",
+      "description": "This team works closely with kids who need a friend by their side to enjoy Sunday classes. Whether engaging in their age-appropriate class or spending time in the friends room, this team understands that every child is uniquely created by God and has a place in His Kingdom. For children with special needs. Spring Arbor Campus only.",
+      "signUpUrl": "https://radiantjxn.churchcenter.com/people/forms/586040",
+      "imageUrl": "/images/serve/kids-5.png"
+    },
+    {
+      "groupId": "radiant-students",
+      "id": "stu-middle-school",
+      "title": "5th–7th",
+      "tag": "Students",
+      "description": "Radiant Students exists to help middle schoolers experience three things: wonder for who God is, discovery of who He created them to be, and passion for loving others. 5th–7th graders worship in the main sanctuary each Sunday before joining their classroom for a powerful, age-appropriate message, prayer, and discussion with real-life application—designed to help students take ownership of their faith.",
+      "signUpUrl": "https://radiantjxn.churchcenter.com/people/forms/586040",
+      "imageUrl": "/images/serve/kids-4.png"
+    },
+    {
+      "groupId": "radiant-students",
+      "id": "stu-sr-high",
+      "title": "Jr & Sr High",
+      "tag": "Students",
+      "description": "For 7th–12th grade (Sunday nights). This group meets every Sunday from 6:00 PM to 8:15 PM. There will be a customized service with time to hang out, play games, and make new friends. We will then move into a time of intentional worship and a message with small group discussions targeted at strengthening our faith.",
+      "signUpUrl": "https://radiantjxn.churchcenter.com/people/forms/586040",
+      "imageUrl": "/images/serve/kids-6.png"
+    },
+    {
+      "groupId": "community-groups",
+      "id": "cg-gather",
+      "title": "Gather Group Leader",
+      "tag": "Community",
+      "description": "Lead a Gather Group focused on welcoming new faces into community. Help people take their first steps toward belonging at Radiant by creating an open, hospitable environment where guests become friends and friends become family.",
+      "signUpUrl": "https://radiantjxn.churchcenter.com/people/forms/586040",
+      "imageUrl": "/images/serve/greeters-2.png"
+    },
+    {
+      "groupId": "community-groups",
+      "id": "cg-grow",
+      "title": "Grow Group Leader",
+      "tag": "Community",
+      "description": "Facilitate a Grow Group rooted in Scripture and sermon application. Guide members deeper in their faith through intentional discussion, prayer, and accountability—helping one another grow into the people God has called them to be.",
+      "signUpUrl": "https://radiantjxn.churchcenter.com/people/forms/586040",
+      "imageUrl": "/images/serve/greeters-3.png"
+    },
+    {
+      "groupId": "community-groups",
+      "id": "cg-go",
+      "title": "Go Group Leader",
+      "tag": "Community",
+      "description": "Lead a Go Group that turns faith into action. Mobilize your group to serve the local community, live out the Great Commission, and make a tangible difference in Jackson and beyond. Training and ongoing support are provided.",
+      "signUpUrl": "https://radiantjxn.churchcenter.com/people/forms/586040",
+      "imageUrl": "/images/serve/greeters-4.png"
+    },
+    {
+      "groupId": "discipleship",
+      "id": "disc-leader",
+      "title": "Discipleship Group Leader",
+      "tag": "Discipleship",
+      "description": "Walk alongside others in intentional one-on-one or small group discipleship. Help believers at Radiant grow in their knowledge of Scripture, deepen their prayer life, and develop the habits and character that mark a devoted follower of Jesus. Training and support are provided.",
+      "signUpUrl": "https://radiantjxn.churchcenter.com/people/forms/586040",
+      "imageUrl": "/images/serve/community-group-leader-1.png"
     }
   ]
 }
