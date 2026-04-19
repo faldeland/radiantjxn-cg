@@ -17,6 +17,7 @@ const SERVE_IMG = '/images/serve';
 
 const IMAGE_BY_ID = {
   'prayer-team': `${SERVE_IMG}/prayer-2.png`,
+  'prayer-intercessory': `${SERVE_IMG}/prayer-1.png`,
   'worship-vocals': `${SERVE_IMG}/vocals.png`,
   'worship-band': `${SERVE_IMG}/instrumentals-1.png`,
   'fi-coffee': `${SERVE_IMG}/coffee-1.png`,
@@ -31,6 +32,7 @@ const IMAGE_BY_ID = {
   'ng-elementary': `${SERVE_IMG}/kids-6.png`,
   'ng-check-in': `${SERVE_IMG}/kids-checkin-1.png`,
   'ng-radiant-friends': `${SERVE_IMG}/kids-5.png`,
+  'stu-middle-school': `${SERVE_IMG}/kids-4.png`,
   'stu-jr-high': `${SERVE_IMG}/kids-4.png`,
   'stu-sr-high': `${SERVE_IMG}/kids-6.png`,
   'caw-service-director': `${SERVE_IMG}/production-3.png`,
@@ -38,7 +40,9 @@ const IMAGE_BY_ID = {
   'caw-graphic-tech': `${SERVE_IMG}/graphics-tech-1.png`,
   'caw-audio-tech': `${SERVE_IMG}/audio-tech-1.png`,
   'caw-camera-operator': `${SERVE_IMG}/camera-operator-1.png`,
-  'cg-leader': `${SERVE_IMG}/greeters-2.png`,
+  'disc-leader': `${SERVE_IMG}/community-group-leader-1.png`,
+  'cg-grow': `${SERVE_IMG}/greeters-3.png`,
+  'cg-go': `${SERVE_IMG}/greeters-4.png`,
 };
 
 const IMAGE_BY_TAG = {
@@ -62,13 +66,21 @@ const CURATED_OPPORTUNITIES = [
   {
     groupId: 'prayer',
     id: 'prayer-team',
-    title: 'Prayer Team',
+    title: 'Prayer Partners',
     tag: 'Prayer',
     description:
       'Stand in the gap through intercession for our church family, our city, and the nations—in the prayer room on Sundays, in corporate prayer, or behind the scenes.',
   },
   {
-    groupId: 'worship',
+    groupId: 'prayer',
+    id: 'prayer-intercessory',
+    title: 'Intercessory Prayer',
+    tag: 'Prayer',
+    description:
+      'Pray for those in need during every service from the Ministry Center. This team covers our worship gatherings with intercession, standing in the gap so that every person who walks through our doors encounters the presence of God.',
+  },
+  {
+    groupId: 'creative-arts-worship',
     id: 'worship-vocals',
     title: 'Vocal',
     tag: 'Music',
@@ -76,7 +88,7 @@ const CURATED_OPPORTUNITIES = [
       'This team expresses their worship through singing and physical gestures to invite others to enter into and encounter the presence of the Lord.',
   },
   {
-    groupId: 'worship',
+    groupId: 'creative-arts-worship',
     id: 'worship-band',
     title: 'Instruments',
     tag: 'Music',
@@ -181,6 +193,14 @@ const CURATED_OPPORTUNITIES = [
   },
   {
     groupId: 'radiant-students',
+    id: 'stu-middle-school',
+    title: 'Middle School',
+    tag: 'Students',
+    description:
+      'Radiant Students exists to help middle schoolers experience three things: wonder for who God is, discovery of who He created them to be, and passion for loving others. 5th–7th graders worship in the main sanctuary each Sunday before joining their classroom for a powerful, age-appropriate message, prayer, and discussion with real-life application—designed to help students take ownership of their faith.',
+  },
+  {
+    groupId: 'radiant-students',
     id: 'stu-jr-high',
     title: 'Jr High',
     tag: 'Students',
@@ -197,11 +217,35 @@ const CURATED_OPPORTUNITIES = [
   },
   {
     groupId: 'community-groups',
-    id: 'cg-leader',
-    title: 'Community Group Leader',
+    id: 'cg-gather',
+    title: 'Gather Group Leader',
     tag: 'Community',
     description:
-      'Facilitate a weekly Community Group: welcome people, guide discussion around Scripture and sermon application, pray together, and help members build real relationships that point one another to Jesus. Training and ongoing support are provided.',
+      'Lead a Gather Group focused on welcoming new faces into community. Help people take their first steps toward belonging at Radiant by creating an open, hospitable environment where guests become friends and friends become family.',
+  },
+  {
+    groupId: 'community-groups',
+    id: 'cg-grow',
+    title: 'Grow Group Leader',
+    tag: 'Community',
+    description:
+      'Facilitate a Grow Group rooted in Scripture and sermon application. Guide members deeper in their faith through intentional discussion, prayer, and accountability—helping one another grow into the people God has called them to be.',
+  },
+  {
+    groupId: 'community-groups',
+    id: 'cg-go',
+    title: 'Go Group Leader',
+    tag: 'Community',
+    description:
+      'Lead a Go Group that turns faith into action. Mobilize your group to serve the local community, live out the Great Commission, and make a tangible difference in Jackson and beyond. Training and ongoing support are provided.',
+  },
+  {
+    groupId: 'discipleship',
+    id: 'disc-leader',
+    title: 'Discipleship Group Leader',
+    tag: 'Discipleship',
+    description:
+      'Walk alongside others in intentional one-on-one or small group discipleship. Help believers at Radiant grow in their knowledge of Scripture, deepen their prayer life, and develop the habits and character that mark a devoted follower of Jesus. Training and support are provided.',
   },
   {
     groupId: 'creative-arts-worship',
@@ -247,19 +291,18 @@ const CURATED_OPPORTUNITIES = [
 
 const GROUP_ORDER = [
   'prayer',
-  'worship',
   'first-impressions',
   'next-generation',
   'radiant-students',
   'community-groups',
+  'discipleship',
   'creative-arts-worship',
 ];
 
 /** Full tile order (group blocks follow GROUP_ORDER; roles ordered within each block) */
 const TILE_ORDER = [
   'prayer-team',
-  'worship-vocals',
-  'worship-band',
+  'prayer-intercessory',
   'fi-coffee',
   'fi-greeters',
   'fi-information',
@@ -272,9 +315,15 @@ const TILE_ORDER = [
   'ng-elementary',
   'ng-check-in',
   'ng-radiant-friends',
+  'stu-middle-school',
   'stu-jr-high',
   'stu-sr-high',
-  'cg-leader',
+  'cg-gather',
+  'cg-grow',
+  'cg-go',
+  'disc-leader',
+  'worship-vocals',
+  'worship-band',
   'caw-service-director',
   'caw-producer',
   'caw-graphic-tech',

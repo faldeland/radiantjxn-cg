@@ -18,28 +18,27 @@ function teamRadiantApp() {
   const SERVE_IMG = '/images/serve';
   const GROUP_LABELS = {
     prayer: 'Prayer',
-    worship: 'Worship',
     'first-impressions': 'First Impressions Ministry',
     'next-generation': 'Generational Ministries',
     'radiant-students': 'Radiant Students',
     'community-groups': 'Community Groups',
-    'creative-arts-worship': 'Creative Arts and Worship',
+    discipleship: 'Discipleship',
+    'creative-arts-worship': 'Worship and Creative Arts',
   };
   const GROUP_ORDER = [
     'prayer',
-    'worship',
     'first-impressions',
     'next-generation',
     'radiant-students',
     'community-groups',
+    'discipleship',
     'creative-arts-worship',
   ];
 
   /** Same order as scraper/team-radiant-scrape.js TILE_ORDER (serialized tile order). */
   const TILE_ORDER = [
     'prayer-team',
-    'worship-vocals',
-    'worship-band',
+    'prayer-intercessory',
     'fi-coffee',
     'fi-greeters',
     'fi-information',
@@ -52,9 +51,15 @@ function teamRadiantApp() {
     'ng-elementary',
     'ng-check-in',
     'ng-radiant-friends',
+    'stu-middle-school',
     'stu-jr-high',
     'stu-sr-high',
-    'cg-leader',
+    'cg-gather',
+    'cg-grow',
+    'cg-go',
+    'disc-leader',
+    'worship-vocals',
+    'worship-band',
     'caw-service-director',
     'caw-producer',
     'caw-graphic-tech',
@@ -79,9 +84,7 @@ function teamRadiantApp() {
 
   /** Shown under the section heading for specific groups */
   const GROUP_SUBTITLES = {
-    worship: 'Worship Team',
     'next-generation': 'Radiant Kids',
-    'creative-arts-worship': 'Production Team',
   };
 
   /**
@@ -91,6 +94,8 @@ function teamRadiantApp() {
   const TEAM_RADIANT_DETAIL_COPY = {
     'prayer-team':
       'Stand in the gap through intercession for our church family, our city, and the nations—in the prayer room on Sundays, in corporate prayer, or behind the scenes.',
+    'prayer-intercessory':
+      'Pray for those in need during every service from the Ministry Center. This team covers our worship gatherings with intercession, standing in the gap so that every person who walks through our doors encounters the presence of God.',
     'worship-vocals':
       'This team expresses their worship through singing and physical gestures to invite others to enter into and encounter the presence of the Lord.',
     'worship-band':
@@ -119,12 +124,20 @@ function teamRadiantApp() {
       'This team welcomes all families as they arrive and is often the first contact for first-time guests. This team utilizes a computer system to print name tags for new children and walks families through self-check-in stations to print their own tags. Security tags are an essential component to child safety in Radiant Kids.',
     'ng-radiant-friends':
       'This team works closely with kids who need a friend by their side to enjoy Sunday classes. Whether engaging in their age-appropriate class or spending time in the friends room, this team understands that every child is uniquely created by God and has a place in His Kingdom. For children with special needs. Spring Arbor Campus only.',
+    'stu-middle-school':
+      'Radiant Students exists to help middle schoolers experience three things: wonder for who God is, discovery of who He created them to be, and passion for loving others. 5th–7th graders worship in the main sanctuary each Sunday before joining their classroom for a powerful, age-appropriate message, prayer, and discussion with real-life application—designed to help students take ownership of their faith.',
     'stu-jr-high':
       'For 5th–7th grade (Sunday mornings). Radiant Students worship together in the main sanctuary before being dismissed to their class for an age-appropriate message, prayer, and group discussions with real-life applications.',
     'stu-sr-high':
       'For 7th–12th grade (Sunday nights). This group meets every Sunday from 6:00 PM to 8:15 PM. There will be a customized service with time to hang out, play games, and make new friends. We will then move into a time of intentional worship and a message with small group discussions targeted at strengthening our faith.',
-    'cg-leader':
-      'Facilitate a weekly Community Group: welcome people, guide discussion around Scripture and sermon application, pray together, and help members build real relationships that point one another to Jesus. Training and ongoing support are provided.',
+    'cg-gather':
+      'Lead a Gather Group focused on welcoming new faces into community. Help people take their first steps toward belonging at Radiant by creating an open, hospitable environment where guests become friends and friends become family.',
+    'cg-grow':
+      'Facilitate a Grow Group rooted in Scripture and sermon application. Guide members deeper in their faith through intentional discussion, prayer, and accountability—helping one another grow into the people God has called them to be.',
+    'cg-go':
+      'Lead a Go Group that turns faith into action. Mobilize your group to serve the local community, live out the Great Commission, and make a tangible difference in Jackson and beyond. Training and ongoing support are provided.',
+    'disc-leader':
+      'Walk alongside others in intentional one-on-one or small group discipleship. Help believers at Radiant grow in their knowledge of Scripture, deepen their prayer life, and develop the habits and character that mark a devoted follower of Jesus. Training and support are provided.',
     'caw-service-director':
       'Directs camera operators, graphic techs, and technical directors for both livestream and IMAG in-house. Able to remain calm under pressure and demonstrates excellent verbal communication. Has a thorough understanding of the order of each service. Some experience is preferred but not required.',
     'caw-producer':
@@ -139,6 +152,7 @@ function teamRadiantApp() {
 
   const FALLBACK_BY_ID = {
     'prayer-team': `${SERVE_IMG}/prayer-2.png`,
+    'prayer-intercessory': `${SERVE_IMG}/prayer-1.png`,
     'worship-vocals': `${SERVE_IMG}/vocals.png`,
     'worship-band': `${SERVE_IMG}/instrumentals-1.png`,
     'fi-coffee': `${SERVE_IMG}/coffee-1.png`,
@@ -153,6 +167,7 @@ function teamRadiantApp() {
     'ng-elementary': `${SERVE_IMG}/kids-6.png`,
     'ng-check-in': `${SERVE_IMG}/kids-checkin-1.png`,
     'ng-radiant-friends': `${SERVE_IMG}/kids-5.png`,
+    'stu-middle-school': `${SERVE_IMG}/kids-4.png`,
     'stu-jr-high': `${SERVE_IMG}/kids-4.png`,
     'stu-sr-high': `${SERVE_IMG}/kids-6.png`,
     'caw-service-director': `${SERVE_IMG}/production-3.png`,
@@ -160,7 +175,10 @@ function teamRadiantApp() {
     'caw-graphic-tech': `${SERVE_IMG}/graphics-tech-1.png`,
     'caw-audio-tech': `${SERVE_IMG}/audio-tech-1.png`,
     'caw-camera-operator': `${SERVE_IMG}/camera-operator-1.png`,
-    'cg-leader': `${SERVE_IMG}/greeters-2.png`,
+    'disc-leader': `${SERVE_IMG}/community-group-leader-1.png`,
+    'cg-gather': `${SERVE_IMG}/greeters-2.png`,
+    'cg-grow': `${SERVE_IMG}/greeters-3.png`,
+    'cg-go': `${SERVE_IMG}/greeters-4.png`,
   };
   const FALLBACK_IMAGES = {
     Welcome: `${SERVE_IMG}/greeters-4.png`,
