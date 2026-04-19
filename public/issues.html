@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>Issues — Radiant JXN</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            radiant: {
+              50: '#fff7ed', 100: '#ffedd5', 200: '#fed7aa', 300: '#fdba74',
+              400: '#fb923c', 500: '#f97316', 600: '#ea580c', 700: '#c2410c',
+              800: '#9a3412', 900: '#7c2d12',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 antialiased min-h-screen transition-colors duration-300"
+      x-data="issuesApp()" x-init="init()" x-cloak>
+
+  <!-- Header -->
+  <header class="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 px-4 py-3 sticky top-0 z-40 shadow-sm">
+    <div class="max-w-5xl mx-auto flex items-center justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <a href="/" class="flex items-center gap-2 text-gray-500 dark:text-gray-400 hover:text-radiant-600 dark:hover:text-radiant-400 transition-colors">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+          </svg>
+          <span class="text-sm font-medium">Back</span>
+        </a>
+        <div class="h-5 w-px bg-gray-300 dark:bg-gray-600"></div>
+        <h1 class="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2">
+          <svg class="w-5 h-5 text-radiant-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
+          </svg>
+          Issues
+        </h1>
+      </div>
+      <div class="flex items-center gap-3">
+        <span class="text-xs text-gray-500 dark:text-gray-400" x-show="!loading">
+          <span x-text="openCount" class="font-semibold text-radiant-600"></span> open ·
+          <span x-text="closedCount" class="font-semibold"></span> closed
+        </span>
+        <button @click="loadIssues()" :disabled="loading"
+                class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-400 transition-colors disabled:opacity-40">
+          <svg class="w-4 h-4" :class="loading ? 'animate-spin' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-5xl mx-auto px-4 py-6">
+
+    <!-- Filter tabs -->
+    <div class="flex items-center gap-1 mb-5 border-b border-gray-200 dark:border-gray-700">
+      <button @click="tab = 'open'"
+              class="px-4 py-2 text-sm font-semibold border-b-2 transition-colors -mb-px"
+              :class="tab === 'open'
+                ? 'border-radiant-600 text-radiant-600 dark:text-radiant-400 dark:border-radiant-400'
+                : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'">
+        Open
+        <span class="ml-1.5 px-1.5 py-0.5 rounded-full text-xs bg-radiant-100 dark:bg-radiant-900/40 text-radiant-700 dark:text-radiant-300"
+              x-text="openCount" x-show="openCount > 0"></span>
+      </button>
+      <button @click="tab = 'closed'"
+              class="px-4 py-2 text-sm font-semibold border-b-2 transition-colors -mb-px"
+              :class="tab === 'closed'
+                ? 'border-radiant-600 text-radiant-600 dark:text-radiant-400 dark:border-radiant-400'
+                : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'">
+        Closed
+        <span class="ml-1.5 px-1.5 py-0.5 rounded-full text-xs bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300"
+              x-text="closedCount" x-show="closedCount > 0"></span>
+      </button>
+      <button @click="tab = 'all'"
+              class="px-4 py-2 text-sm font-semibold border-b-2 transition-colors -mb-px"
+              :class="tab === 'all'
+                ? 'border-radiant-600 text-radiant-600 dark:text-radiant-400 dark:border-radiant-400'
+                : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'">
+        All
+      </button>
+    </div>
+
+    <!-- Loading -->
+    <div x-show="loading" class="flex justify-center py-12">
+      <svg class="w-7 h-7 animate-spin text-radiant-600" fill="none" viewBox="0 0 24 24">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
+      </svg>
+    </div>
+
+    <!-- Empty state -->
+    <div x-show="!loading && filteredIssues.length === 0"
+         class="text-center py-16 text-gray-400 dark:text-gray-500">
+      <svg class="w-10 h-10 mx-auto mb-3 opacity-40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+      </svg>
+      <p class="text-sm font-medium" x-text="tab === 'open' ? 'No open issues' : tab === 'closed' ? 'No closed issues' : 'No issues yet'"></p>
+    </div>
+
+    <!-- Issues list -->
+    <div x-show="!loading && filteredIssues.length > 0" class="space-y-3">
+      <template x-for="issue in filteredIssues" :key="issue.id">
+        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4 shadow-sm">
+          <div class="flex items-start justify-between gap-3">
+            <div class="flex items-start gap-3 min-w-0">
+              <!-- Status dot -->
+              <div class="mt-1 flex-shrink-0">
+                <div class="w-2.5 h-2.5 rounded-full"
+                     :class="issue.status === 'open' ? 'bg-green-500' : 'bg-gray-400'"></div>
+              </div>
+              <div class="min-w-0">
+                <!-- Description -->
+                <p class="text-sm font-medium text-gray-900 dark:text-gray-100 leading-snug mb-1"
+                   x-show="issue.description"
+                   x-text="issue.description"></p>
+                <p class="text-sm text-gray-400 dark:text-gray-500 italic mb-1"
+                   x-show="!issue.description">No description provided</p>
+                <!-- URL -->
+                <a x-show="issue.url" :href="issue.url" target="_blank" rel="noopener noreferrer"
+                   class="text-xs text-radiant-600 dark:text-radiant-400 hover:underline break-all"
+                   x-text="issue.url"></a>
+                <!-- Timestamps -->
+                <div class="flex flex-wrap items-center gap-x-3 gap-y-0.5 mt-1.5">
+                  <span class="text-[0.65rem] text-gray-400 dark:text-gray-500"
+                        x-text="'Opened ' + formatDate(issue.createdAt)"></span>
+                  <span class="text-[0.65rem] text-gray-400 dark:text-gray-500"
+                        x-show="issue.closedAt"
+                        x-text="'Closed ' + formatDate(issue.closedAt)"></span>
+                </div>
+              </div>
+            </div>
+            <!-- Actions -->
+            <div class="flex items-center gap-1 flex-shrink-0">
+              <button x-show="issue.status === 'open'"
+                      @click="closeIssue(issue)"
+                      :disabled="issue._busy"
+                      class="text-xs px-3 py-1.5 rounded-lg border border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors disabled:opacity-40 font-medium">
+                Close
+              </button>
+              <button x-show="issue.status === 'closed'"
+                      @click="reopenIssue(issue)"
+                      :disabled="issue._busy"
+                      class="text-xs px-3 py-1.5 rounded-lg border border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors disabled:opacity-40 font-medium">
+                Reopen
+              </button>
+              <button @click="deleteIssue(issue)"
+                      :disabled="issue._busy"
+                      class="p-1.5 rounded-lg text-gray-400 hover:text-red-500 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors disabled:opacity-40">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </template>
+    </div>
+  </main>
+
+  <script>
+    function issuesApp() {
+      return {
+        issues: [],
+        loading: true,
+        tab: 'open',
+
+        get openCount() { return this.issues.filter(i => i.status === 'open').length; },
+        get closedCount() { return this.issues.filter(i => i.status === 'closed').length; },
+        get filteredIssues() {
+          if (this.tab === 'open') return this.issues.filter(i => i.status === 'open');
+          if (this.tab === 'closed') return this.issues.filter(i => i.status === 'closed');
+          return this.issues;
+        },
+
+        async init() {
+          // theme
+          const theme = document.cookie.match(/(?:^|; )theme=([^;]*)/)?.[1];
+          if (theme !== 'light') document.documentElement.classList.add('dark');
+          await this.loadIssues();
+        },
+
+        async loadIssues() {
+          this.loading = true;
+          try {
+            const res = await fetch('/api/issues');
+            const data = await res.json();
+            this.issues = (data.issues || []).map(i => ({ ...i, _busy: false }));
+          } catch (e) {
+            console.error('Failed to load issues', e);
+          } finally {
+            this.loading = false;
+          }
+        },
+
+        async closeIssue(issue) {
+          issue._busy = true;
+          try {
+            const res = await fetch(`/api/issues/${issue.id}`, {
+              method: 'PATCH',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ status: 'closed' }),
+            });
+            if (res.ok) {
+              const data = await res.json();
+              Object.assign(issue, data.issue, { _busy: false });
+            }
+          } catch (e) { issue._busy = false; }
+        },
+
+        async reopenIssue(issue) {
+          issue._busy = true;
+          try {
+            const res = await fetch(`/api/issues/${issue.id}`, {
+              method: 'PATCH',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ status: 'open' }),
+            });
+            if (res.ok) {
+              const data = await res.json();
+              Object.assign(issue, data.issue, { _busy: false });
+            }
+          } catch (e) { issue._busy = false; }
+        },
+
+        async deleteIssue(issue) {
+          if (!confirm('Delete this issue permanently?')) return;
+          issue._busy = true;
+          try {
+            const res = await fetch(`/api/issues/${issue.id}`, { method: 'DELETE' });
+            if (res.ok) this.issues = this.issues.filter(i => i.id !== issue.id);
+            else issue._busy = false;
+          } catch (e) { issue._busy = false; }
+        },
+
+        formatDate(iso) {
+          if (!iso) return '';
+          const d = new Date(iso);
+          return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit' });
+        },
+      };
+    }
+  </script>
+</body>
+</html>

@@ -25,6 +25,25 @@ const EVENTS_PATH = DATA_DIR
   ? path.join(DATA_DIR, 'events.json')
   : path.join(__dirname, 'public', 'data', 'events.json');
 
+const ISSUES_PATH = DATA_DIR
+  ? path.join(DATA_DIR, 'issues.json')
+  : path.join(__dirname, 'public', 'data', 'issues.json');
+
+function readIssues() {
+  try {
+    if (!fs.existsSync(ISSUES_PATH)) return [];
+    const raw = fs.readFileSync(ISSUES_PATH, 'utf8');
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed.issues) ? parsed.issues : [];
+  } catch {
+    return [];
+  }
+}
+
+function writeIssues(issues) {
+  fs.writeFileSync(ISSUES_PATH, JSON.stringify({ issues }, null, 2), 'utf8');
+}
+
 if (DATA_DIR) {
   try {
     fs.mkdirSync(DATA_DIR, { recursive: true });
@@ -201,6 +220,57 @@ app.post('/api/refresh-events', async (req, res) => {
   } finally {
     eventsScrapeInProgress = false;
   }
+});
+
+// ── Issues ─────────────────────────────────────────────────────────────────
+
+app.get('/api/issues', (req, res) => {
+  const issues = readIssues().sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  res.json({ issues });
+});
+
+app.post('/api/issues', (req, res) => {
+  const { url, description } = req.body || {};
+  if (!url && !description) {
+    return res.status(400).json({ error: 'url or description is required' });
+  }
+  const issues = readIssues();
+  const issue = {
+    id: `issue-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+    url: String(url || '').trim(),
+    description: String(description || '').trim(),
+    status: 'open',
+    createdAt: new Date().toISOString(),
+    closedAt: null,
+  };
+  issues.push(issue);
+  writeIssues(issues);
+  res.status(201).json({ issue });
+});
+
+app.patch('/api/issues/:id', (req, res) => {
+  const { id } = req.params;
+  const { status } = req.body || {};
+  if (!['open', 'closed'].includes(status)) {
+    return res.status(400).json({ error: 'status must be "open" or "closed"' });
+  }
+  const issues = readIssues();
+  const idx = issues.findIndex((i) => i.id === id);
+  if (idx === -1) return res.status(404).json({ error: 'Issue not found' });
+  issues[idx].status = status;
+  issues[idx].closedAt = status === 'closed' ? new Date().toISOString() : null;
+  writeIssues(issues);
+  res.json({ issue: issues[idx] });
+});
+
+app.delete('/api/issues/:id', (req, res) => {
+  const { id } = req.params;
+  const issues = readIssues();
+  const idx = issues.findIndex((i) => i.id === id);
+  if (idx === -1) return res.status(404).json({ error: 'Issue not found' });
+  issues.splice(idx, 1);
+  writeIssues(issues);
+  res.json({ success: true });
 });
 
 app.listen(PORT, () => {
