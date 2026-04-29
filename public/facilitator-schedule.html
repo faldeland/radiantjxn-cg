@@ -102,7 +102,10 @@
     <!-- Calendar picker -->
     <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm p-4 mb-8">
       <div class="flex items-center justify-between mb-4">
-        <button @click="prevMonth()" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-400 transition-colors">
+        <button
+          @click="prevMonth()"
+          :disabled="!canGoPrevMonth"
+          class="p-2 rounded-full text-gray-500 dark:text-gray-400 transition-colors disabled:opacity-40 disabled:cursor-not-allowed hover:bg-gray-100 dark:hover:bg-gray-700 disabled:hover:bg-transparent dark:disabled:hover:bg-transparent">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
         </button>
         <h2 class="text-lg font-bold text-gray-900 dark:text-white" x-text="calendarMonthLabel"></h2>

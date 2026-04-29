@@ -73,6 +73,17 @@ if (DATA_DIR) {
   } catch (err) {
     console.warn('Could not ensure DATA_DIR exists:', err.message);
   }
+
+  // Seed facilitator-schedule.json from the bundled copy if the volume doesn't have one yet
+  const bundledSchedule = path.join(__dirname, 'public', 'data', 'facilitator-schedule.json');
+  if (!fs.existsSync(FACILITATOR_SCHEDULE_PATH) && fs.existsSync(bundledSchedule)) {
+    try {
+      fs.copyFileSync(bundledSchedule, FACILITATOR_SCHEDULE_PATH);
+      console.log('Seeded facilitator-schedule.json to DATA_DIR');
+    } catch (err) {
+      console.warn('Could not seed facilitator-schedule.json:', err.message);
+    }
+  }
 }
 
 app.use(express.json());

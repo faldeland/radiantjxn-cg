@@ -1,14 +1,18 @@
 function facilitatorScheduleApp() {
   const now = new Date();
+  const MIN_CALENDAR_YEAR = 2026;
+  const MIN_CALENDAR_MONTH = 3; // April (0-based)
+  const startsBeforeMin = now.getFullYear() < MIN_CALENDAR_YEAR ||
+    (now.getFullYear() === MIN_CALENDAR_YEAR && now.getMonth() < MIN_CALENDAR_MONTH);
   return {
     darkMode: false,
     menuOpen: false,
     entries: {},
     saving: {},
-    calendarYear: now.getFullYear(),
-    calendarMonth: now.getMonth(),
-    selectedYear: now.getFullYear(),
-    selectedMonth: now.getMonth(),
+    calendarYear: startsBeforeMin ? MIN_CALENDAR_YEAR : now.getFullYear(),
+    calendarMonth: startsBeforeMin ? MIN_CALENDAR_MONTH : now.getMonth(),
+    selectedYear: startsBeforeMin ? MIN_CALENDAR_YEAR : now.getFullYear(),
+    selectedMonth: startsBeforeMin ? MIN_CALENDAR_MONTH : now.getMonth(),
 
     taglines: ['Facilitator Schedule'],
     currentTagline: 'Facilitator Schedule',
@@ -17,6 +21,7 @@ function facilitatorScheduleApp() {
     init() {
       this.darkMode = document.cookie.includes('darkMode=true');
       if (this.darkMode) document.documentElement.classList.add('dark');
+      this.enforceCalendarMin();
       this.loadSchedule();
     },
 
@@ -43,7 +48,23 @@ function facilitatorScheduleApp() {
         .toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
     },
 
+    get canGoPrevMonth() {
+      return this.calendarYear > MIN_CALENDAR_YEAR ||
+        (this.calendarYear === MIN_CALENDAR_YEAR && this.calendarMonth > MIN_CALENDAR_MONTH);
+    },
+
+    enforceCalendarMin() {
+      const isBeforeMin = this.calendarYear < MIN_CALENDAR_YEAR ||
+        (this.calendarYear === MIN_CALENDAR_YEAR && this.calendarMonth < MIN_CALENDAR_MONTH);
+      if (isBeforeMin) {
+        this.calendarYear = MIN_CALENDAR_YEAR;
+        this.calendarMonth = MIN_CALENDAR_MONTH;
+      }
+    },
+
     prevMonth() {
+      this.enforceCalendarMin();
+      if (!this.canGoPrevMonth) return;
       if (this.calendarMonth === 0) {
         this.calendarMonth = 11;
         this.calendarYear--;
