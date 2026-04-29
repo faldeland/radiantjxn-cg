@@ -125,6 +125,14 @@
             Facilitator Notes
           </button>
           <button type="button"
+                  @click="tab = 'schedule'"
+                  :class="tab === 'schedule'
+                    ? 'bg-radiant-600 text-white shadow-sm'
+                    : 'text-gray-600 dark:text-gray-300 hover:bg-white/60 dark:hover:bg-gray-700'"
+                  class="px-4 py-1.5 rounded-lg text-sm font-semibold transition-colors">
+            Facilitator Schedule
+          </button>
+          <button type="button"
                   @click="tab = 'principles'"
                   :class="tab === 'principles'
                     ? 'bg-radiant-600 text-white shadow-sm'
@@ -841,6 +849,96 @@
 
         </article>
       </section>
+
+      <!-- Facilitator Schedule tab -->
+      <section x-show="tab === 'schedule'" x-transition.opacity class="space-y-6"
+               x-effect="if (tab === 'schedule' && !scheduleLoaded) { loadSchedule(); }">
+
+        <!-- Calendar picker -->
+        <div class="bg-white dark:bg-gray-800 rounded-2xl border border-radiant-200 dark:border-gray-700 shadow-sm p-3">
+          <div class="flex items-center justify-between mb-2">
+            <button @click="prevMonth()" class="p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-400 transition-colors">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+            </button>
+            <h2 class="text-sm font-bold text-gray-900 dark:text-white" x-text="calendarMonthLabel"></h2>
+            <button @click="nextMonth()" class="p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-400 transition-colors">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+
+          <div class="grid grid-cols-7 text-center text-[0.65rem] font-semibold text-gray-400 dark:text-gray-500 mb-0.5">
+            <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
+          </div>
+
+          <div class="grid grid-cols-7 gap-px">
+            <template x-for="(cell, i) in calendarDays" :key="'cal-' + i">
+              <div class="relative flex items-center justify-center h-8 text-xs rounded-md transition-colors"
+                   :class="{
+                     'cursor-pointer': cell.isSaturday,
+                     'bg-emerald-100 dark:bg-emerald-900/30 font-bold text-emerald-700 dark:text-emerald-300': cell.isSaturday && cell.hasFacilitator,
+                     'bg-radiant-50 dark:bg-radiant-900/20 font-bold text-radiant-700 dark:text-radiant-300': cell.isSaturday && !cell.hasFacilitator,
+                     'ring-2 ring-radiant-500': cell.isToday,
+                     'text-gray-700 dark:text-gray-300': !cell.isSaturday && !cell.blank,
+                     'hover:bg-radiant-100 dark:hover:bg-radiant-900/40': cell.isSaturday && !cell.hasFacilitator,
+                     'hover:bg-emerald-200 dark:hover:bg-emerald-900/50': cell.isSaturday && cell.hasFacilitator,
+                   }"
+                   @click="cell.isSaturday && selectMonth()">
+                <span x-text="cell.day"></span>
+              </div>
+            </template>
+          </div>
+
+        </div>
+
+        <!-- Saturday schedule form -->
+        <div class="bg-white dark:bg-gray-800 rounded-2xl border border-radiant-200 dark:border-gray-700 shadow-sm overflow-hidden">
+          <div class="px-4 py-3 border-b border-gray-100 dark:border-gray-700">
+            <h3 class="text-base font-bold text-gray-900 dark:text-white" x-text="selectedMonthLabel + ' — Saturday Facilitators'"></h3>
+          </div>
+
+          <div class="hidden sm:grid grid-cols-[5rem_7rem_1fr_1fr] gap-2 px-4 py-2 text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wide border-b border-gray-100 dark:border-gray-700">
+            <span>Day</span>
+            <span>Date</span>
+            <span>Facilitator Name</span>
+            <span>SOAP Passage(s)</span>
+          </div>
+
+          <template x-for="sat in saturdays" :key="sat.date">
+            <div class="grid grid-cols-1 sm:grid-cols-[5rem_7rem_1fr_1fr] gap-2 sm:gap-2 items-center px-4 py-3 border-b border-gray-50 dark:border-gray-700/50 last:border-b-0 hover:bg-gray-50 dark:hover:bg-gray-700/30 transition-colors">
+              <span class="text-sm font-semibold text-gray-700 dark:text-gray-300" x-text="sat.dayLabel"></span>
+              <span class="text-sm text-gray-500 dark:text-gray-400" x-text="sat.label"></span>
+              <div class="flex items-center gap-2">
+                <input type="text"
+                       :value="sat.facilitator"
+                       @change="saveFacilitator(sat.date, $event.target.value)"
+                       @keydown.enter="$event.target.blur()"
+                       placeholder="Enter facilitator name"
+                       class="w-full px-3 py-2 text-sm rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-radiant-500 focus:border-transparent placeholder-gray-400 dark:placeholder-gray-500 transition-colors">
+                <svg x-show="scheduleSaving[sat.date]" class="w-4 h-4 animate-spin text-radiant-500 flex-shrink-0" fill="none" viewBox="0 0 24 24">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+                </svg>
+              </div>
+              <div class="flex items-center gap-2">
+                <input type="text"
+                       :value="sat.soapPassages"
+                       @change="saveSoapPassages(sat.date, $event.target.value)"
+                       @keydown.enter="$event.target.blur()"
+                       placeholder="e.g. Romans 8:1-11"
+                       class="w-full px-3 py-2 text-sm rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-radiant-500 focus:border-transparent placeholder-gray-400 dark:placeholder-gray-500 transition-colors">
+                <svg x-show="scheduleSaving['soap-' + sat.date]" class="w-4 h-4 animate-spin text-radiant-500 flex-shrink-0" fill="none" viewBox="0 0 24 24">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+                </svg>
+              </div>
+            </div>
+          </template>
+
+          <div x-show="saturdays.length === 0" class="px-4 py-8 text-center text-sm text-gray-400 dark:text-gray-500">
+            No Saturdays in this month.
+          </div>
+        </div>
+      </section>
     </div>
   </main>
 
@@ -870,10 +968,21 @@
 
   <script>
     function ironSharpensApp() {
+      const now = new Date();
       return {
         darkMode: false,
         tab: 'facilitator',
         taglines: ['FREE', 'EMPOWERED', 'CONNECTED', 'GENEROUS', 'LOVING OTHERS'],
+
+        // Facilitator Schedule state
+        scheduleEntries: {},
+        soapEntries: {},
+        scheduleSaving: {},
+        scheduleLoaded: false,
+        calendarYear: now.getFullYear(),
+        calendarMonth: now.getMonth(),
+        selectedYear: now.getFullYear(),
+        selectedMonth: now.getMonth(),
         taglineIndex: 0,
         currentTagline: 'FREE',
         taglineFading: false,
@@ -935,6 +1044,89 @@
         applyDarkMode() {
           document.documentElement.classList.toggle('dark', this.darkMode);
         },
+        // ── Facilitator Schedule methods ───────────────────────────────
+        async loadSchedule() {
+          try {
+            const res = await fetch('/api/facilitator-schedule');
+            const data = await res.json();
+            this.scheduleEntries = data.entries || {};
+            this.soapEntries = data.soapEntries || {};
+            this.scheduleLoaded = true;
+          } catch { this.scheduleEntries = {}; this.soapEntries = {}; }
+        },
+        get calendarMonthLabel() {
+          return new Date(this.calendarYear, this.calendarMonth, 1)
+            .toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+        },
+        prevMonth() {
+          if (this.calendarMonth === 0) { this.calendarMonth = 11; this.calendarYear--; }
+          else { this.calendarMonth--; }
+          this.selectMonth();
+        },
+        nextMonth() {
+          if (this.calendarMonth === 11) { this.calendarMonth = 0; this.calendarYear++; }
+          else { this.calendarMonth++; }
+          this.selectMonth();
+        },
+        selectMonth() {
+          this.selectedYear = this.calendarYear;
+          this.selectedMonth = this.calendarMonth;
+        },
+        get isSelectedMonth() {
+          return this.calendarYear === this.selectedYear && this.calendarMonth === this.selectedMonth;
+        },
+        get calendarDays() {
+          const year = this.calendarYear, month = this.calendarMonth;
+          const firstDay = new Date(year, month, 1);
+          const lastDay = new Date(year, month + 1, 0);
+          const days = [];
+          for (let i = 0; i < firstDay.getDay(); i++) days.push({ day: '', date: '', blank: true });
+          for (let d = 1; d <= lastDay.getDate(); d++) {
+            const dt = new Date(year, month, d);
+            const iso = this._toISO(dt);
+            days.push({ day: d, date: iso, blank: false, isSaturday: dt.getDay() === 6, isToday: iso === this._toISO(new Date()), hasFacilitator: !!this.scheduleEntries[iso] });
+          }
+          return days;
+        },
+        get selectedMonthLabel() {
+          return new Date(this.selectedYear, this.selectedMonth, 1)
+            .toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+        },
+        get saturdays() {
+          const year = this.selectedYear, month = this.selectedMonth;
+          const lastDay = new Date(year, month + 1, 0).getDate();
+          const list = [];
+          for (let d = 1; d <= lastDay; d++) {
+            const dt = new Date(year, month, d);
+            if (dt.getDay() === 6) {
+              const iso = this._toISO(dt);
+              list.push({ date: iso, label: dt.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }), dayLabel: 'Saturday', facilitator: this.scheduleEntries[iso] || '', soapPassages: this.soapEntries[iso] || '' });
+            }
+          }
+          return list;
+        },
+        async saveFacilitator(dateStr, value) {
+          this.scheduleSaving[dateStr] = true;
+          try {
+            const res = await fetch(`/api/facilitator-schedule/${dateStr}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ facilitator: value }) });
+            const data = await res.json();
+            this.scheduleEntries = data.entries || this.scheduleEntries;
+          } catch { /* silent */ }
+          this.scheduleSaving[dateStr] = false;
+        },
+        async saveSoapPassages(dateStr, value) {
+          this.scheduleSaving['soap-' + dateStr] = true;
+          try {
+            const res = await fetch(`/api/facilitator-schedule/${dateStr}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ soapPassages: value }) });
+            const data = await res.json();
+            this.soapEntries = data.soapEntries || this.soapEntries;
+          } catch { /* silent */ }
+          this.scheduleSaving['soap-' + dateStr] = false;
+        },
+        _toISO(dt) {
+          return `${dt.getFullYear()}-${String(dt.getMonth()+1).padStart(2,'0')}-${String(dt.getDate()).padStart(2,'0')}`;
+        },
+
         joinGroups: [
           { id: 'qr-join-east',  label: 'East',  url: 'https://radiantjxn.churchcenter.com/groups/grow/iron-sharpens-east' },
           { id: 'qr-join-north', label: 'North', url: 'https://radiantjxn.churchcenter.com/groups/grow/iron-sharpens-north' },

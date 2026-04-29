@@ -29,6 +29,10 @@ const ISSUES_PATH = DATA_DIR
   ? path.join(DATA_DIR, 'issues.json')
   : path.join(__dirname, 'public', 'data', 'issues.json');
 
+const FACILITATOR_SCHEDULE_PATH = DATA_DIR
+  ? path.join(DATA_DIR, 'facilitator-schedule.json')
+  : path.join(__dirname, 'public', 'data', 'facilitator-schedule.json');
+
 function readIssues() {
   try {
     if (!fs.existsSync(ISSUES_PATH)) return [];
@@ -42,6 +46,25 @@ function readIssues() {
 
 function writeIssues(issues) {
   fs.writeFileSync(ISSUES_PATH, JSON.stringify({ issues }, null, 2), 'utf8');
+}
+
+function readFacilitatorSchedule() {
+  try {
+    if (!fs.existsSync(FACILITATOR_SCHEDULE_PATH)) return { entries: {}, soapEntries: {} };
+    const raw = fs.readFileSync(FACILITATOR_SCHEDULE_PATH, 'utf8');
+    const parsed = JSON.parse(raw);
+    return { entries: parsed.entries || {}, soapEntries: parsed.soapEntries || {} };
+  } catch {
+    return { entries: {}, soapEntries: {} };
+  }
+}
+
+function writeFacilitatorSchedule(data) {
+  fs.writeFileSync(
+    FACILITATOR_SCHEDULE_PATH,
+    JSON.stringify(data, null, 2),
+    'utf8',
+  );
 }
 
 if (DATA_DIR) {
@@ -271,6 +294,32 @@ app.delete('/api/issues/:id', (req, res) => {
   issues.splice(idx, 1);
   writeIssues(issues);
   res.json({ success: true });
+});
+
+// ── Facilitator Schedule ────────────────────────────────────────────────────
+
+app.get('/api/facilitator-schedule', (req, res) => {
+  const data = readFacilitatorSchedule();
+  res.json(data);
+});
+
+app.put('/api/facilitator-schedule/:date', (req, res) => {
+  const { date } = req.params;
+  const { facilitator, soapPassages } = req.body || {};
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+    return res.status(400).json({ error: 'date must be YYYY-MM-DD' });
+  }
+  const data = readFacilitatorSchedule();
+  if (facilitator !== undefined) {
+    const name = String(facilitator || '').trim();
+    if (name) { data.entries[date] = name; } else { delete data.entries[date]; }
+  }
+  if (soapPassages !== undefined) {
+    const passages = String(soapPassages || '').trim();
+    if (passages) { data.soapEntries[date] = passages; } else { delete data.soapEntries[date]; }
+  }
+  writeFacilitatorSchedule(data);
+  res.json(data);
 });
 
 app.listen(PORT, () => {
