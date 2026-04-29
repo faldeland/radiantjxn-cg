@@ -9,18 +9,23 @@ function reportIssueApp() {
 
     init() {
       this.url = window.location.href;
+      window.addEventListener('open-report-issue', (e) => {
+        this.url = e.detail?.url || window.location.href;
+        this.description = e.detail?.description || '';
+        this.submitted = false;
+        this.error = '';
+        this.open = true;
+        this.$nextTick(() => {
+          const ta = document.getElementById('report-issue-description');
+          if (ta) ta.focus();
+        });
+      });
     },
 
     openModal() {
-      this.url = window.location.href;
-      this.description = '';
-      this.submitted = false;
-      this.error = '';
-      this.open = true;
-      this.$nextTick(() => {
-        const ta = document.getElementById('report-issue-description');
-        if (ta) ta.focus();
-      });
+      window.dispatchEvent(new CustomEvent('open-report-issue', {
+        detail: { url: window.location.href },
+      }));
     },
 
     closeModal() {
