@@ -971,7 +971,7 @@
       const now = new Date();
       return {
         darkMode: false,
-        tab: 'facilitator',
+        tab: localStorage.getItem('ironSharpensTab') || 'facilitator',
         taglines: ['FREE', 'EMPOWERED', 'CONNECTED', 'GENEROUS', 'LOVING OTHERS'],
 
         // Facilitator Schedule state
@@ -995,6 +995,7 @@
           this.applyDarkMode();
           this.startTaglineRotation();
           this.$nextTick(() => this.truncateVerses());
+          this.$watch('tab', (val) => localStorage.setItem('ironSharpensTab', val));
         },
         truncateVerses() {
           const WORD_LIMIT = 50;
